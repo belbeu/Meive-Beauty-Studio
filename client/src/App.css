@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 * {
   margin: 0;
@@ -147,14 +147,13 @@ button {
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      90deg,
-      rgba(0, 0, 0, 0.92) 0%,
-      rgba(0, 0, 0, 0.72) 30%,
-      rgba(0, 0, 0, 0.48) 65%,
-      rgba(0, 0, 0, 0.55) 95%
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.92) 0%,
+    rgba(0, 0, 0, 0.72) 30%,
+    rgba(0, 0, 0, 0.48) 65%,
+    rgba(0, 0, 0, 0.55) 95%
+  );
   z-index: 1;
 }
 
@@ -162,13 +161,12 @@ button {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.28) 0%,
-      transparent 30%,
-      rgba(0, 0, 0, 0.35) 100%
-    );
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.28) 0%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
   z-index: 2;
   pointer-events: none;
 }
@@ -308,7 +306,7 @@ button {
 
 .featured-card p {
   margin-top: 7px;
-  max-width: 100%;;
+  max-width: 100%;
   font-size: 11px;
   line-height: 1.5;
   color: #999;
@@ -396,7 +394,9 @@ button {
   flex-direction: column;
   justify-content: space-between;
   min-height: 380px;
-  transition: border-color 0.3s ease, background 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
 .service-card:hover {
@@ -582,7 +582,6 @@ button {
 }
 
 @media (max-width: 900px) {
-
   .about-section {
     grid-template-columns: 1fr;
   }
@@ -600,9 +599,7 @@ button {
   }
 }
 
-
 @media (max-width: 600px) {
-
   .about-image-side {
     min-height: 330px;
   }
@@ -618,7 +615,6 @@ button {
   .about-specs-grid {
     grid-template-columns: 1fr;
   }
-
 }
 
 .products-section {
@@ -776,7 +772,7 @@ button {
   border-color: #a71932;
   background-color: #a71932;
   color: #ffffff;
-  transform: translateX(4px); 
+  transform: translateX(4px);
 }
 
 @media (max-width: 768px) {
@@ -785,7 +781,7 @@ button {
     align-items: flex-start;
     gap: 15px;
   }
-  
+
   .products-top-note {
     text-align: left;
   }
@@ -810,7 +806,6 @@ button {
 }
 
 @media (max-width: 800px) {
-
   .logo {
     min-width: auto;
   }
@@ -846,9 +841,7 @@ button {
   }
 }
 
-
 @media (max-width: 480px) {
-
   .logo-sub {
     display: none;
   }
@@ -924,7 +917,7 @@ button {
   margin-bottom: 50px;
   display: flex;
   flex-direction: column;
-  align-items: center; 
+  align-items: center;
   text-align: center;
 }
 
@@ -957,7 +950,7 @@ button {
 .contact-title span:nth-child(3) {
   color: #ada9b1;
   font-size: 15px;
-  font-family: "DM Sans", sans-serif !important;
+  font-family: "DM Sans", sans-serif;
 }
 .contact-grid {
   display: flex;
@@ -1011,10 +1004,10 @@ button {
 .contact-form {
   background: rgba(15, 15, 15, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  
+
   width: 100%;
   max-width: 850px;
-  
+
   padding: 50px;
   display: flex;
   flex-direction: column;
@@ -1096,7 +1089,6 @@ button {
   background: rgba(255, 255, 255, 0.05);
 }
 
-
 .form-group select option {
   background: #121212;
   color: #ffffff;
@@ -1105,9 +1097,9 @@ button {
 .form-group select option:hover,
 .form-group select option:focus,
 .form-group select option:checked {
-  background: #ad1838 !important;
-  background-color: #ad1838 !important;
-  color: #ffffff !important;
+  background: #ad1838;
+  background-color: #ad1838;
+  color: #ffffff;
 }
 
 .form-group select:focus-visible {
@@ -1121,9 +1113,9 @@ button {
   }
 }
 
-/* ==========================================
-   FOOTER SITE (IGUAL À IMAGEM)
-   ========================================== */
+/* =============
+    FOOTER SITE 
+   ============= */
 .site-footer {
   background-color: #050505;
   color: #a0a0a0;
@@ -1387,7 +1379,7 @@ button {
 }
 .form-row {
   display: flex;
-  gap: 20px; 
+  gap: 20px;
   width: 100%;
 }
 
@@ -1451,8 +1443,8 @@ button {
 }
 
 .custom-option:hover {
-  background: #ad1838 !important; 
-  color: #ffffff !important;
+  background: #ad1838;
+  color: #ffffff;
 }
 
 @media (max-width: 600px) {
@@ -1468,7 +1460,7 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center !important;
+  text-align: center;
 }
 
 .testimonials-grid {
@@ -1491,7 +1483,12 @@ button {
 }
 
 .testimonial-card:hover {
-  border-color: rgba(173, 24, 56, 0.4); /* Sutil toque vinho ao passar o mouse */
+  border-color: rgba(
+    173,
+    24,
+    56,
+    0.4
+  ); /* Sutil toque vinho ao passar o mouse */
 }
 
 .stars {
@@ -1535,12 +1532,136 @@ button {
   font-weight: 500;
 }
 .highlight-purple {
-  font-size: 60px !important; 
-  color: #a855f7 !important; /* Exemplo de um tom de roxo/lilás diferente */
+  font-size: 60px;
+  color: #a855f7; /* Exemplo de um tom de roxo/lilás diferente */
 }
 /* Responsivo para telemóveis: empilha os cards se a tela for estreita */
 @media (max-width: 900px) {
   .testimonials-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================
+   BOTÃO FLUTUANTE EXPANSÍVEL (WHATSAPP, INSTA, TIKTOK)
+   ========================================== */
+.floating-socials-container {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Menu que contém os 3 botões (WhatsApp, Insta, TikTok) */
+.floating-socials-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 14px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px) scale(0.8);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  pointer-events: none;
+}
+
+/* Quando passa o rato ou foca no container, exibe o menu suavemente */
+.floating-socials-container:hover .floating-socials-menu,
+.floating-socials-container:focus-within .floating-socials-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Estilo comum dos sub-botões */
+.floating-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  text-decoration: none;
+}
+
+.floating-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Cores específicas de cada sub-botão */
+.floating-btn.tiktok {
+  background: #000000;
+  border-color: #25f4ee;
+}
+
+.floating-btn.instagram {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+}
+
+.floating-btn.whatsapp-sub {
+  background: #25d366;
+}
+
+/* Botão Principal Flutuante (Gatilho com a sua Imagem) */
+.floating-main-btn {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background-color: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Imagem icone-test.jpg dentro do botão principal */
+.floating-main-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.floating-main-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.7);
+}
+
+/* Animação de pulso em redor do botão */
+.floating-main-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  animation: floatPulse 2s infinite ease-out;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes floatPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
   }
 }

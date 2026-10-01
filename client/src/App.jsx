@@ -3,12 +3,14 @@ import "./App.css";
 import BeautyMarquee from "./components/BeautyMarquee";
 import AboutSection from "./components/Sobre";
 import ProdutosSection from "./components/ProdutosHome";
+import imagem from "./assets/icone-test.jpg"; 
 
 function App() {
-
   const [isOpen, setIsOpen] = useState(false);
   const [servicoSelecionado, setServicoSelecionado] = useState("");
-  const [nomeServicoLabel, setNomeServicoLabel] = useState("Selecione uma opção");
+  const [nomeServicoLabel, setNomeServicoLabel] = useState(
+    "Selecione uma opção",
+  );
 
   const selecionarServico = (valor, label) => {
     setServicoSelecionado(valor);
@@ -53,8 +55,6 @@ function App() {
       duration: "1h",
     },
   ];
-
-  
 
   return (
     <main className="home">
@@ -193,81 +193,133 @@ function App() {
       <ProdutosSection />
 
       <section className="testimonials-section">
- <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '50px' }}>
-  <span style={{ 
-    fontFamily: 'Inter, sans-serif', 
-    fontSize: '12px', 
-    letterSpacing: '4px', 
-    color: '#ad1838', /* Altere para a cor que preferir */
-    fontWeight: '600', 
-    marginBottom: '20px',
-    whiteSpace: 'nowrap', /* Garante que fica estritamente numa linha só */
-    display: 'inline-block'
-  }}>
-    DEPOIMENTOS
-  </span>
-    <h2 style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '0', padding: '0', lineHeight: '0.9' }}>
-      <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '78px', color: '#ffffff', margin: '0 0 -5px 0' }}>
-        O QUE AS
-      </span>
-      
-      <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '85px', color: '#8a2be2', margin: '0 0 -5px 0', letterSpacing: '1px' }}>
-        MEIVE GIRLS
-      </span>
-      
-      <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '78px', color: '#ffffff', margin: '0' }}>
-        DIZEM
-      </span>
-    </h2>
-  </div>
+        <div
+          style={{
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+            marginBottom: "50px",
+          }}
+        >
+          <span
+            style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              letterSpacing: "4px",
+              color: "#ad1838" /* Altere para a cor que preferir */,
+              fontWeight: "600",
+              marginBottom: "20px",
+              whiteSpace:
+                "nowrap" /* Garante que fica estritamente numa linha só */,
+              display: "inline-block",
+            }}
+          >
+            DEPOIMENTOS
+          </span>
+          <h2
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              margin: "0",
+              padding: "0",
+              lineHeight: "0.9",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: '"Bebas Neue", sans-serif',
+                fontSize: "78px",
+                color: "#ffffff",
+                margin: "0 0 -5px 0",
+              }}
+            >
+              O QUE AS
+            </span>
 
-  <div className="testimonials-grid">
-    {/* Card 1 */}
-    <div className="testimonial-card">
-      <div className="stars">★★★★★</div>
-      <p className="testimonial-text">
-        "Fiz volume russo e não tem volta. A Meive arrasa demais, tudo perfeito!"
-      </p>
-      <div className="testimonial-author">
-        <span className="author-avatar">A</span>
-        <span className="author-name">Ana Paula M.</span>
-      </div>
-    </div>
+            <span
+              style={{
+                fontFamily: '"Bebas Neue", sans-serif',
+                fontSize: "85px",
+                color: "#8a2be2",
+                margin: "0 0 -5px 0",
+                letterSpacing: "1px",
+              }}
+            >
+              MEIVE GIRLS
+            </span>
 
-    {/* Card 2 */}
-    <div className="testimonial-card">
-      <div className="stars">★★★★★</div>
-      <p className="testimonial-text">
-        "Acordei pronta. Melhor decisão da minha vida foi descobrir o Meive Beauty Studio."
-      </p>
-      <div className="testimonial-author">
-        <span className="author-avatar">B</span>
-        <span className="author-name">Bruna L.</span>
-      </div>
-    </div>
+            <span
+              style={{
+                fontFamily: '"Bebas Neue", sans-serif',
+                fontSize: "78px",
+                color: "#ffffff",
+                margin: "0",
+              }}
+            >
+              DIZEM
+            </span>
+          </h2>
+        </div>
 
-    {/* Card 3 */}
-    <div className="testimonial-card">
-      <div className="stars">★★★★★</div>
-      <p className="testimonial-text">
-        "Fora o resultado incrível, o espaço é lindo e o atendimento é impecável."
-      </p>
-      <div className="testimonial-author">
-        <span className="author-avatar">L</span>
-        <span className="author-name">Larissa C.</span>
-      </div>
-    </div>
-  </div>
-</section>
+        <div className="testimonials-grid">
+          {/* Card 1 */}
+          <div className="testimonial-card">
+            <div className="stars">★★★★★</div>
+            <p className="testimonial-text">
+              "Fiz volume russo e não tem volta. A Meive arrasa demais, tudo
+              perfeito!"
+            </p>
+            <div className="testimonial-author">
+              <span className="author-avatar">A</span>
+              <span className="author-name">Ana Paula M.</span>
+            </div>
+          </div>
+
+          {/* Card 2 */}
+          <div className="testimonial-card">
+            <div className="stars">★★★★★</div>
+            <p className="testimonial-text">
+              "Acordei pronta. Melhor decisão da minha vida foi descobrir o
+              Meive Beauty Studio."
+            </p>
+            <div className="testimonial-author">
+              <span className="author-avatar">B</span>
+              <span className="author-name">Bruna L.</span>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div className="testimonial-card">
+            <div className="stars">★★★★★</div>
+            <p className="testimonial-text">
+              "Fora o resultado incrível, o espaço é lindo e o atendimento é
+              impecável."
+            </p>
+            <div className="testimonial-author">
+              <span className="author-avatar">L</span>
+              <span className="author-name">Larissa C.</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section id="contato" className="contact-section">
         <div className="contact-header">
           <span className="contact-subtitle">AGENDAMENTO</span>
           <h2 className="contact-title">
             <span>BORA</span> <span>AGENDAR?</span>
-            <span style={{ fontFamily: '"DM Sans", sans-serif !important', color: '#ada9b1', fontSize: '15px' }}>
-  Entre em contato e retornamos em até 1 hora.
-</span>
+            <span
+              style={{
+                fontFamily: '"DM Sans", sans-serif !important',
+                color: "#ada9b1",
+                fontSize: "15px",
+              }}
+            >
+              Entre em contato e retornamos em até 1 hora.
+            </span>
           </h2>
         </div>
 
@@ -275,51 +327,102 @@ function App() {
           {/* Formulário Simples de Contato */}
           <form className="contact-form" onSubmit={(e) => e.preventDefault()}>
             <div className="form-row">
-               <div className="form-group">
+              <div className="form-group">
                 <label htmlFor="nome">SEU NOME</label>
-                <input type="text" id="nome" placeholder="Digite seu nome" required />
-            </div>
+                <input
+                  type="text"
+                  id="nome"
+                  placeholder="Digite seu nome"
+                  required
+                />
+              </div>
 
-            <div className="form-group">
+              <div className="form-group">
                 <label htmlFor="whatsapp">SEU WHATSAPP</label>
-                <input type="text" id="whatsapp" placeholder="(11) 98888-8888" required />
+                <input
+                  type="text"
+                  id="whatsapp"
+                  placeholder="(11) 94487-4969"
+                  required
+                />
+              </div>
             </div>
-        </div>
 
             <div className="form-group">
               <div className="form-group custom-select-container">
-    <label htmlFor="servico">QUAL SERVIÇO VOCÊ DESEJA?</label>
-    
-    {/* Caixa que simula o select fechado */}
-    <div 
-      className={`custom-select-trigger ${servicoSelecionado ? 'selected' : ''}`}
-      onClick={() => setIsOpen(!isOpen)}
-    >
-      <span>{nomeServicoLabel}</span>
-      <svg className={`select-arrow ${isOpen ? 'open' : ''}`} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 9l6 6 6-6"/></svg>
-    </div>
+                <label htmlFor="servico">QUAL SERVIÇO VOCÊ DESEJA?</label>
 
-    {/* Input escondido para manter a obrigatoriedade no form */}
-    <input type="hidden" name="servico" value={servicoSelecionado} required />
+                {/* Caixa que simula o select fechado */}
+                <div
+                  className={`custom-select-trigger ${servicoSelecionado ? "selected" : ""}`}
+                  onClick={() => setIsOpen(!isOpen)}
+                >
+                  <span>{nomeServicoLabel}</span>
+                  <svg
+                    className={`select-arrow ${isOpen ? "open" : ""}`}
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
 
-    {/* Lista de opções customizada */}
-    {isOpen && (
-      <div className="custom-options-list">
-        <div className="custom-option" onClick={() => selecionarServico("volume-russo", "Volume Russo (R$ 280)")}>
-          Volume Russo (R$ 280)
-        </div>
-        <div className="custom-option" onClick={() => selecionarServico("fio-a-fio", "Fio a Fio (R$ 180)")}>
-          Fio a Fio (R$ 180)
-        </div>
-        <div className="custom-option" onClick={() => selecionarServico("hibrido", "Híbrido (R$ 230)")}>
-          Híbrido (R$ 230)
-        </div>
-        <div className="custom-option" onClick={() => selecionarServico("manutencao", "Manutenção (A partir de R$ 100)")}>
-          Manutenção (A partir de R$ 100)
-        </div>
-      </div>
-    )}
-  </div>
+                {/* Input escondido para manter a obrigatoriedade no form */}
+                <input
+                  type="hidden"
+                  name="servico"
+                  value={servicoSelecionado}
+                  required
+                />
+
+                {/* Lista de opções customizada */}
+                {isOpen && (
+                  <div className="custom-options-list">
+                    <div
+                      className="custom-option"
+                      onClick={() =>
+                        selecionarServico(
+                          "volume-russo",
+                          "Volume Russo (R$ 280)",
+                        )
+                      }
+                    >
+                      Volume Russo (R$ 280)
+                    </div>
+                    <div
+                      className="custom-option"
+                      onClick={() =>
+                        selecionarServico("fio-a-fio", "Fio a Fio (R$ 180)")
+                      }
+                    >
+                      Fio a Fio (R$ 180)
+                    </div>
+                    <div
+                      className="custom-option"
+                      onClick={() =>
+                        selecionarServico("hibrido", "Híbrido (R$ 230)")
+                      }
+                    >
+                      Híbrido (R$ 230)
+                    </div>
+                    <div
+                      className="custom-option"
+                      onClick={() =>
+                        selecionarServico(
+                          "manutencao",
+                          "Manutenção (A partir de R$ 100)",
+                        )
+                      }
+                    >
+                      Manutenção (A partir de R$ 100)
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="form-group">
@@ -379,15 +482,15 @@ function App() {
             <h4 className="footer-title">HORÁRIOS</h4>
             <ul className="schedule-list">
               <li>
-                <span>Seg - Sex</span>
-                <span className="highlight-time">9h às 19h</span>
+                <span>Ter - Sex</span>
+                <span className="highlight-time">13h às 21h</span>
               </li>
               <li>
                 <span>Sábado</span>
-                <span className="highlight-time">9h às 16h</span>
+                <span className="highlight-time">9h às 1h</span>
               </li>
               <li>
-                <span>Domingo</span>
+                <span>Dom - Seg</span>
                 <span className="closed-time">Fechado</span>
               </li>
             </ul>
@@ -419,6 +522,69 @@ function App() {
           <span className="hashtag">#MeiveBeauty</span>
         </div>
       </footer>
+      {/* BOTÃO FLUTUANTE DE REDES SOCIAIS / WHATSAPP */}
+      <div className="floating-socials-container">
+        <div className="floating-socials-menu">
+          {/* Ícone TikTok */}
+          <a
+            href="https://tiktok.com"
+            target="_blank"
+            rel="noreferrer"
+            className="floating-btn tiktok"
+            aria-label="TikTok"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-2.09-2.78V9.39a6.34 6.34 0 0 0-1.36.15 6.37 6.37 0 1 0 6.9 6.33V8.83a8.3 8.3 0 0 0 4.17 1.25V6.69z" />
+            </svg>
+          </a>
+
+          {/* Ícone Instagram */}
+          <a
+            href="https://www.instagram.com/nineris.studio/"
+            target="_blank"
+            rel="noreferrer"
+            className="floating-btn instagram"
+            aria-label="Instagram"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </a>
+
+          {/* Ícone WhatsApp (Ação Secundária) */}
+          <a
+            href="https://wa.me/+5511944874969"
+            target="_blank"
+            rel="noreferrer"
+            className="floating-btn whatsapp-sub"
+            aria-label="WhatsApp Chat"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+            </svg>
+          </a>
+        </div>
+
+        {/* Botão Principal Flutuante (Gatilho com Imagem) */}
+        <button className="floating-main-btn" aria-label="Abrir redes sociais">
+          <img
+            src={imagem}
+            alt="Meive Beauty"
+            className="floating-main-img"
+          />
+        </button>
+      </div>
     </main>
   );
 }
