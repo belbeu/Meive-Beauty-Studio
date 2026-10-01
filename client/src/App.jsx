@@ -187,6 +187,11 @@ function App() {
           ))}
         </div>
       </section>
+
+      <AboutSection />
+
+      <ProdutosSection />
+
       <section className="testimonials-section">
  <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', marginBottom: '50px' }}>
   <span style={{ 
@@ -254,10 +259,6 @@ function App() {
     </div>
   </div>
 </section>
-
-      <AboutSection />
-
-      <ProdutosSection />
 
       <section id="contato" className="contact-section">
         <div className="contact-header">

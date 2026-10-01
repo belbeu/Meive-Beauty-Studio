@@ -621,9 +621,6 @@ button {
 
 }
 
-/* =================================================================
-   ESTILOS DA SEÇÃO DE PRODUTOS
-   ================================================================= */
 .products-section {
   padding: 80px 5%;
   background-color: #0b0b0b;
@@ -739,9 +736,6 @@ button {
   background-color: #8a1327;
 }
 
-/* =================================================================
-   RODAPÉ DA SEÇÃO DE PRODUTOS ("VER MAIS" NO CANTO INFERIOR DIREITO)
-   ================================================================= */
 .products-section-footer {
   display: flex;
   justify-content: flex-end; /* Joga tudo para a direita */
@@ -782,7 +776,7 @@ button {
   border-color: #a71932;
   background-color: #a71932;
   color: #ffffff;
-  transform: translateX(4px); /* Efeito suave da seta movendo para o lado */
+  transform: translateX(4px); 
 }
 
 @media (max-width: 768px) {
@@ -908,12 +902,22 @@ button {
 }
 .contact-section {
   position: relative;
-  padding: 100px 20px;
+  padding-top: 70px;
+  padding-bottom: 30px;
   background: #090909;
   color: #ffffff;
   max-width: 1300px;
+  min-height: auto;
+  height: auto;
   margin: 0 auto;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.section-divider {
+  height: 1px;
+  margin: 0;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .contact-header {
