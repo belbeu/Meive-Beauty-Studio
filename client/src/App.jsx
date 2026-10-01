@@ -105,7 +105,7 @@ function App() {
           </div>
 
           <p className="hero-description">
-            Transformando olhares através da Minha Arte.
+            Transformando olhares através da Arte.
           </p>
 
           <div className="hero-buttons">
@@ -399,15 +399,15 @@ function App() {
             <ul className="contact-list">
               <li>
                 <span className="icon">📍</span>
-                <span>Rua das Flores, 142 — Pinheiros, SP</span>
+                <span>R. Giancarlo Palanti, 22 A, 03661-050, Vila Ré</span>
               </li>
               <li>
                 <span className="icon">📱</span>
-                <span>(11) 99999-9999</span>
+                <span>(11) 94487-4969</span>
               </li>
               <li>
                 <span className="icon">📧</span>
-                <span>meive@email.com</span>
+                <span>meivestudio@email.com</span>
               </li>
             </ul>
           </div>
