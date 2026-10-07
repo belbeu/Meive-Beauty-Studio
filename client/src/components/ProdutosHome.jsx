@@ -12,6 +12,7 @@ export default function ProdutosSection() {
       image: serumImg,
       title: "Sérum para Cílios",
       price: "R$ 89",
+      description: "Fórmula multissérum leve para umas pestanas e sobrancelhas mais espessas, densas e com aspeto saudável.",
     },
     {
       id: "prod-2",
