@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./ProdutosHome.css";
 import serumImg from "../assets/serum de cilios.webp";
 import removedorImg from "../assets/removedor.webp";
@@ -6,6 +6,9 @@ import espumaImg from "../assets/espuma para cilios.webp";
 import gelImg from "../assets/gel de limpeza.webp";
 
 export default function ProdutosSection() {
+  // Estado para controlar qual produto está com o texto expandido
+  const [expandedId, setExpandedId] = useState(null);
+
   const productsData = [
     {
       id: "prod-1",
@@ -37,6 +40,15 @@ export default function ProdutosSection() {
     },
   ];
 
+  // Função que abre ou fecha a descrição do produto clicado
+  const handleToggleDescription = (id) => {
+    if (expandedId === id) {
+      setExpandedId(null); // Fecha se já estiver aberto
+    } else {
+      setExpandedId(id); // Abre o novo e fecha os outros
+    }
+  };
+
   return (
     <section id="produtos" className="products-section">
       <div className="products-header-container">
@@ -59,8 +71,14 @@ export default function ProdutosSection() {
             <div className="product-info">
               <h3>{product.title}</h3>
               
-              {/* A descrição do produto */}
-              <p className="product-description">{product.description}</p>
+              {/* Descrição agora é clicável e muda de classe dinamicamente */}
+              <p 
+                className={`product-description ${expandedId === product.id ? "expanded" : ""}`}
+                onClick={() => handleToggleDescription(product.id)}
+                title="Clique para ler mais"
+              >
+                {product.description}
+              </p>
               
               <div className="product-footer">
                 <span className="product-price">{product.price}</span>
