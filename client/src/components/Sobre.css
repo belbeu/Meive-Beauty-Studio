@@ -1,0 +1,158 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+.about-section {
+  width: 100%;
+  min-height: 553px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #0b0b0b;
+  overflow: hidden;
+}
+
+.about-image-side {
+  position: relative;
+  min-height: 553px;
+  background-image: url("../assets/sobre-img.jpeg");
+  background-size: cover;
+  background-position: center center;
+  overflow: hidden;
+}
+
+.about-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.05) 0%,
+    rgba(0, 0, 0, 0.08) 55%,
+    rgba(11, 11, 11, 0.75) 100%
+  );
+}
+
+.about-content-side {
+  min-width: 0;
+  padding: 25px 48px 40px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #0b0b0b;
+}
+
+.about-subtitle {
+  display: block;
+  margin-bottom: 9px;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  color: #6e1a70;
+}
+
+.about-title {
+  margin: 0 0 15px 0;
+  color: #ffffff;
+  font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
+  font-size: clamp(42px, 4vw, 55px);
+  font-weight: 900;
+  line-height: 0.91;
+  letter-spacing: -1.5px;
+  text-transform: uppercase;
+}
+
+.about-title .highlight-red {
+  display: inline;
+  color: #a71932;
+}
+
+.about-lead {
+  max-width: 555px;
+  margin: 0 0 13px 0;
+  color: #969696;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.about-subtext {
+  max-width: 555px;
+  margin: 0 0 29px 0;
+  color: #8a8a8a;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.about-specs-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.spec-card {
+  min-height: 56px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 1px solid #222222;
+  background: #0b0b0b;
+}
+
+.spec-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #a71932;
+  font-family: Arial, sans-serif;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 2px;
+}
+
+.spec-value {
+  display: block;
+  color: #858585;
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+/* ==========================================
+   Responsividade da Seção Sobre
+   ========================================== */
+@media (max-width: 900px) {
+  .about-section {
+    grid-template-columns: 1fr;
+  }
+
+  .about-image-side {
+    min-height: 420px;
+  }
+
+  .about-content-side {
+    padding: 50px 30px;
+  }
+
+  .about-title {
+    font-size: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .about-image-side {
+    min-height: 330px;
+  }
+
+  .about-content-side {
+    padding: 40px 22px;
+  }
+
+  .about-title {
+    font-size: 42px;
+  }
+
+  .about-specs-grid {
+    grid-template-columns: 1fr;
+  }
+}

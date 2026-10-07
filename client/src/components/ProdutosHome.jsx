@@ -1,4 +1,5 @@
 import React from "react";
+import "./ProdutosHome.css";
 import serumImg from "../assets/serum de cilios.webp";
 import removedorImg from "../assets/removedor.webp";
 import espumaImg from "../assets/espuma para cilios.webp";

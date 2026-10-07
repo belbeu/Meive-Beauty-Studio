@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+.section-divider {
+  width: 100%;
+  height: 150px;
+  margin-top: 100px;
+  background: linear-gradient(180deg, rgba(9, 9, 9, 0) 0%, #090909 100%);
+}
+
+.services-section {
+  position: relative;
+  padding: 100px 20px;
+  background: #090909;
+  color: #ffffff;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.services-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 30px;
+}
+
+.services-subtitle {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #ad1838;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.services-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(50px, 7vw, 90px);
+  line-height: 0.9;
+  letter-spacing: 1px;
+}
+
+.services-top-note {
+  max-width: 300px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #777;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.service-card {
+  position: relative;
+  background: rgba(15, 15, 15, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 380px;
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.service-card:hover {
+  border-color: rgba(173, 24, 56, 0.4);
+  background: rgba(20, 15, 17, 0.8);
+}
+
+.service-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  min-height: 24px;
+}
+
+.service-tag {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  background: #ad1838;
+  color: #ffffff;
+  padding: 3px 8px;
+}
+
+.service-number {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 36px;
+  color: rgba(255, 255, 255, 0.1);
+  line-height: 1;
+}
+
+.service-info h3 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.service-info p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #888;
+}
+
+.service-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.service-price {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.service-duration {
+  font-size: 10px;
+  color: #555;
+  background: rgba(255, 255, 255, 0.04);
+  padding: 4px 8px;
+  border-radius: 2px;
+}
