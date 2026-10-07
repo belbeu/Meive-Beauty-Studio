@@ -277,6 +277,22 @@
     left: 20px;
   }
 }
+.product-description {
+  /* Cor e Tipografia */
+  color: #A3A3A3; /* Tom de cinza claro para não competir com o título ou preço */
+  font-size: 14px; /* Letra ligeiramente menor que o título */
+  font-weight: 400;
+  
+  /* Espaçamento */
+  margin-top: 8px; /* Espaço entre o título e a descrição */
+  margin-bottom: 24px; /* Espaço entre a descrição e o rodapé (preço/botão) */
+  line-height: 1.4; /* Melhora a legibilidade das linhas de texto */
 
-
-
+  /* Limite de 2 linhas com reticências (...) no final */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2; /* <-- Coloque exatamente aqui, logo abaixo da anterior */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

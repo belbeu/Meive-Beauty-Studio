@@ -19,18 +19,21 @@ export default function ProdutosSection() {
       image: removedorImg,
       title: "Removedor Óleo-Free",
       price: "R$ 45",
+      description: "Remove suavemente a maquilhagem e as impurezas diárias sem deixar resíduos oleosos na sua pele.",
     },
     {
       id: "prod-3",
       image: espumaImg,
       title: "Espuma para Cílios",
       price: "R$ 55",
+      description: "Limpeza profunda e delicada, ideal para a manutenção perfeita e duradoura das suas extensões.",
     },
     {
       id: "prod-4",
       image: gelImg,
       title: "Gel de Limpeza Facial",
       price: "R$ 68",
+      description: "Purifica a pele diariamente, controlando a oleosidade e mantendo a hidratação natural do rosto.",
     },
   ];
 
@@ -55,6 +58,10 @@ export default function ProdutosSection() {
             ></div>
             <div className="product-info">
               <h3>{product.title}</h3>
+              
+              {/* A descrição do produto */}
+              <p className="product-description">{product.description}</p>
+              
               <div className="product-footer">
                 <span className="product-price">{product.price}</span>
                 <button className="product-buy-btn">COMPRAR</button>
