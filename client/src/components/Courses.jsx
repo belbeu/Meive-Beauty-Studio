@@ -437,6 +437,14 @@ export default function ServicesPage() {
         
         
       </section>
+      <div style={{ width: "100%", padding: "0 5%", boxSizing: "border-box", marginTop: "40px" }}>
+        <hr style={{ 
+          border: "none", 
+          height: "1px", 
+          backgroundColor: "rgba(255, 255, 255, 0.1)", 
+          margin: "10px 0 40px 0" 
+        }} />
+      </div>
       <section style={{ padding: "40px 5%", maxWidth: "1300px", margin: "0 auto" }}>
         <div style={{
           display: "grid",
@@ -510,6 +518,7 @@ export default function ServicesPage() {
               </div>
             </div>
           </div>
+          
 
           <div style={{ position: "relative", display: "flex", justifyContent: "center", marginTop: "20px" }}>
             <div style={{
