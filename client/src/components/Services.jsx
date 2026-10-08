@@ -5,24 +5,25 @@ const servicesData = [
   {
     id: "01",
     tag: "MAIS PEDIDO",
-    title: "VOLUME RUSSO",
-    description: "Fios ultrafinos em leque. Resultado dramático e cheio que dura semanas.",
+    title: "Moddelo RUSSO",
+    description: "Usa fios sintéticos ultrafinos e é aplicado em cada cílio natural.Criando um efeito de densidade e preenchimento, resultando em um olhar muito mais dramático e volumoso.",
     price: "R$ 280",
     duration: "3h",
   },
   {
     id: "02",
-    tag: null,
-    title: "FIO A FIO",
-    description: "Clássico e natural. Um fio por cílio para quem quer leveza no dia a dia.",
+    tag: "PROMOÇÃO", // Modificado para PROMOÇÃO
+    title: "Modelo Brasileiro",
+    description: " Usa fios tecnológicos em formato de Y, que dão um efeito trançado e volumoso sem pesar nos olhos.",
+    oldPrice: "R$ 220", // Adicionada a propriedade de preço antigo
     price: "R$ 180",
     duration: "2h",
   },
   {
     id: "03",
     tag: "FAVORITO",
-    title: "HÍBRIDO",
-    description: "O melhor dos dois mundos — textura e volume sem exageros.",
+    title: "MODELO HÍBRIDO",
+    description: "Usado duas tecnicas distintas. O melhor dos dois mundos. Trazendo textura e volume sem exageros.",
     price: "R$ 230",
     duration: "2h30",
   },
@@ -63,7 +64,13 @@ export default function Services() {
             </div>
 
             <div className="service-footer">
-              <strong className="service-price">{service.price}</strong>
+              {/* Adicionada esta div wrapper para agrupar os preços */}
+              <div className="service-price-wrapper">
+                {service.oldPrice && (
+                  <span className="service-old-price">{service.oldPrice}</span>
+                )}
+                <strong className="service-price">{service.price}</strong>
+              </div>
               <span className="service-duration">{service.duration}</span>
             </div>
           </div>

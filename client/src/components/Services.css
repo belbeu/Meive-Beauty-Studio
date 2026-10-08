@@ -133,3 +133,16 @@
   padding: 4px 8px;
   border-radius: 2px;
 }
+/* mudar o preço */
+.service-price-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o preço antigo e o novo */
+}
+
+/* Estilo do preço antigo */
+.service-old-price {
+  color: #737373; /* Cor cinza para não chamar tanta atenção */
+  font-size: 14px; /* Ligeiramente menor que o preço principal */
+  text-decoration: line-through; /* Cria a linha que risca o preço */
+}

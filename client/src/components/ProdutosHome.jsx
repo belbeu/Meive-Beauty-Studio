@@ -6,7 +6,7 @@ import espumaImg from "../assets/espuma para cilios.webp";
 import gelImg from "../assets/gel de limpeza.webp";
 
 export default function ProdutosSection() {
-  // Estado para controlar qual produto está com o texto expandido
+  // O estado para controlar qual produto está com o texto expandido qual não
   const [expandedId, setExpandedId] = useState(null);
 
   const productsData = [
