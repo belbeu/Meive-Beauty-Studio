@@ -8,12 +8,10 @@ import BeautyMarquee from "./components/BeautyMarquee";
 import Services from "./components/Services";
 import AboutSection from "./components/Sobre";
 import ProdutosSection from "./components/ProdutosHome";
-import Testimonials from "./components/Avaliacoes"; 
+// import Testimonials from "./components/Avaliacoes"; // <-- CERTIFIQUE-SE DE QUE ESTA LINHA EXISTE
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
-import PromocoesSection from "./components/Promocao"; // Importando a seção de promoções
-// Importa corretamente o Courses da pasta components
 import Courses from "./components/Courses"; 
 
 function HomePage() {
@@ -25,10 +23,8 @@ function HomePage() {
       <Services />
       <AboutSection />
       <ProdutosSection />
-      <Testimonials />
+      {/* <Testimonials /> <-- ELA É USADA AQUI */}
       <Contact />
-      <PromocoesSection/>
-
       <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
