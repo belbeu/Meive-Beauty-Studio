@@ -5,7 +5,7 @@ const servicesData = [
   {
     id: "01",
     tag: "MAIS PEDIDO",
-    title: "Moddelo RUSSO",
+    title: "Modelo RUSSO",
     description: "Usa fios sintéticos ultrafinos e é aplicado em cada cílio natural.Criando um efeito de densidade e preenchimento, resultando em um olhar muito mais dramático e volumoso.",
     price: "R$ 280",
     duration: "3h",
