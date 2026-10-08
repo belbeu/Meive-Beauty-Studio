@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
+/* CORREÇÃO: Adicionado pointer-events: none para o container não acionar com o pulso */
 .floating-socials-container {
   position: fixed;
   bottom: 25px;
@@ -9,6 +10,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: none; 
 }
 
 /* Menu que contém os 3 botões (WhatsApp, Insta, TikTok) */
@@ -68,6 +70,7 @@
 }
 
 /* Botão Principal Flutuante (Gatilho com a sua Imagem) */
+/* CORREÇÃO: Adicionado pointer-events: auto para aceitar o mouse apenas na área exata do botão */
 .floating-main-btn {
   width: 58px;
   height: 58px;
@@ -83,6 +86,7 @@
   position: relative;
   overflow: hidden;
   padding: 0;
+  pointer-events: auto; 
 }
 
 /* Imagem icone-test.jpg dentro do botão principal */
