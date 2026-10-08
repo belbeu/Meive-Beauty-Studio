@@ -151,7 +151,7 @@ export default function ServicesPage() {
               display: "inline-block",
             }}
           >
-            DEPOIMENTOS
+            QUEM APRENDEU COM A MEIVE
           </span>
           <h2
             style={{
@@ -169,32 +169,23 @@ export default function ServicesPage() {
                 fontSize: "78px",
                 color: "#ffffff",
                 margin: "0 0 -5px 0",
+                letterSpacing: "4px",
               }}
             >
-              O QUE AS
+              ELAS COMEÇARAM.
             </span>
 
             <span
               style={{
                 fontFamily: '"Bebas Neue", sans-serif',
                 fontSize: "85px",
-                color: "#8a2be2",
+                color: "#ad1838",
                 margin: "0 0 -5px 0",
                 letterSpacing: "1px",
+                letterSpacing: "6px",
               }}
             >
-              MEIVE GIRLS
-            </span>
-
-            <span
-              style={{
-                fontFamily: '"Bebas Neue", sans-serif',
-                fontSize: "78px",
-                color: "#ffffff",
-                margin: "0",
-              }}
-            >
-              DIZEM
+              E NÃO PARARAM.
             </span>
           </h2>
         </div>
@@ -204,7 +195,7 @@ export default function ServicesPage() {
           <div className="testimonial-card">
             <div className="stars">★★★★★</div>
             <p className="testimonial-text">
-              "Fiz volume russo e não tem volta. A Meive arrasa demais, tudo perfeito!"
+              “Eu cheguei sem experiência e saí segura para atender minhas primeiras clientes. A didática e o suporte fizeram toda a diferença.”
             </p>
             <div className="testimonial-author">
               <span className="author-avatar">A</span>
@@ -216,7 +207,7 @@ export default function ServicesPage() {
           <div className="testimonial-card">
             <div className="stars">★★★★★</div>
             <p className="testimonial-text">
-              "Acordei pronta. Melhor decisão da minha vida foi descobrir o Meive Beauty Studio."
+              “Finalmente consegui criar fans mais leves e simétricos. Minha retenção melhorou e hoje consigo cobrar com mais confiança.”
             </p>
             <div className="testimonial-author">
               <span className="author-avatar">B</span>
@@ -228,7 +219,7 @@ export default function ServicesPage() {
           <div className="testimonial-card">
             <div className="stars">★★★★★</div>
             <p className="testimonial-text">
-              "Fora o resultado incrível, o espaço é lindo e o atendimento é impecável."
+              “Organizei meu posicionamento, comecei a mostrar melhor meu trabalho e vi minha agenda ganhar movimento de verdade.”
             </p>
             <div className="testimonial-author">
               <span className="author-avatar">L</span>
