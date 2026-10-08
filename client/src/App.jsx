@@ -21,10 +21,12 @@ function HomePage() {
       <Hero />
       <BeautyMarquee />
       <Services />
+      <PromocoesSection/>
       <AboutSection />
       <ProdutosSection />
       <Testimonials />
       <Contact />
+
       <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
