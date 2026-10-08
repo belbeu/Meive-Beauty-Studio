@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import "./Courses.css";
 import Navbar from "./Navbar"; 
 import Footer from "./Footer";
+import "./Avaliacoes.css"
 // Dados divididos por categorias
 const categoriesData = [
   {
