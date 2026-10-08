@@ -21,7 +21,9 @@
   display: flex;
   align-items: baseline;
   gap: 7px;
-  min-width: 300px;
+  min-width: 250px;
+  text-decoration: none;
+  color: #ffffff;
 }
 
 .logo-main {
@@ -41,7 +43,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 30px;
+  gap: 25px;
   flex: 1;
 }
 
@@ -50,6 +52,7 @@
   font-weight: 500;
   letter-spacing: 2px;
   color: #777;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
@@ -60,34 +63,70 @@
 .nav-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
-.cart-button {
+/* Botão do Carrinho (Caixa) */
+.cart-box-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   color: #777;
+  width: 35px;
+  height: 35px;
   cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.cart-button:hover {
+.cart-box-button:hover {
+  border-color: #a91635;
   color: #ffffff;
+  background: rgba(169, 22, 53, 0.1);
 }
 
+/* Botão Minha Conta */
+.account-box-button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 35px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #777;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.account-box-button span {
+  font-family: "Inter", sans-serif;
+}
+
+.account-box-button:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Botão Agendar */
 .schedule-button {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 25px;
+  height: 35px;
   min-width: 89px;
   padding: 0 15px;
   background: #a91635;
+  color: #ffffff;
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.5px;
+  text-decoration: none;
   transition: background 0.2s ease;
 }
 
@@ -98,7 +137,7 @@
 /* ========================
    Responsividade da Navbar
    ======================== */
-@media (max-width: 800px) {
+@media (max-width: 950px) {
   .logo {
     min-width: auto;
   }
@@ -119,5 +158,14 @@
 
   .schedule-button {
     min-width: 80px;
+    padding: 0 10px;
+  }
+
+  .account-box-button span {
+    display: none; /* Oculta o texto "MINHA CONTA" em telas muito pequenas, deixando apenas o ícone */
+  }
+  
+  .account-box-button {
+    padding: 0 8px;
   }
 }

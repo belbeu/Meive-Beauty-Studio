@@ -8,12 +8,15 @@ import BeautyMarquee from "./components/BeautyMarquee";
 import Services from "./components/Services";
 import AboutSection from "./components/Sobre";
 import ProdutosSection from "./components/ProdutosHome";
-import Testimonials from "./components/Avaliacoes"; // <-- CERTIFIQUE-SE DE QUE ESTA LINHA EXISTE
+// import Testimonials from "./components/Avaliacoes"; // <-- CERTIFIQUE-SE DE QUE ESTA LINHA EXISTE
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
 import Courses from "./components/Courses"; 
 import PromocoesSection from "./components/Promocao";
+
+import Login from "./components/Login";
+import Cadastro from "./components/Cadastro";
 
 function HomePage() {
   return (
@@ -22,12 +25,10 @@ function HomePage() {
       <Hero />
       <BeautyMarquee />
       <Services />
-      <PromocoesSection/>
       <AboutSection />
       <ProdutosSection />
-      <Testimonials />
+      {/* <Testimonials /> <-- ELA É USADA AQUI */}
       <Contact />
-
       <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
@@ -41,6 +42,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
       </Routes>
     </Router>
   );
