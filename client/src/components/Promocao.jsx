@@ -2,6 +2,9 @@ import React from "react";
 import "./Promocao.css";
 
 export default function PromocoesSection() {
+  // Substitua pelo seu número de WhatsApp com DDI e DDD (ex: 5511999999999)
+  const phoneNumber = "5511944874969"; 
+
   const promocoesData = [
     {
       id: "promo-1",
@@ -10,7 +13,7 @@ export default function PromocoesSection() {
       oldPrice: "R$ 350",
       newPrice: "R$ 290",
       validity: "Válido até sexta-feira",
-      highlight: true // Para dar um destaque especial a este cartão
+      highlight: true
     },
     {
       id: "promo-2",
@@ -40,25 +43,39 @@ export default function PromocoesSection() {
       </div>
 
       <div className="promo-grid">
-        {promocoesData.map((promo) => (
-          <div key={promo.id} className={`promo-card ${promo.highlight ? 'highlighted' : ''}`}>
-            {promo.highlight && <div className="promo-badge">Mais Popular</div>}
-            
-            <div className="promo-content">
-              <h3>{promo.title}</h3>
-              <p>{promo.description}</p>
-              
-              <div className="promo-pricing">
-                <span className="promo-old-price">{promo.oldPrice}</span>
-                <span className="promo-new-price">{promo.newPrice}</span>
-              </div>
-              
-              <span className="promo-validity">{promo.validity}</span>
-            </div>
+        {promocoesData.map((promo) => {
+          // Monta a mensagem automática para cada promoção
+          const mensagem = `Olá! Gostaria de aproveitar a promoção *${promo.title}* por *${promo.newPrice}* (${promo.validity}). Como faço para agendar?`;
+          const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(mensagem)}`;
 
-            <button className="promo-btn">Agendar Agora!</button>
-          </div>
-        ))}
+          return (
+            <div key={promo.id} className={`promo-card ${promo.highlight ? 'highlighted' : ''}`}>
+              {promo.highlight && <div className="promo-badge">Mais Popular</div>}
+              
+              <div className="promo-content">
+                <h3>{promo.title}</h3>
+                <p>{promo.description}</p>
+                
+                <div className="promo-pricing">
+                  <span className="promo-old-price">{promo.oldPrice}</span>
+                  <span className="promo-new-price">{promo.newPrice}</span>
+                </div>
+                
+                <span className="promo-validity">{promo.validity}</span>
+              </div>
+
+              {/* Transformamos a tag button em <a> para abrir o WhatsApp */}
+              <a 
+                href={whatsappUrl} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="promo-btn"
+              >
+                Agendar Agora!
+              </a>
+            </div>
+          );
+        })}
       </div>
     </section>
   );
