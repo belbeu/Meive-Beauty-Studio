@@ -15,6 +15,9 @@ import FloatingSocials from "./components/IconeFlutuante";
 import Courses from "./components/Courses"; 
 import PromocoesSection from "./components/Promocao";
 
+import Login from "./components/Login";
+import Cadastro from "./components/Cadastro";
+
 function HomePage() {
   return (
     <main className="home">
@@ -39,6 +42,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/courses" element={<Courses />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/cadastro" element={<Cadastro />} />
       </Routes>
     </Router>
   );

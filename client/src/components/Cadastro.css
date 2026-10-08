@@ -1,0 +1,254 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
+.cadastro-container {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  min-height: 100vh;
+  width: 100%;
+  background: #050505;
+  overflow: hidden;
+}
+
+.cadastro-banner-side {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 50px 60px;
+}
+
+.cadastro-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.4) 0%,
+    rgba(170, 126, 195, 0.25) 50%,
+    rgba(5, 5, 5, 0.95) 100%
+  );
+  z-index: 1;
+}
+
+.cadastro-brand,
+.cadastro-quote-container {
+  position: relative;
+  z-index: 2;
+}
+
+.cadastro-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.cadastro-brand .logo-main {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 32px;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+}
+
+.cadastro-brand .logo-sub {
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 2.8px;
+  color: #ad1838;
+}
+
+.cadastro-quote-container {
+  margin-bottom: 20px;
+}
+
+.cadastro-quote-title {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: clamp(55px, 6vw, 85px);
+  line-height: 0.9;
+  letter-spacing: 1px;
+  color: #ffffff;
+  margin-bottom: 15px;
+}
+
+.cadastro-quote-title .quote-highlight {
+  color: #ad1838;
+}
+
+.cadastro-quote-footer {
+  font-size: 13px;
+  color: #bbbbbb;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* Lado Direito (Formulário) */
+.cadastro-form-side {
+  background: #090909;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.cadastro-form-wrapper {
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+}
+
+.cadastro-header {
+  margin-bottom: 30px;
+}
+
+.cadastro-tag {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #ad1838;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.cadastro-header h2 {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 46px;
+  line-height: 0.95;
+  color: #ffffff;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.cadastro-header p {
+  font-size: 13px;
+  color: #777777;
+}
+
+.cadastro-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.cadastro-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cadastro-field label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: #777777;
+  font-weight: 600;
+}
+
+.cadastro-field input {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 13px 16px;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.cadastro-field input:focus {
+  border-color: #ad1838;
+}
+
+.cadastro-submit-btn {
+  background: #ad1838;
+  color: #ffffff;
+  border: none;
+  height: 48px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 5px;
+  transition: background 0.2s ease;
+}
+
+.cadastro-submit-btn:hover {
+  background: #c31c40;
+}
+
+.cadastro-divider {
+  position: relative;
+  text-align: center;
+  margin: 22px 0;
+}
+
+.cadastro-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cadastro-divider span {
+  position: relative;
+  background: #090909;
+  padding: 0 15px;
+  font-size: 10px;
+  color: #555555;
+  letter-spacing: 2px;
+}
+
+.google-cadastro-btn {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  height: 46px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.google-cadastro-btn:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cadastro-footer-links {
+  margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.cadastro-footer-links p {
+  font-size: 12px;
+  color: #777777;
+}
+
+.cadastro-footer-links p a {
+  color: #ad1838;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+  .cadastro-container {
+    grid-template-columns: 1fr;
+  }
+  .cadastro-banner-side {
+    min-height: 300px;
+    padding: 30px;
+  }
+}
