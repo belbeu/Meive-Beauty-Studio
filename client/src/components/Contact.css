@@ -315,6 +315,74 @@
   border: none;
   cursor: pointer;
 }
+/* =========================================
+   ESTILOS DO SELETOR PERSONALIZADO
+========================================= */
+
+.custom-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.custom-select-trigger {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 16px;
+  color: #888; /* Cor cinza quando nenhum serviço foi selecionado */
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  border-radius: 8px;
+}
+
+.custom-select-trigger.selected {
+  color: #ffffff; /* Fica branco quando um serviço é selecionado */
+}
+
+.custom-select-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.select-arrow {
+  transition: transform 0.2s ease;
+  color: #9b9b9b;
+}
+
+.select-arrow.open {
+  transform: rotate(180deg);
+}
+
+.custom-options-list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  z-index: 99;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.custom-option {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.custom-option:hover {
+  background: #ad1838;
+  color: #ffffff;
+}
 
 /* Responsividade do Formulário e Contato */
 @media (max-width: 768px) {
