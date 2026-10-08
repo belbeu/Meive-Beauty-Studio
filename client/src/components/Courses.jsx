@@ -228,6 +228,170 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+      <section style={{ padding: "40px 5%", maxWidth: "1300px", margin: "0 auto" }}>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1.1fr 0.9fr",
+          gap: "50px",
+          alignItems: "center",
+          "@media (max-width: 900px)": { gridTemplateColumns: "1fr" }
+        }}>
+          
+          {/* Lado Esquerdo: Textos e Tópicos */}
+          <div>
+            <span style={{
+              fontFamily: "Inter, sans-serif",
+              fontSize: "12px",
+              letterSpacing: "4px",
+              color: "#ad1838",
+              fontWeight: "600",
+              display: "flex",
+              alignItems: "center",
+              gap: "15px",
+              marginBottom: "20px"
+            }}>
+              <span style={{ display: "inline-block", width: "30px", height: "1px", backgroundColor: "#ad1838" }}></span>
+              SUA CONQUISTA, REGISTRADA
+            </span>
+
+            <h2 style={{
+              display: "flex",
+              flexDirection: "column",
+              margin: "0 0 20px 0",
+              padding: "0",
+              lineHeight: "0.9",
+              fontFamily: '"Bebas Neue", sans-serif',
+              fontSize: "72px",
+            }}>
+              <span style={{ color: "#ffffff", letterSpacing: "3px", margin: "0 0 -5px 0" }}>APRENDEU.</span>
+              <span style={{ color: "#ffffff", letterSpacing: "3px", margin: "0 0 -5px 0" }}>PRATICOU.</span>
+              <span style={{ color: "#ad1838", letterSpacing: "3px", margin: "0" }}>CONQUISTOU.</span>
+            </h2>
+
+            <p style={{ color: "#cccccc", fontSize: "15px", lineHeight: "1.6", marginBottom: "40px", maxWidth: "500px" }}>
+              Ao concluir sua formação, você recebe o Certificado Meive Beauty Studio com identificação do curso e carga horária.
+            </p>
+
+            {/* Lista dos 3 tópicos */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "25px" }}>
+              <div style={{ display: "flex", gap: "20px", alignItems: "flex-start", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "20px" }}>
+                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "28px", color: "#ad1838", lineHeight: "1" }}>01</span>
+                <div>
+                  <h4 style={{ color: "#ffffff", fontSize: "16px", marginBottom: "5px", fontWeight: "600" }}>Certificado de conclusão</h4>
+                  <p style={{ color: "#999999", fontSize: "13px", margin: 0, lineHeight: "1.4" }}>Um registro da sua jornada e das habilidades desenvolvidas no curso.</p>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: "20px", alignItems: "flex-start", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "20px" }}>
+                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "28px", color: "#ad1838", lineHeight: "1" }}>02</span>
+                <div>
+                  <h4 style={{ color: "#ffffff", fontSize: "16px", marginBottom: "5px", fontWeight: "600" }}>Versão digital</h4>
+                  <p style={{ color: "#999999", fontSize: "13px", margin: 0, lineHeight: "1.4" }}>Pronta para compartilhar nas redes sociais e adicionar ao seu portfólio.</p>
+                </div>
+              </div>
+
+              <div style={{ display: "flex", gap: "20px", alignItems: "flex-start", borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: "20px" }}>
+                <span style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "28px", color: "#ad1838", lineHeight: "1" }}>03</span>
+                <div>
+                  <h4 style={{ color: "#ffffff", fontSize: "16px", marginBottom: "5px", fontWeight: "600" }}>Identificação individual</h4>
+                  <p style={{ color: "#999999", fontSize: "13px", margin: 0, lineHeight: "1.4" }}>Emitido com o nome da aluna, curso realizado, data e carga horária.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ position: "relative", display: "flex", justifyContent: "center", marginTop: "20px" }}>
+            <div style={{
+              backgroundColor: "#f4f0ec",
+              width: "100%",
+              maxWidth: "680px", // Aumentado para simular o formato largo A4
+              padding: "35px 45px", // Mais esticado nas laterais
+              boxShadow: "0 25px 50px rgba(0,0,0,0.6)",
+              border: "1px solid #dcd6ce",
+              position: "relative",
+              transform: "rotate(1.5deg)",
+              borderRadius: "2px"
+            }}>
+              {/* Badge Modelo Ilustrativo */}
+              <div style={{
+                position: "absolute",
+                top: "-12px",
+                right: "25px",
+                backgroundColor: "#ad1838",
+                color: "#ffffff",
+                fontSize: "10px",
+                fontWeight: "700",
+                letterSpacing: "1.5px",
+                padding: "4px 10px",
+                textTransform: "uppercase"
+              }}>
+                Modelo Ilustrativo
+              </div>
+
+              {/* Borda interna dupla do certificado A4 */}
+              <div style={{ border: "1.5px solid #ad1838", padding: "20px", textAlign: "center" }}>
+                <div style={{ border: "0.5px solid #ad1838", padding: "20px" }}>
+                  
+                  <h3 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "26px", color: "#111111", letterSpacing: "2px", margin: "0 0 2px 0" }}>
+                    MEIVE <span style={{ fontSize: "11px", fontFamily: "Inter, sans-serif", fontWeight: "300", letterSpacing: "1px", color: "#666666" }}>BEAUTY STUDIO</span>
+                  </h3>
+                  
+                  <p style={{ fontSize: "9px", letterSpacing: "2.5px", color: "#ad1838", textTransform: "uppercase", marginBottom: "20px", fontWeight: "600" }}>
+                    Certificado de Conclusão
+                  </p>
+
+                  <p style={{ fontSize: "10px", color: "#555555", marginBottom: "8px", fontStyle: "italic" }}>
+                    Certificamos que
+                  </p>
+
+                  <h4 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "34px", color: "#111111", letterSpacing: "2px", margin: "0 0 12px 0", borderBottom: "1px solid #dcd6ce", paddingBottom: "3px", display: "inline-block", minWidth: "260px" }}>
+                    NOME DA ALUNA
+                  </h4>
+
+                  <p style={{ fontSize: "10px", color: "#555555", marginBottom: "10px" }}>
+                    concluiu com excelência o curso
+                  </p>
+
+                  <h5 style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: "20px", color: "#ad1838", letterSpacing: "1px", margin: "0 0 25px 0" }}>
+                    LASH BOSS: DO ZERO AO PRO
+                  </h5>
+
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginTop: "15px", paddingTop: "12px", borderTop: "1px dotted #ccc", fontSize: "9px", color: "#777777" }}>
+                    <div style={{ textAlign: "left", width: "120px", borderBottom: "1px solid #bbb", paddingBottom: "2px" }}>
+                      <span>DATA</span>
+                    </div>
+                    
+                    {/* Selo redondo central */}
+                    <div style={{
+                      width: "40px",
+                      height: "40px",
+                      border: "1px solid #ad1838",
+                      borderRadius: "50%",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "6.5px",
+                      color: "#ad1838",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      lineHeight: "1",
+                      padding: "2px"
+                    }}>
+                      MEIVE CERTIFIED
+                    </div>
+
+                    <div style={{ textAlign: "right", width: "120px", borderBottom: "1px solid #bbb", paddingBottom: "2px" }}>
+                      <span>ASSINATURA</span>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </div>
   );
 }
