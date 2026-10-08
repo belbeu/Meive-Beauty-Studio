@@ -1,0 +1,24 @@
+.services-page-container {
+  background-color: #090909;
+  min-height: 100vh;
+  padding-bottom: 60px;
+}
+
+.services-page-nav-bar {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px 20px 0 20px;
+}
+
+.back-home-btn {
+  color: #ad1838;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  transition: opacity 0.2s;
+}
+
+.back-home-btn:hover {
+  opacity: 0.8;
+}

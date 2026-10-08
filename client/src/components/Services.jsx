@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // 1. Importa o hook de navegação
 import "./Services.css";
 
 const servicesData = [
@@ -42,6 +43,7 @@ export default function Services() {
       <div className="services-header-container">
         <div className="services-titles">
           <span className="services-subtitle">O QUE A GENTE FAZ</span>
+          {/* Título sem clique de redirecionamento */}
           <h2 className="services-title">SERVIÇOS</h2>
         </div>
         <p className="services-top-note">

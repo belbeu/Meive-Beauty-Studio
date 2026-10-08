@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -12,8 +13,10 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
 
+// Importa corretamente o Courses da pasta components
+import Courses from "./components/Courses"; 
 
-function App() {
+function HomePage() {
   return (
     <main className="home">
       <Navbar />
@@ -24,13 +27,20 @@ function App() {
       <ProdutosSection />
       <Testimonials />
       <Contact />
-      
       <div className="section-divider"></div>
-      
       <Footer />
       <FloatingSocials />
     </main>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router basename="/Meive-Beauty-Studio">
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/courses" element={<Courses />} />
+      </Routes>
+    </Router>
+  );
+}

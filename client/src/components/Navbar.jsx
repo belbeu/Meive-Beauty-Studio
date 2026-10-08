@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // OBRIGATÓRIO: Importa o Link para não dar erro
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -10,6 +11,8 @@ export default function Navbar() {
       </div>
 
       <nav className="nav-links">
+        {/* Agora usa o Link corretamente apontando para a rota /courses */}
+        <Link to="/courses">CURSOS</Link>
         <a href="#servicos">SERVIÇOS</a>
         <a href="#produtos">PRODUTOS</a>
         <a href="#sobre">SOBRE</a>
