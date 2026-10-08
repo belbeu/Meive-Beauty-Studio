@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./Courses.css";
-
+import Navbar from "./Navbar"; 
+import Footer from "./Footer";
+import "./Avaliacoes.css"
 // Dados divididos por categorias
 const categoriesData = [
   {
@@ -60,6 +62,7 @@ export default function ServicesPage() {
   return (
     <div className="services-page-container">
       <div className="services-page-nav-bar">
+        <Navbar />
         <Link to="/" className="back-home-btn">← Voltar ao Início</Link>
       </div>
 
@@ -612,6 +615,7 @@ export default function ServicesPage() {
 
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

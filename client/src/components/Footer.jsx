@@ -36,7 +36,23 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Coluna 2: Horários */}
+        {/* Coluna 2: Nova coluna EXPLORE */}
+        <div className="footer-col explore-col">
+          <h4 className="footer-title" style={{ color: "#ad1838" }}>EXPLORE</h4>
+          <ul className="explore-list">
+            <li>
+              <a href="#servicos">SERVIÇOS & CURSOS</a>
+            </li>
+            <li>
+              <a href="#produtos">PRODUTOS</a>
+            </li>
+            <li>
+              <a href="#contato">MINHA CONTA</a>
+            </li>
+          </ul>
+        </div>
+
+        {/* Coluna 3: Horários */}
         <div className="footer-col schedule-col">
           <h4 className="footer-title">HORÁRIOS</h4>
           <ul className="schedule-list">
@@ -55,7 +71,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Coluna 3: Contato */}
+        {/* Coluna 4: Contato */}
         <div className="footer-col contact-col">
           <h4 className="footer-title">CONTATO</h4>
           <ul className="contact-list">
