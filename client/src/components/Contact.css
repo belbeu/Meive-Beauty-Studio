@@ -217,6 +217,105 @@
   outline: none;
 }
 
+/* =========================================
+   MENSAGEM DE ERRO
+========================================= */
+
+.form-error {
+  margin: 10px 0 0;
+
+  color: #ad1838;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+}
+
+
+/* =========================================
+   CONFIRMAÇÃO DO FORMULÁRIO
+========================================= */
+
+.confirmation-card {
+  width: 100%;
+  min-height: 380px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 60px 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.025);
+
+  box-sizing: border-box;
+}
+
+.confirmation-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+
+  border-radius: 50%;
+
+  background: #8a2be2;
+  color: #ffffff;
+
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+
+  box-shadow: 0 0 30px rgba(138, 43, 226, 0.35);
+}
+
+.confirmation-subtitle {
+  margin-bottom: 12px;
+
+  color: #ad1838;
+
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 4px;
+}
+
+.confirmation-card h3 {
+  margin: 0 0 15px;
+
+  color: #ffffff;
+
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 64px;
+  line-height: 0.9;
+  font-weight: 400;
+}
+
+.confirmation-card p {
+  max-width: 500px;
+
+  margin: 0 0 30px;
+
+  color: #ada9b1;
+
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.confirmation-card .primary-button {
+  border: none;
+  cursor: pointer;
+}
+
 /* Responsividade do Formulário e Contato */
 @media (max-width: 768px) {
   .contact-grid {
