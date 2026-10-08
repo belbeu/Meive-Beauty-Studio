@@ -1,9 +1,10 @@
-
-import React from "react";
+import React, { useState } from "react";
 import imagem from "../assets/icone-test.jpg";
 import "./IconeFlutuante.css";
 
 export default function FloatingSocials() {
+  const [aberto, setAberto] = useState(false);
+
   const mensagemWhatsApp =
     "Olá! Vim pelo site e gostaria de realizar um agendamento!";
 
@@ -13,9 +14,11 @@ export default function FloatingSocials() {
 
   return (
     <div className="floating-socials-container">
-      <div className="floating-socials-menu">
 
-        {/* Ícone TikTok */}
+      {/* Menu das redes sociais */}
+      <div className={`floating-socials-menu ${aberto ? "aberto" : ""}`}>
+
+        {/* TikTok */}
         <a
           href="https://tiktok.com"
           target="_blank"
@@ -28,7 +31,7 @@ export default function FloatingSocials() {
           </svg>
         </a>
 
-        {/* Ícone Instagram */}
+        {/* Instagram */}
         <a
           href="https://www.instagram.com/nineris.studio/"
           target="_blank"
@@ -46,13 +49,27 @@ export default function FloatingSocials() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            <rect
+              x="2"
+              y="2"
+              width="20"
+              height="20"
+              rx="5"
+              ry="5"
+            />
+
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+
+            <line
+              x1="17.5"
+              y1="6.5"
+              x2="17.51"
+              y2="6.5"
+            />
           </svg>
         </a>
 
-        {/* Ícone WhatsApp */}
+        {/* WhatsApp */}
         <a
           href={linkWhatsApp}
           target="_blank"
@@ -66,8 +83,13 @@ export default function FloatingSocials() {
         </a>
       </div>
 
-      {/* Botão Principal Flutuante */}
-      <button className="floating-main-btn" aria-label="Abrir redes sociais">
+      {/* Botão principal */}
+      <button
+        className={`floating-main-btn ${aberto ? "ativo" : ""}`}
+        aria-label={aberto ? "Fechar redes sociais" : "Abrir redes sociais"}
+        aria-expanded={aberto}
+        onClick={() => setAberto(!aberto)}
+      >
         <img
           src={imagem}
           alt="Meive Beauty"
@@ -77,3 +99,4 @@ export default function FloatingSocials() {
     </div>
   );
 }
+
