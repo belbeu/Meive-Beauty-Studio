@@ -1,0 +1,128 @@
+importe
+.promo-section {
+  padding: 60px 20px;
+  background-color: #0a0a0a; /* Fundo muito escuro/preto */
+  color: #ffffff;
+}
+
+.promo-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.promo-subtitle {
+  color: #c9184a; /* Cor de destaque (vermelho/rosa escuro) */
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.promo-title {
+  font-size: 32px;
+  margin-top: 8px;
+}
+
+.promo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.promo-card {
+  background-color: #141414; /* Fundo do cartão ligeiramente mais claro que a secção */
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.promo-card:hover {
+  transform: translateY(-5px);
+  border-color: #c9184a;
+}
+
+/* Estilo para o cartão em destaque */
+.promo-card.highlighted {
+  border: 2px solid #c9184a;
+  background-color: #1a0f12; /* Fundo com um toque avermelhado sutil */
+}
+
+.promo-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #c9184a;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.promo-content h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.promo-content p {
+  color: #a3a3a3;
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+
+.promo-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.promo-old-price {
+  color: #737373;
+  font-size: 16px;
+  text-decoration: line-through;
+}
+
+.promo-new-price {
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.promo-validity {
+  display: block;
+  color: #c9184a;
+  font-size: 12px;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
+
+.promo-btn {
+  width: 100%;
+  background-color: transparent;
+  color: #ffffff;
+  border: 1px solid #c9184a;
+  padding: 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.promo-card:hover .promo-btn, 
+.promo-card.highlighted .promo-btn {
+  background-color: #c9184a;
+}
