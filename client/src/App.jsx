@@ -13,6 +13,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
 import Courses from "./components/Courses"; 
+import PromocoesSection from "./components/Promocao";
 
 function HomePage() {
   return (
