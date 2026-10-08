@@ -23,11 +23,11 @@ function HomePage() {
       <Hero />
       <BeautyMarquee />
       <Services />
+      <PromocoesSection/>
       <AboutSection />
       <ProdutosSection />
       <Testimonials />
       <Contact />
-      <PromocoesSection/>
 
       <div className="section-divider"></div>
       <Footer />
