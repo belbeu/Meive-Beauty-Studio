@@ -1,152 +1,621 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+
+/* =========================================================
+   DIVISOR
+   ========================================================= */
 
 .section-divider {
   width: 100%;
   height: 150px;
   margin-top: 100px;
-  background: linear-gradient(180deg, rgba(9, 9, 9, 0) 0%, #090909 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(9, 9, 9, 0) 0%,
+    #090909 100%
+  );
 }
+
+
+/* =========================================================
+   SEÇÃO DE SERVIÇOS
+   ========================================================= */
 
 .services-section {
   position: relative;
+
   padding: 100px 20px;
+
   background: #090909;
   color: #ffffff;
+
   max-width: 1300px;
   margin: 0 auto;
 }
 
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
 .services-header-container {
   display: flex;
+
   justify-content: space-between;
   align-items: flex-end;
+
   margin-bottom: 50px;
+
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
   padding-bottom: 30px;
 }
 
 .services-subtitle {
   display: block;
+
   font-size: 11px;
+
   letter-spacing: 2px;
+
   color: #ad1838;
+
   margin-bottom: 8px;
+
   font-weight: 600;
 }
 
+
+/* TÍTULO + SELECT */
+
+.services-title-row {
+  display: flex;
+
+  align-items: center;
+
+  gap: 25px;
+}
+
 .services-title {
+  margin: 0;
+
   font-family: "Bebas Neue", sans-serif;
+
   font-size: clamp(50px, 7vw, 90px);
+
   line-height: 0.9;
+
   letter-spacing: 1px;
 }
 
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.services-select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 165px;
+
+  height: 42px;
+
+  padding: 0 38px 0 14px;
+
+  background-color: #090909;
+
+  color: #ffffff;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  border-radius: 0;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+
+  cursor: pointer;
+
+  background-image:
+    linear-gradient(45deg, transparent 50%, #ad1838 50%),
+    linear-gradient(135deg, #ad1838 50%, transparent 50%);
+
+  background-position:
+    calc(100% - 16px) 17px,
+    calc(100% - 11px) 17px;
+
+  background-size:
+    5px 5px,
+    5px 5px;
+
+  background-repeat: no-repeat;
+
+  transition:
+    border-color 0.3s ease,
+    background-color 0.3s ease;
+}
+
+.services-select:hover {
+  border-color: rgba(173, 24, 56, 0.7);
+}
+
+.services-select:focus {
+  outline: none;
+
+  border-color: #ad1838;
+}
+
+.services-select option {
+  background: #090909;
+
+  color: #ffffff;
+}
+
+
 .services-top-note {
   max-width: 300px;
+
+  font-family: "Inter", sans-serif;
+
   font-size: 12px;
+
   line-height: 1.5;
+
   color: #777;
+
+  margin: 0;
 }
+
+
+/* =========================================================
+   CARROSSEL
+   ========================================================= */
+
+.services-carousel {
+  position: relative;
+
+  width: 100%;
+}
+
+
+/*
+   O GRID CONTINUA EXATAMENTE COM 4 CARDS.
+*/
 
 .services-grid {
   display: grid;
+
   grid-template-columns: repeat(4, 1fr);
+
   gap: 15px;
+
   align-items: stretch;
+
+  width: 100%;
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
 
 .service-card {
   position: relative;
+
   background: rgba(15, 15, 15, 0.6);
+
   border: 1px solid rgba(255, 255, 255, 0.08);
+
   padding: 24px 20px;
+
   display: flex;
+
   flex-direction: column;
-  min-height: 350px; 
-  transition: border-color 0.3s ease, background 0.3s ease;
+
+  min-height: 350px;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
 }
 
 .service-card:hover {
   border-color: rgba(173, 24, 56, 0.4);
+
   background: rgba(20, 15, 17, 0.8);
 }
 
+
+/* =========================================================
+   PARTE SUPERIOR DO CARD
+   ========================================================= */
+
 .service-card-top {
   display: flex;
+
   justify-content: space-between;
+
   align-items: flex-start;
+
   min-height: 24px;
 }
 
+
+/* TAG */
+
 .service-tag {
+  display: inline-block;
+
+  font-family: "Inter", sans-serif;
+
   font-size: 8px;
+
   letter-spacing: 1.5px;
+
   font-weight: 700;
+
   background: #ad1838;
+
   color: #ffffff;
+
   padding: 3px 8px;
 }
 
+
+/* NÚMERO */
+
 .service-number {
   font-family: "Bebas Neue", sans-serif;
+
   font-size: 36px;
+
   color: rgba(255, 255, 255, 0.1);
+
   line-height: 1;
 }
 
+
+/* =========================================================
+   INFORMAÇÕES DO CARD
+   ========================================================= */
+
 .service-info {
-  flex: 1; 
+  flex: 1;
+
   display: flex;
+
   flex-direction: column;
 }
 
 .service-info h3 {
   font-family: "Bebas Neue", sans-serif;
+
   font-size: 28px;
+
   letter-spacing: 0.5px;
+
+  line-height: 1;
+
   margin-top: 20px;
+
   margin-bottom: 10px;
-}
 
-.service-info p {
-  font-size: 12px;
-  line-height: 1.5;
-  color: #888;
-}
-
-.service-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 15px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.service-price {
-  font-size: 15px;
-  font-weight: 600;
   color: #ffffff;
 }
 
-.service-duration {
-  font-size: 10px;
-  color: #555;
-  background: rgba(255, 255, 255, 0.04);
-  padding: 4px 8px;
-  border-radius: 2px;
-}
-/* mudar o preço */
-.service-price-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* Espaço entre o preço antigo e o novo */
+.service-info p {
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  color: #888;
+
+  margin: 0;
 }
 
-/* Estilo do preço antigo */
+
+/* =========================================================
+   RODAPÉ DO CARD
+   ========================================================= */
+
+.service-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-top: auto;
+
+  padding-top: 15px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* PREÇOS */
+
+.service-price-wrapper {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: flex-start;
+
+  gap: 2px;
+}
+
+.service-price {
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  color: #ffffff;
+}
+
 .service-old-price {
-  color: #737373; /* Cor cinza para não chamar tanta atenção */
-  font-size: 14px; /* Ligeiramente menor que o preço principal */
-  text-decoration: line-through; /* Cria a linha que risca o preço */
+  color: #737373;
+
+  font-size: 14px;
+
+  text-decoration: line-through;
+}
+
+.service-maintenance {
+  display: block;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  color: #777;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* DURAÇÃO */
+
+.service-duration {
+  font-family: "Inter", sans-serif;
+
+  font-size: 10px;
+
+  color: #555;
+
+  background: rgba(255, 255, 255, 0.04);
+
+  padding: 4px 8px;
+
+  border-radius: 2px;
+}
+
+
+/* =========================================================
+   SETAS DO CARROSSEL
+   ========================================================= */
+
+.carousel-arrow {
+  position: absolute;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 20;
+
+  width: 42px;
+
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  background: rgba(9, 9, 9, 0.95);
+
+  color: #ffffff;
+
+  font-family: Arial, sans-serif;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.carousel-arrow:hover {
+  background: #ad1838;
+
+  border-color: #ad1838;
+}
+
+
+/* esquerda */
+
+.carousel-arrow-left {
+  left: -21px;
+}
+
+
+/* direita */
+
+.carousel-arrow-right {
+  right: -21px;
+}
+
+
+/* =========================================================
+   BOLINHAS
+   ========================================================= */
+
+.carousel-dots {
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-top: 25px;
+}
+
+.carousel-dot {
+  width: 5px;
+
+  height: 5px;
+
+  padding: 0;
+
+  border: none;
+
+  background: rgba(255, 255, 255, 0.2);
+
+  cursor: pointer;
+
+  transition:
+    width 0.3s ease,
+    background 0.3s ease;
+}
+
+.carousel-dot.active {
+  width: 20px;
+
+  background: #ad1838;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .services-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+
+/* =========================================================
+   TABLET MENOR
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .services-header-container {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 25px;
+  }
+
+  .services-title-row {
+    flex-wrap: wrap;
+
+    gap: 15px;
+  }
+
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .carousel-arrow {
+    width: 36px;
+
+    height: 36px;
+
+    font-size: 24px;
+  }
+
+  .carousel-arrow-left {
+    left: -10px;
+  }
+
+  .carousel-arrow-right {
+    right: -10px;
+  }
+
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 550px) {
+
+  .services-section {
+    padding: 70px 15px;
+  }
+
+  .services-title-row {
+    align-items: center;
+  }
+
+  .services-title {
+    font-size: 55px;
+  }
+
+  .services-select {
+    width: 145px;
+
+    height: 38px;
+
+    font-size: 10px;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    min-height: 330px;
+  }
+
+  .carousel-arrow {
+    width: 32px;
+
+    height: 32px;
+
+    font-size: 22px;
+  }
+
+  .carousel-arrow-left {
+    left: -6px;
+  }
+
+  .carousel-arrow-right {
+    right: -6px;
+  }
+
 }

@@ -1,21 +1,233 @@
 import React, { useState } from "react";
 import "./Contact.css";
 
+// ==========================================================
+// SERVIÇOS DO MEVIE
+// ==========================================================
+
+const categoriasServicos = {
+  LASH: [
+    {
+      valor: "teste-alergico",
+      nome: "Teste Alérgico — Extensão de Cílios",
+    },
+    {
+      valor: "remocao-cilios",
+      nome: "Remoção de Cílios",
+      preco: "R$ 40,00",
+    },
+    {
+      valor: "manutencao-lash",
+      nome: "Manutenção Lash",
+      preco: "R$ 65,00",
+    },
+    {
+      valor: "lash-lifting",
+      nome: "Lash Lifting",
+      preco: "R$ 130,00",
+    },
+    {
+      valor: "volume-brasileiro-primeira",
+      nome: "Volume Brasileiro — Primeira Aplicação",
+      preco: "R$ 150,00",
+    },
+    {
+      valor: "volume-brasileiro-manutencao",
+      nome: "Volume Brasileiro — Manutenção até 25 dias",
+      preco: "R$ 110,00",
+    },
+    {
+      valor: "volume-brasileiro-marrom-primeira",
+      nome: "Volume Brasileiro Marrom — Primeira Aplicação",
+      preco: "R$ 150,00",
+    },
+    {
+      valor: "volume-brasileiro-marrom-manutencao",
+      nome: "Volume Brasileiro Marrom — Manutenção até 25 dias",
+      preco: "R$ 110,00",
+    },
+    {
+      valor: "efeito-fox-primeira",
+      nome: "Efeito Fox — Primeira Aplicação",
+      preco: "R$ 170,00",
+    },
+    {
+      valor: "efeito-fox-manutencao",
+      nome: "Efeito Fox — Manutenção até 25 dias",
+      preco: "R$ 130,00",
+    },
+    {
+      valor: "efeito-wispy-primeira",
+      nome: "Efeito Wispy — Primeira Aplicação",
+      preco: "R$ 180,00",
+    },
+    {
+      valor: "efeito-wispy-manutencao",
+      nome: "Efeito Wispy — Manutenção até 25 dias",
+      preco: "R$ 140,00",
+    },
+    {
+      valor: "efeito-glamour-primeira",
+      nome: "Efeito Glamour/Egípcio — Primeira Aplicação",
+      preco: "R$ 160,00",
+    },
+    {
+      valor: "efeito-glamour-manutencao",
+      nome: "Efeito Glamour/Egípcio — Manutenção até 25 dias",
+      preco: "R$ 120,00",
+    },
+    {
+      valor: "efeito-rimel-primeira",
+      nome: "Efeito Rímel — Primeira Aplicação",
+      preco: "R$ 160,00",
+    },
+    {
+      valor: "efeito-rimel-manutencao",
+      nome: "Efeito Rímel — Manutenção até 25 dias",
+      preco: "R$ 120,00",
+    },
+    {
+      valor: "volume-5d-primeira",
+      nome: "Volume 5D — Primeira Aplicação",
+      preco: "R$ 160,00",
+    },
+    {
+      valor: "volume-5d-manutencao",
+      nome: "Volume 5D — Manutenção até 25 dias",
+      preco: "R$ 120,00",
+    },
+  ],
+
+  SOBRANCELHAS: [
+    {
+      valor: "manutencao-brow",
+      nome: "Manutenção Brow",
+      preco: "R$ 80,00",
+    },
+    {
+      valor: "brow-lamination",
+      nome: "Brow Lamination",
+      preco: "R$ 130,00",
+    },
+    {
+      valor: "design-sobrancelhas",
+      nome: "Design de Sobrancelhas",
+      preco: "R$ 40,00",
+    },
+    {
+      valor: "design-buco",
+      nome: "Design + Buço",
+      preco: "R$ 55,00",
+    },
+    {
+      valor: "design-coloracao",
+      nome: "Design + Coloração",
+      preco: "R$ 60,00",
+    },
+    {
+      valor: "design-henna",
+      nome: "Design + Henna",
+      preco: "R$ 60,00",
+    },
+    {
+      valor: "buco-linha",
+      nome: "Buço na Linha",
+      preco: "R$ 20,00",
+    },
+    {
+      valor: "henna",
+      nome: "Henna",
+      preco: "R$ 35,00",
+    },
+  ],
+
+  UNHAS: [
+    {
+      valor: "banho-gel-primeira",
+      nome: "Banho de Gel — Primeira Aplicação",
+      preco: "R$ 100,00",
+    },
+    {
+      valor: "banho-gel-manutencao",
+      nome: "Banho de Gel — Manutenção até 20 dias",
+      preco: "R$ 80,00",
+    },
+    {
+      valor: "reposicao-unha",
+      nome: "Reposição de Unha (Manutenção)",
+      preco: "R$ 10,00",
+    },
+    {
+      valor: "f1-primeira",
+      nome: "Alongamento no Molde F1 — Primeira Aplicação",
+      preco: "R$ 120,00",
+    },
+    {
+      valor: "f1-manutencao",
+      nome: "Alongamento no Molde F1 — Manutenção até 20 dias",
+      preco: "R$ 90,00",
+    },
+    {
+      valor: "russo-primeira",
+      nome: "Alongamento no Molde Russo — Primeira Aplicação",
+      preco: "R$ 120,00",
+    },
+    {
+      valor: "russo-manutencao",
+      nome: "Alongamento no Molde Russo — Manutenção até 20 dias",
+      preco: "R$ 90,00",
+    },
+    {
+      valor: "mao-simples",
+      nome: "Mão Simples",
+      preco: "R$ 30,00",
+    },
+    {
+      valor: "pe-simples",
+      nome: "Pé Simples",
+      preco: "R$ 35,00",
+    },
+    {
+      valor: "pe-gel",
+      nome: "Pé com Esmaltação em Gel",
+      preco: "R$ 60,00",
+    },
+    {
+      valor: "mao-pe-simples",
+      nome: "Mão e Pé Simples",
+      preco: "R$ 55,00",
+    },
+    {
+      valor: "blindagem-primeira",
+      nome: "Blindagem — Primeira Aplicação",
+      preco: "R$ 70,00",
+    },
+    {
+      valor: "blindagem-manutencao",
+      nome: "Blindagem — Manutenção até 20 dias",
+      preco: "R$ 50,00",
+    },
+  ],
+};
+
 export default function Contact() {
   const [nome, setNome] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [mensagem, setMensagem] = useState("");
 
+  // Controle do seletor
   const [isOpen, setIsOpen] = useState(false);
-  const [servicoSelecionado, setServicoSelecionado] = useState("");
-  const [nomeServicoLabel, setNomeServicoLabel] =
-    useState("Selecione uma opção");
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
+  const [servicoSelecionado, setServicoSelecionado] = useState(null);
 
   const [carregando, setCarregando] = useState(false);
   const [enviado, setEnviado] = useState(false);
   const [erro, setErro] = useState("");
 
-  // Máscara do WhatsApp
+  // ==========================================================
+  // MÁSCARA DO WHATSAPP
+  // ==========================================================
+
   const formatarWhatsapp = (valor) => {
     const numeros = valor.replace(/\D/g, "").slice(0, 11);
 
@@ -33,13 +245,32 @@ export default function Contact() {
     )}-${numeros.slice(7)}`;
   };
 
-  const selecionarServico = (valor, label) => {
-    setServicoSelecionado(valor);
-    setNomeServicoLabel(label);
+  // ==========================================================
+  // SELEÇÃO DA CATEGORIA
+  // ==========================================================
+
+  const selecionarCategoria = (categoria) => {
+    setCategoriaSelecionada(categoria);
+    setServicoSelecionado(null);
+  };
+
+  // ==========================================================
+  // SELEÇÃO DO SERVIÇO
+  // ==========================================================
+
+  const selecionarServico = (servico) => {
+    setServicoSelecionado({
+      ...servico,
+      categoria: categoriaSelecionada,
+    });
+
     setIsOpen(false);
   };
 
-  // Envio do formulário
+  // ==========================================================
+  // ENVIO DO FORMULÁRIO
+  // ==========================================================
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,7 +294,11 @@ export default function Contact() {
           body: JSON.stringify({
             nome,
             whatsapp,
-            servico: nomeServicoLabel,
+            servico: `${servicoSelecionado.nome}${
+              servicoSelecionado.preco
+                ? ` (${servicoSelecionado.preco})`
+                : ""
+            }`,
             mensagem,
           }),
         }
@@ -73,22 +308,25 @@ export default function Contact() {
 
       if (!response.ok) {
         throw new Error(
-          data.mensagem || "Não foi possível enviar a mensagem."
+          data.mensagem ||
+            "Não foi possível enviar a mensagem."
         );
       }
 
-      // Mostra a tela de confirmação
       setEnviado(true);
 
       // Limpa o formulário
       setNome("");
       setWhatsapp("");
       setMensagem("");
-      setServicoSelecionado("");
-      setNomeServicoLabel("Selecione uma opção");
+      setCategoriaSelecionada("");
+      setServicoSelecionado(null);
       setIsOpen(false);
     } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
+      console.error(
+        "Erro ao enviar formulário:",
+        error
+      );
 
       setErro(
         error.message ||
@@ -99,21 +337,28 @@ export default function Contact() {
     }
   };
 
+  // ==========================================================
+  // TEXTO EXIBIDO NO SELECT
+  // ==========================================================
+
+  const textoSelect = servicoSelecionado
+    ? servicoSelecionado.nome
+    : categoriaSelecionada
+      ? `Selecione um serviço de ${categoriaSelecionada}`
+      : "Selecione uma categoria";
+
   return (
     <section id="contato" className="contact-section">
       <div className="contact-header">
-        <span className="contact-subtitle">AGENDAMENTO</span>
+        <span className="contact-subtitle">
+          AGENDAMENTO
+        </span>
 
         <h2 className="contact-title">
-          <span>BORA</span> <span>AGENDAR?</span>
+          <span>BORA</span>
+          <span>AGENDAR?</span>
 
-          <span
-            style={{
-              fontFamily: '"DM Sans", sans-serif',
-              color: "#ada9b1",
-              fontSize: "15px",
-            }}
-          >
+          <span className="contact-description">
             Entre em contato e retornamos em até 1 hora.
           </span>
         </h2>
@@ -121,30 +366,44 @@ export default function Contact() {
 
       <div className="contact-grid">
         {!enviado ? (
-          <form className="contact-form" onSubmit={handleSubmit}>
+          <form
+            className="contact-form"
+            onSubmit={handleSubmit}
+          >
+            {/* NOME + WHATSAPP */}
             <div className="form-row">
               <div className="form-group">
-                <label htmlFor="nome">SEU NOME</label>
+                <label htmlFor="nome">
+                  SEU NOME
+                </label>
 
                 <input
                   type="text"
                   id="nome"
                   value={nome}
-                  onChange={(e) => setNome(e.target.value)}
+                  onChange={(e) =>
+                    setNome(e.target.value)
+                  }
                   placeholder="Digite seu nome"
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="whatsapp">SEU WHATSAPP</label>
+                <label htmlFor="whatsapp">
+                  SEU WHATSAPP
+                </label>
 
                 <input
                   type="tel"
                   id="whatsapp"
                   value={whatsapp}
                   onChange={(e) =>
-                    setWhatsapp(formatarWhatsapp(e.target.value))
+                    setWhatsapp(
+                      formatarWhatsapp(
+                        e.target.value
+                      )
+                    )
                   }
                   placeholder="(11) 94487-4969"
                   maxLength="15"
@@ -153,19 +412,24 @@ export default function Contact() {
               </div>
             </div>
 
+            {/* SERVIÇO */}
             <div className="form-group">
-              <div className="form-group custom-select-container">
-                <label htmlFor="servico">
-                  QUAL SERVIÇO VOCÊ DESEJA?
-                </label>
+              <label>
+                QUAL SERVIÇO VOCÊ DESEJA?
+              </label>
 
+              <div className="custom-select-container">
                 <div
                   className={`custom-select-trigger ${
-                    servicoSelecionado ? "selected" : ""
+                    servicoSelecionado
+                      ? "selected"
+                      : ""
                   }`}
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() =>
+                    setIsOpen(!isOpen)
+                  }
                 >
-                  <span>{nomeServicoLabel}</span>
+                  <span>{textoSelect}</span>
 
                   <svg
                     className={`select-arrow ${
@@ -182,80 +446,117 @@ export default function Contact() {
                   </svg>
                 </div>
 
-                <input
-                  type="hidden"
-                  name="servico"
-                  value={servicoSelecionado}
-                />
-
                 {isOpen && (
                   <div className="custom-options-list">
-                    <div
-                      className="custom-option"
-                      onClick={() =>
-                        selecionarServico(
-                          "volume-russo",
-                          "Volume Russo (R$ 280)"
-                        )
-                      }
-                    >
-                      Volume Russo (R$ 280)
-                    </div>
+                    {!categoriaSelecionada ? (
+                      <>
+                        <div className="select-list-title">
+                          ESCOLHA UMA CATEGORIA
+                        </div>
 
-                    <div
-                      className="custom-option"
-                      onClick={() =>
-                        selecionarServico(
-                          "fio-a-fio",
-                          "Fio a Fio (R$ 180)"
-                        )
-                      }
-                    >
-                      Fio a Fio (R$ 180)
-                    </div>
+                        {Object.keys(
+                          categoriasServicos
+                        ).map((categoria) => (
+                          <button
+                            type="button"
+                            className="custom-option category-option"
+                            key={categoria}
+                            onClick={() =>
+                              selecionarCategoria(
+                                categoria
+                              )
+                            }
+                          >
+                            <span>
+                              {categoria}
+                            </span>
 
-                    <div
-                      className="custom-option"
-                      onClick={() =>
-                        selecionarServico(
-                          "hibrido",
-                          "Híbrido (R$ 230)"
-                        )
-                      }
-                    >
-                      Híbrido (R$ 230)
-                    </div>
+                            <span className="option-arrow">
+                              →
+                            </span>
+                          </button>
+                        ))}
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          className="back-option"
+                          onClick={() =>
+                            setCategoriaSelecionada(
+                              ""
+                            )
+                          }
+                        >
+                          ← VOLTAR PARA CATEGORIAS
+                        </button>
 
-                    <div
-                      className="custom-option"
-                      onClick={() =>
-                        selecionarServico(
-                          "manutencao",
-                          "Manutenção (A partir de R$ 100)"
-                        )
-                      }
-                    >
-                      Manutenção (A partir de R$ 100)
-                    </div>
+                        <div className="select-list-title">
+                          {categoriaSelecionada}
+                        </div>
+
+                        {categoriasServicos[
+                          categoriaSelecionada
+                        ].map((servico) => (
+                          <button
+                            type="button"
+                            className="custom-option service-option"
+                            key={servico.valor}
+                            onClick={() =>
+                              selecionarServico(
+                                servico
+                              )
+                            }
+                          >
+                            <span className="service-name">
+                              {servico.nome}
+                            </span>
+
+                            {servico.preco && (
+                              <span className="service-price">
+                                {servico.preco}
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </>
+                    )}
                   </div>
                 )}
               </div>
+
+              <input
+                type="hidden"
+                name="servico"
+                value={
+                  servicoSelecionado?.valor || ""
+                }
+              />
             </div>
 
+            {/* MENSAGEM */}
             <div className="form-group">
-              <label htmlFor="mensagem">MENSAGEM</label>
+              <label htmlFor="mensagem">
+                MENSAGEM
+              </label>
 
               <textarea
                 id="mensagem"
                 rows="4"
                 value={mensagem}
-                onChange={(e) => setMensagem(e.target.value)}
+                onChange={(e) =>
+                  setMensagem(e.target.value)
+                }
                 placeholder="Como podemos te ajudar?"
                 required
               />
             </div>
 
-            {erro && <p className="form-error">{erro}</p>}
+            {erro && (
+              <p className="form-error">
+                {erro}
+              </p>
+            )}
 
             <button
               type="submit"
@@ -269,7 +570,9 @@ export default function Contact() {
           </form>
         ) : (
           <div className="confirmation-card">
-            <div className="confirmation-icon">✓</div>
+            <div className="confirmation-icon">
+              ✓
+            </div>
 
             <span className="confirmation-subtitle">
               MENSAGEM ENVIADA
@@ -278,8 +581,8 @@ export default function Contact() {
             <h3>Tudo certo!</h3>
 
             <p>
-              Recebemos sua mensagem e entraremos em contato
-              pelo WhatsApp em breve.
+              Recebemos sua mensagem e entraremos
+              em contato pelo WhatsApp em breve.
             </p>
 
             <button

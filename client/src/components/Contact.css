@@ -1,10 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+
+/* ==========================================================
+   SEÇÃO DE CONTATO
+========================================================== */
 
 .contact-section {
   position: relative;
-  padding-top: 70px;
-  padding-bottom: 30px;
+  padding-top: 80px;
+  padding-bottom: 0px; /* Altere aqui se quiser remover qualquer espaço interno ao final da seção */
   background: #090909;
   color: #ffffff;
   max-width: 1300px;
@@ -14,36 +20,44 @@
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.section-divider {
-  height: 1px;
-  margin: 0;
-  padding: 0;
-  background: rgba(255, 255, 255, 0.08);
-}
+
+/* ==========================================================
+   HEADER
+========================================================== */
 
 .contact-header {
   margin-bottom: 50px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
+
   text-align: center;
 }
 
 .contact-subtitle {
   display: block;
+
   font-size: 11px;
   letter-spacing: 5px;
+
   color: #ad1838;
+
   margin-bottom: 8px;
+
   font-weight: 600;
-  gap: 7px;
 }
 
 .contact-title {
+  margin: 0;
+
   font-family: "Bebas Neue", sans-serif;
+
   font-size: clamp(50px, 7vw, 90px);
   line-height: 0.9;
+
   letter-spacing: 1px;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,74 +72,66 @@
   color: #8a2be2;
 }
 
-.contact-title span:nth-child(3) {
+.contact-description {
+  margin-top: 18px;
+
   color: #ada9b1;
+
   font-size: 15px;
   font-family: "DM Sans", sans-serif;
+
+  font-weight: 400;
+
+  line-height: 1.4;
 }
+
+
+/* ==========================================================
+   GRID
+========================================================== */
 
 .contact-grid {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 40px;
-  width: 100%;
-}
-
-.contact-info-box {
-  width: 100%;
-  background: rgba(15, 15, 15, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 60px 40px;
-  min-height: 520px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  max-width: 900px;
-}
-
-.contact-info-box h3 {
-  font-family: "Bebas Neue", sans-serif;
-  font-size: 32px;
-  letter-spacing: 0.5px;
-  margin-bottom: 15px;
-}
-
-.contact-info-box p {
-  font-size: 13px;
-  color: #888;
-  line-height: 1.6;
-  margin-bottom: 30px;
-}
-
-.contact-details {
-  display: flex;
-  flex-direction: column;
   gap: 20px;
+  width: 100%;
 }
 
-.contact-item strong {
-  font-size: 15px;
-  color: #fff;
-  letter-spacing: 0.5px;
-}
+
+/* ==========================================================
+   FORMULÁRIO
+========================================================== */
 
 .contact-form {
   background: rgba(15, 15, 15, 0.6);
+
   border: 1px solid rgba(255, 255, 255, 0.08);
+
   width: 100%;
   max-width: 850px;
+
   padding: 50px;
+
   display: flex;
   flex-direction: column;
+
   gap: 20px;
+
+  box-sizing: border-box;
+   margin-bottom: 0px;
 }
+
+
+/* ==========================================================
+   LINHA NOME + WHATSAPP
+========================================================== */
 
 .form-row {
   display: flex;
+
   gap: 20px;
+
   width: 100%;
 }
 
@@ -133,115 +139,430 @@
   flex: 1;
 }
 
+
+/* ==========================================================
+   CAMPOS
+========================================================== */
+
 .form-group {
   display: flex;
   flex-direction: column;
+
   gap: 8px;
+
+  position: relative;
 }
 
 .form-group label {
   font-size: 9px;
+
   letter-spacing: 2px;
+
   color: #888;
+
   font-weight: 600;
 }
 
 .form-group input,
 .form-group textarea {
   background: rgba(255, 255, 255, 0.03);
+
   border: 1px solid rgba(255, 255, 255, 0.1);
+
   padding: 12px 16px;
+
   color: #fff;
-  font-family: inherit;
+
+  font-family: "DM Sans", sans-serif;
+
   font-size: 13px;
+
   outline: none;
-  transition: border-color 0.2s ease;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  box-sizing: border-box;
+
+  width: 100%;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #666;
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   border-color: #ad1838;
-}
 
-.submit-btn {
-  width: 100%;
-  cursor: pointer;
-  border: none;
-  color: #fff;
-  margin-top: 10px;
-}
-
-.form-group select {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 12px 16px;
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 13px;
-  outline: none;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.36%22%20height%3D%22292.36%22%3E%3Cpath%20fill%3D%22%239b9b9b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 10px;
-}
-
-.form-group select:hover {
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.form-group select:focus {
-  border-color: #ad1838;
   background: rgba(255, 255, 255, 0.05);
 }
 
-.form-group select option {
-  background: #121212;
-  color: #ffffff;
-  padding: 12px;
+.form-group textarea {
+  resize: vertical;
+
+  min-height: 110px;
 }
 
-.form-group select option:hover,
-.form-group select option:focus,
-.form-group select option:checked {
-  background: #ad1838;
-  background-color: #ad1838;
-  color: #ffffff;
+
+/* ==========================================================
+   SELECT PERSONALIZADO
+========================================================== */
+
+.custom-select-container {
+  position: relative;
+
+  width: 100%;
 }
 
-.form-group select:focus-visible {
+.custom-select-trigger {
+  min-height: 43px;
+
+  box-sizing: border-box;
+
+  background: rgba(255, 255, 255, 0.03);
+
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  padding: 12px 16px;
+
+  color: #888;
+
+  font-family: "DM Sans", sans-serif;
+
+  font-size: 13px;
+
   outline: none;
+
+  cursor: pointer;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 15px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+
+  border-radius: 0;
 }
 
-/* =========================================
-   MENSAGEM DE ERRO
-========================================= */
+.custom-select-trigger.selected {
+  color: #ffffff;
+}
+
+.custom-select-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+
+  background: rgba(255, 255, 255, 0.05);
+}
+
+
+/* ==========================================================
+   SETA
+========================================================== */
+
+.select-arrow {
+  flex-shrink: 0;
+
+  transition: transform 0.2s ease;
+
+  color: #9b9b9b;
+}
+
+.select-arrow.open {
+  transform: rotate(180deg);
+}
+
+
+/* ==========================================================
+   LISTA DO SELECT
+========================================================== */
+
+.custom-options-list {
+  position: absolute;
+
+  top: calc(100% + 5px);
+
+  left: 0;
+
+  width: 100%;
+
+  max-height: 360px;
+
+  overflow-y: auto;
+
+  background: #121212;
+
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  z-index: 999;
+
+  box-shadow:
+    0 15px 35px rgba(0, 0, 0, 0.55);
+
+  box-sizing: border-box;
+
+  border-radius: 0;
+}
+
+
+/* ==========================================================
+   TÍTULO DA LISTA
+========================================================== */
+
+.select-list-title {
+  padding: 13px 16px;
+
+  color: #ad1838;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  letter-spacing: 2px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+
+/* ==========================================================
+   BOTÃO DE CATEGORIA
+========================================================== */
+
+.custom-option {
+  width: 100%;
+
+  border: none;
+
+  background: transparent;
+
+  font-family: "DM Sans", sans-serif;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  box-sizing: border-box;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.category-option {
+  padding: 15px 16px;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  font-size: 13px;
+}
+
+.category-option:hover {
+  background: #ad1838;
+
+  color: #ffffff;
+}
+
+.option-arrow {
+  color: #888;
+
+  font-size: 16px;
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
+}
+
+.category-option:hover .option-arrow {
+  color: #ffffff;
+
+  transform: translateX(4px);
+}
+
+
+/* ==========================================================
+   VOLTAR
+========================================================== */
+
+.back-option {
+  width: 100%;
+
+  padding: 11px 16px;
+
+  border: none;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+
+  background: rgba(255, 255, 255, 0.025);
+
+  color: #888;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+
+  text-align: left;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.back-option:hover {
+  color: #ffffff;
+
+  background: rgba(173, 24, 56, 0.15);
+}
+
+
+/* ==========================================================
+   SERVIÇOS DA CATEGORIA
+========================================================== */
+
+.service-option {
+  padding: 13px 16px;
+
+  color: #ffffff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  font-size: 12px;
+
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.service-option:last-child {
+  border-bottom: none;
+}
+
+.service-option:hover {
+  background: #ad1838;
+}
+
+.service-name {
+  line-height: 1.4;
+}
+
+.service-price {
+  flex-shrink: 0;
+
+  color: #aaa;
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.service-option:hover .service-price {
+  color: #ffffff;
+}
+
+
+/* ==========================================================
+   SCROLLBAR DO SELECT
+========================================================== */
+
+.custom-options-list::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-options-list::-webkit-scrollbar-track {
+  background: #0c0c0c;
+}
+
+.custom-options-list::-webkit-scrollbar-thumb {
+  background: #444;
+}
+
+.custom-options-list::-webkit-scrollbar-thumb:hover {
+  background: #ad1838;
+}
+
+
+/* ==========================================================
+   ERRO
+========================================================== */
 
 .form-error {
-  margin: 10px 0 0;
+  margin: 0;
 
   color: #ad1838;
 
   font-family: "DM Sans", sans-serif;
+
   font-size: 13px;
+
+  line-height: 1.4;
 }
 
 
-/* =========================================
-   CONFIRMAÇÃO DO FORMULÁRIO
-========================================= */
+/* ==========================================================
+   BOTÃO
+========================================================== */
+
+.submit-btn {
+  width: 100%;
+
+  cursor: pointer;
+
+  border: none;
+
+  color: #fff;
+
+  margin-top: 10px;
+}
+
+.submit-btn:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+}
+
+
+/* ==========================================================
+   CONFIRMAÇÃO
+========================================================== */
 
 .confirmation-card {
   width: 100%;
+
+  max-width: 850px;
+
   min-height: 380px;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   justify-content: center;
 
   text-align: center;
@@ -249,6 +570,7 @@
   padding: 60px 40px;
 
   border: 1px solid rgba(255, 255, 255, 0.12);
+
   background: rgba(255, 255, 255, 0.025);
 
   box-sizing: border-box;
@@ -256,10 +578,13 @@
 
 .confirmation-icon {
   width: 64px;
+
   height: 64px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   margin-bottom: 25px;
@@ -267,13 +592,17 @@
   border-radius: 50%;
 
   background: #8a2be2;
+
   color: #ffffff;
 
   font-family: Arial, sans-serif;
+
   font-size: 30px;
+
   font-weight: 600;
 
-  box-shadow: 0 0 30px rgba(138, 43, 226, 0.35);
+  box-shadow:
+    0 0 30px rgba(138, 43, 226, 0.35);
 }
 
 .confirmation-subtitle {
@@ -282,7 +611,9 @@
   color: #ad1838;
 
   font-family: "Inter", sans-serif;
+
   font-size: 11px;
+
   font-weight: 600;
 
   letter-spacing: 4px;
@@ -294,8 +625,11 @@
   color: #ffffff;
 
   font-family: "Bebas Neue", sans-serif;
+
   font-size: 64px;
+
   line-height: 0.9;
+
   font-weight: 400;
 }
 
@@ -307,92 +641,91 @@
   color: #ada9b1;
 
   font-family: "DM Sans", sans-serif;
+
   font-size: 15px;
+
   line-height: 1.6;
 }
 
 .confirmation-card .primary-button {
   border: none;
+
   cursor: pointer;
 }
-/* =========================================
-   ESTILOS DO SELETOR PERSONALIZADO
-========================================= */
 
-.custom-select-container {
-  position: relative;
-  width: 100%;
-}
 
-.custom-select-trigger {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 12px 16px;
-  color: #888; /* Cor cinza quando nenhum serviço foi selecionado */
-  font-family: inherit;
-  font-size: 13px;
-  outline: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: border-color 0.2s ease, background 0.2s ease;
-  border-radius: 8px;
-}
+/* ==========================================================
+   RESPONSIVIDADE
+========================================================== */
 
-.custom-select-trigger.selected {
-  color: #ffffff; /* Fica branco quando um serviço é selecionado */
-}
-
-.custom-select-trigger:hover {
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.select-arrow {
-  transition: transform 0.2s ease;
-  color: #9b9b9b;
-}
-
-.select-arrow.open {
-  transform: rotate(180deg);
-}
-
-.custom-options-list {
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  width: 100%;
-  background: #121212;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  z-index: 99;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-  box-sizing: border-box;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.custom-option {
-  padding: 12px 16px;
-  font-size: 13px;
-  color: #ffffff;
-  cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.custom-option:hover {
-  background: #ad1838;
-  color: #ffffff;
-}
-
-/* Responsividade do Formulário e Contato */
 @media (max-width: 768px) {
-  .contact-grid {
-    grid-template-columns: 1fr;
+  .contact-section {
+    padding-top: 55px;
+    padding-bottom: 0;
+  }
+
+  .contact-header {
+    margin-bottom: 35px;
+  }
+
+  .contact-title span:nth-child(1),
+  .contact-title span:nth-child(2) {
+    font-size: 65px;
+  }
+
+  .contact-form {
+    max-width: calc(100% - 30px);
+
+    padding: 30px 25px;
   }
 }
+
 
 @media (max-width: 600px) {
   .form-row {
     flex-direction: column;
+
+    gap: 20px;
+  }
+
+  .contact-title span:nth-child(1),
+  .contact-title span:nth-child(2) {
+    font-size: 55px;
+  }
+
+  .contact-description {
+    max-width: 280px;
+
+    font-size: 13px;
+  }
+
+  .contact-form {
+    padding: 25px 20px;
+  }
+
+  .custom-options-list {
+    max-height: 300px;
+  }
+
+  .service-option {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+  .service-price {
+    font-size: 10px;
+  }
+
+  .confirmation-card {
+    min-height: 350px;
+
+    padding: 45px 25px;
+  }
+
+  .confirmation-card h3 {
+    font-size: 52px;
   }
 }

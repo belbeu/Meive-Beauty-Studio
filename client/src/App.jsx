@@ -25,6 +25,7 @@ function HomePage() {
       <Hero />
       <BeautyMarquee />
       <Services />
+      <PromocoesSection />
       <AboutSection />
       <ProdutosSection />
       {/* <Testimonials /> <-- ELA É USADA AQUI */}
