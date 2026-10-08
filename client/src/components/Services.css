@@ -53,6 +53,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 15px;
+  align-items: stretch;
 }
 
 .service-card {
@@ -62,11 +63,8 @@
   padding: 24px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 380px;
-  transition:
-    border-color 0.3s ease,
-    background 0.3s ease;
+  min-height: 350px; 
+  transition: border-color 0.3s ease, background 0.3s ease;
 }
 
 .service-card:hover {
@@ -97,6 +95,12 @@
   line-height: 1;
 }
 
+.service-info {
+  flex: 1; 
+  display: flex;
+  flex-direction: column;
+}
+
 .service-info h3 {
   font-family: "Bebas Neue", sans-serif;
   font-size: 28px;
@@ -115,7 +119,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 30px;
+  margin-top: auto;
   padding-top: 15px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
@@ -132,4 +136,17 @@
   background: rgba(255, 255, 255, 0.04);
   padding: 4px 8px;
   border-radius: 2px;
+}
+/* mudar o preço */
+.service-price-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o preço antigo e o novo */
+}
+
+/* Estilo do preço antigo */
+.service-old-price {
+  color: #737373; /* Cor cinza para não chamar tanta atenção */
+  font-size: 14px; /* Ligeiramente menor que o preço principal */
+  text-decoration: line-through; /* Cria a linha que risca o preço */
 }

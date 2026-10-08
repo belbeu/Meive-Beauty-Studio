@@ -17,6 +17,8 @@ export default function Navbar() {
         <a href="#produtos">PRODUTOS</a>
         <a href="#sobre">SOBRE</a>
         <a href="#contato">CONTATO</a>
+        <a href="#promocoes">PROMOÇÕES</a>
+        
       </nav>
 
       <div className="nav-actions">

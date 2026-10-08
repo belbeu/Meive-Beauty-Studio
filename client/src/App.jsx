@@ -12,7 +12,7 @@ import Testimonials from "./components/Avaliacoes";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
-
+import PromocoesSection from "./components/Promocao"; // Importando a seção de promoções
 // Importa corretamente o Courses da pasta components
 import Courses from "./components/Courses"; 
 
@@ -27,6 +27,8 @@ function HomePage() {
       <ProdutosSection />
       <Testimonials />
       <Contact />
+      <PromocoesSection/>
+
       <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
