@@ -8,7 +8,7 @@ import BeautyMarquee from "./components/BeautyMarquee";
 import Services from "./components/Services";
 import AboutSection from "./components/Sobre";
 import ProdutosSection from "./components/ProdutosHome";
-import Testimonials from "./components/Avaliacoes"; // <-- CERTIFIQUE-SE DE QUE ESTA LINHA EXISTE
+// import Testimonials from "./components/Avaliacoes"; // <-- CERTIFIQUE-SE DE QUE ESTA LINHA EXISTE
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante"; 
@@ -21,12 +21,10 @@ function HomePage() {
       <Hero />
       <BeautyMarquee />
       <Services />
-      <PromocoesSection/>
       <AboutSection />
       <ProdutosSection />
-      <Testimonials />
+      {/* <Testimonials /> <-- ELA É USADA AQUI */}
       <Contact />
-
       <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
