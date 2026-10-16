@@ -15,7 +15,7 @@ export default function Hero() {
         </div>
 
         <p className="hero-description">
-          Transformando olhares através da Arte.
+          Transformando olhares através da minha Arte.
         </p>
 
         <div className="hero-buttons">

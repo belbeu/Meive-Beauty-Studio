@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+// Altere esta linha no topo do seu App.jsx:
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -17,6 +18,7 @@ import PromocoesSection from "./components/Promocao";
 
 import Login from "./components/Login";
 import Cadastro from "./components/Cadastro";
+import AdminLogin from "./components/AdminLogin";
 
 function HomePage() {
   return (
@@ -45,6 +47,9 @@ export default function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/adm/login" element={<AdminLogin />} />
+
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );

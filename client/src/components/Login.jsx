@@ -7,7 +7,7 @@ export default function Login() {
     <div className="login-container">
       <div
         className="login-banner-side"
-        style={{ backgroundImage: `url(${heroImg})` }}
+        style={ {backgroundImage: `url(${heroImg})` }}
       >
         <div className="login-banner-overlay"></div>
 
@@ -77,9 +77,9 @@ export default function Login() {
               Ainda não é uma Meive Girl?{" "}
               <Link to="/cadastro">Criar conta</Link>
             </p>
-            <a href="#admin" className="admin-link">
+            <Link to="/adm/login" className="admin-link" style={{ textDecoration: "none" }}>
               ACESSO ADMINISTRATIVO
-            </a>
+            </Link>
           </div>
         </div>
       </div>
