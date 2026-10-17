@@ -15,10 +15,10 @@ import FloatingSocials from "./components/IconeFlutuante";
 import Courses from "./components/Courses";
 import PromocoesSection from "./components/Promocao";
 
-import Login from "./components/Login";
-import Cadastro from "./components/Cadastro";
+import Login from "./components/cliente/Login";
+import Cadastro from "./components/cliente/Cadastro";
+import ClientDashboard from "./components/cliente/ClienteDashboard";
 
-// Área administrativa (tudo dentro de components/admin)
 import { AuthProvider } from "./components/admin/AuthContext";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLogin from "./components/admin/AdminLogin";
@@ -52,6 +52,7 @@ export default function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/minha-conta" element={<ClientDashboard />} />
 
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />

@@ -242,6 +242,95 @@
   text-decoration: none;
 }
 
+/* Input com ícone de olhinho */
+.cadastro-input-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.cadastro-input-wrapper input {
+  width: 100%;
+  padding-right: 46px;
+}
+
+.cadastro-eye-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 44px;
+  background: transparent;
+  border: none;
+  color: #777777;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.cadastro-eye-btn:hover {
+  color: #ffffff;
+}
+
+/* Lista de requisitos (animada ao focar no input) */
+.senha-requisitos {
+  list-style: none;
+  margin: 0;
+  padding: 0 12px;
+  max-height: 0;
+  opacity: 0;
+  transform: translateY(-6px);
+  overflow: hidden;
+  border-left: 2px solid transparent;
+  transition: max-height 0.35s ease, opacity 0.3s ease,
+    transform 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
+}
+
+.senha-requisitos.aberto {
+  max-height: 120px;
+  opacity: 1;
+  transform: translateY(0);
+  padding: 6px 12px;
+  border-left-color: #ad1838;
+}
+
+.senha-requisitos li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #777777;
+  padding: 3px 0;
+  transition: color 0.25s ease;
+}
+
+.senha-requisitos li.ok {
+  color: #4caf7d;
+}
+
+.req-icone {
+  width: 12px;
+  display: inline-block;
+  text-align: center;
+}
+
+/* Mensagens de confirmação */
+.cadastro-field input.input-erro,
+.cadastro-field input.input-erro:focus {
+  border-color: #e5484d;
+}
+
+.cadastro-msg-erro {
+  font-size: 11px;
+  color: #e5484d;
+}
+
+.cadastro-msg-ok {
+  font-size: 11px;
+  color: #4caf7d;
+}
+
 /* Responsividade */
 @media (max-width: 900px) {
   .cadastro-container {

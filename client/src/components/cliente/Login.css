@@ -272,6 +272,37 @@
   color: #888888;
 }
 
+/* Input com ícone de olhinho */
+.login-input-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.login-input-wrapper input {
+  width: 100%;
+  padding-right: 46px;
+}
+
+.login-eye-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 44px;
+  background: transparent;
+  border: none;
+  color: #777777;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.login-eye-btn:hover {
+  color: #ffffff;
+}
+
 /* Responsividade */
 @media (max-width: 900px) {
   .login-container {

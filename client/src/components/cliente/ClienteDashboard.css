@@ -1,0 +1,508 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=DM+Sans:wght@300;400;500;600;700&display=swap");
+
+.client-page {
+  --bg: #0a0a0a;
+  --surface: #101010;
+  --border: rgba(255, 255, 255, 0.09);
+  --muted: #7a7a7a;
+  --faint: #555555;
+  --red: #a11d38;
+  --red-bright: #c8284a;
+  --purple: #5a2d82;
+
+  min-height: 100vh;
+  background: var(--bg);
+  color: #ffffff;
+  font-family: "DM Sans", "Inter", sans-serif;
+  padding: 36px 24px 90px;
+}
+
+.client-page button {
+  font-family: inherit;
+}
+
+.client-page *:focus-visible {
+  outline: 2px solid var(--red-bright);
+  outline-offset: 2px;
+}
+
+.client-wrapper {
+  max-width: 1190px;
+  margin: 0 auto;
+}
+
+/* ============ CABEÇALHO ============ */
+.client-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.client-tag {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 9px;
+  letter-spacing: 3px;
+  color: #8d7a80;
+  margin-bottom: 10px;
+}
+
+.client-tag-line {
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: #6b5b61;
+}
+
+.client-title {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: clamp(48px, 6vw, 68px);
+  letter-spacing: 1px;
+  line-height: 1;
+  margin: 0;
+  color: #f1f1f1;
+}
+
+.client-title span {
+  color: var(--red);
+}
+
+.client-subtitle {
+  margin: 6px 0 0;
+  font-size: 15px;
+  color: #7f7f86;
+}
+
+.client-user {
+  position: relative;
+  margin-top: 28px;
+}
+
+.client-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--purple);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+}
+
+.client-avatar:hover {
+  filter: brightness(1.15);
+}
+
+.client-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 10;
+  min-width: 160px;
+  display: flex;
+  flex-direction: column;
+  background: #141414;
+  border: 1px solid var(--border);
+}
+
+.client-menu a,
+.client-menu button {
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  color: #cfcfcf;
+  font-size: 12px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.client-menu a:hover,
+.client-menu button:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+}
+
+.client-menu button {
+  border-top: 1px solid var(--border);
+  color: var(--red-bright);
+}
+
+/* ============ BOTÕES / BADGES ============ */
+.client-primary-btn {
+  height: 48px;
+  padding: 0 34px;
+  background: var(--red);
+  border: none;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.client-primary-btn:hover {
+  background: #bb2142;
+}
+
+.client-outline-btn {
+  height: 48px;
+  padding: 0 24px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  white-space: nowrap;
+}
+
+.client-outline-btn:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.client-badge {
+  display: inline-block;
+  padding: 9px 14px;
+  font-size: 8px;
+  letter-spacing: 1px;
+  background: #1f1f21;
+  color: #9a9a9a;
+  white-space: nowrap;
+}
+
+.client-badge--confirmed {
+  background: rgba(161, 29, 56, 0.2);
+  color: #d94f6c;
+}
+
+/* ============ PRÓXIMO AGENDAMENTO ============ */
+.client-next {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 30px 30px;
+  margin-bottom: 22px;
+  border: 1px solid rgba(161, 29, 56, 0.3);
+  background: linear-gradient(90deg, #2a0f18 0%, #170b10 55%, #100c0e 100%);
+}
+
+.client-next-date {
+  flex-shrink: 0;
+  width: 76px;
+  height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: var(--red);
+}
+
+.client-next-date strong {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 30px;
+  line-height: 1;
+}
+
+.client-next-date span {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+}
+
+.client-next-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.client-next-label {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #d94f6c;
+  margin-bottom: 8px;
+}
+
+.client-next-info h2 {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  margin: 0 0 10px;
+}
+
+.client-next-info p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 12px;
+  color: #7f7f86;
+}
+
+/* ============ PAINÉIS ============ */
+.client-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 22px;
+}
+
+.client-panel {
+  min-height: 220px;
+  padding: 28px 27px 24px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  min-width: 0;
+}
+
+.client-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.client-panel-head h3 {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+}
+
+.client-link {
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: var(--red);
+  text-decoration: none;
+}
+
+.client-link:hover {
+  text-decoration: underline;
+}
+
+.client-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estado vazio */
+.client-empty {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 38px;
+}
+
+.client-empty-icon {
+  color: var(--purple);
+  display: flex;
+}
+
+.client-empty-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.client-empty-text strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.client-empty-text span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Lista de agendamentos */
+.client-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.client-row:last-child {
+  border-bottom: none;
+}
+
+.client-row-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-row-info strong {
+  font-size: 13px;
+}
+
+.client-row-info span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* Pedidos */
+.client-order {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-top: 28px;
+}
+
+.client-order-img {
+  flex-shrink: 0;
+  width: 68px;
+  height: 76px;
+  object-fit: cover;
+}
+
+.client-order-img--placeholder {
+  background: linear-gradient(160deg, #3a3330 0%, #1a1614 100%);
+}
+
+.client-order-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.client-order-id {
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: var(--faint);
+}
+
+.client-order-info strong {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.client-order-date {
+  font-size: 10px;
+  color: var(--muted);
+}
+
+/* ============ CLUBE MEIVE ============ */
+.client-club {
+  display: grid;
+  grid-template-columns: 1fr minmax(240px, 400px) auto;
+  align-items: center;
+  gap: 40px;
+  padding: 44px 34px;
+  border: 1px solid rgba(90, 45, 130, 0.45);
+  background: linear-gradient(90deg, #22132d 0%, #1b1022 60%, #150e1a 100%);
+}
+
+.client-club-label {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 2px;
+  color: #d94f6c;
+  margin-bottom: 10px;
+}
+
+.client-club-info h2 {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px;
+}
+
+.client-club-info h2 span {
+  color: var(--red);
+}
+
+.client-club-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #8a8794;
+}
+
+.client-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.client-progress-track {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.client-progress-fill {
+  height: 100%;
+  background: var(--red);
+  transition: width 0.4s ease;
+}
+
+.client-progress > span {
+  font-size: 8px;
+  letter-spacing: 1.6px;
+  color: var(--faint);
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width: 1000px) {
+  .client-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .client-club {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .client-club .client-outline-btn {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 760px) {
+  .client-page {
+    padding: 28px 18px 60px;
+  }
+
+  .client-next {
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 22px;
+  }
+
+  .client-next-info {
+    flex-basis: calc(100% - 100px);
+  }
+
+  .client-empty {
+    flex-wrap: wrap;
+  }
+
+  .client-empty-text {
+    flex-basis: calc(100% - 60px);
+  }
+
+  .client-order {
+    flex-wrap: wrap;
+  }
+}
