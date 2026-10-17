@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./AdminLogin.css";
-import heroImg from "../assets/fotoAdm.jpeg"; // Pode usar a mesma imagem ou outra de sua preferência
+import heroImg from "../../assets/fotoAdm.jpeg"; 
 
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
@@ -26,7 +26,6 @@ export default function AdminLogin() {
       const newAttempts = attempts + 1;
       setAttempts(newAttempts);
 
-      // Requisito do Backlog: Limite de tentativas de acesso
       if (newAttempts >= 3) {
         setIsBlocked(true);
         setError("Muitas tentativas falhas. Acesso temporariamente bloqueado por segurança.");
@@ -38,7 +37,6 @@ export default function AdminLogin() {
 
   return (
     <div className="login-container">
-      {/* Lado Esquerdo (Banner com Imagem - Mantém o mesmo layout padrão) */}
       <div
         className="login-banner-side"
         style={{ backgroundImage: `url(${heroImg})` }}
@@ -47,7 +45,7 @@ export default function AdminLogin() {
 
         <Link to="/" className="login-brand" style={{ textDecoration: "none" }}>
           <span className="logo-main">MEIVE</span>
-          <span className="logo-sub" style={{ color: "#ad1838" }}>ADMIN STUDIO</span>
+          <span className="logo-sub" style={{ color: "#ad1838" }}>BEAUTY STUDIO</span>
         </Link>
 
         <div className="login-quote-container">
@@ -61,7 +59,6 @@ export default function AdminLogin() {
         </div>
       </div>
 
-      {/* Lado Direito (Formulário de Login Administrativo) */}
       <div className="login-form-side">
         <div className="login-form-wrapper">
           <div className="login-header">
@@ -74,7 +71,6 @@ export default function AdminLogin() {
             <p>Entre com suas credenciais de gestora autorizada.</p>
           </div>
 
-          {/* Alerta dinâmico de Erro / Limite de Tentativas */}
           {error && <div className="error-message">{error}</div>}
 
           <form className="login-form" onSubmit={handleSubmit}>
