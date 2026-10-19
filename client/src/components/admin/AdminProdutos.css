@@ -1,0 +1,260 @@
+/* =====================================================
+   AdminProdutos.css
+   Depende de AdminDashboard.css (variáveis, header,
+   .dash-panel, botões...)
+   ===================================================== */
+
+/* ---- Resumo (faixa com 4 indicadores) ---- */
+.products-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.products-summary-item {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 24px 24px 26px;
+  border-right: 1px solid var(--border);
+  min-width: 0;
+}
+
+.products-summary-item:last-child {
+  border-right: none;
+}
+
+.products-summary-label {
+  font-size: 7px;
+  letter-spacing: 1.6px;
+  color: var(--faint);
+}
+
+.products-summary-value {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.products-summary-value.is-alert {
+  color: var(--red-bright);
+}
+
+/* ---- Painel ---- */
+.products-panel {
+  padding: 28px 28px 0;
+}
+
+.products-head {
+  align-items: flex-start;
+}
+
+.products-filter {
+  display: flex;
+}
+
+.products-filter button {
+  height: 40px;
+  padding: 0 18px;
+  background: transparent;
+  border: none;
+  color: var(--faint);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.products-filter button.is-low {
+  color: var(--red);
+}
+
+.products-filter button:hover {
+  color: #fff;
+}
+
+.products-filter button.is-active {
+  background: #1d0f14;
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ---- Tabela ---- */
+.products-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.products-row {
+  display: grid;
+  grid-template-columns: 2.4fr 1.2fr 1fr 0.9fr 1.3fr 48px;
+  align-items: center;
+  column-gap: 16px;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.products-row--head {
+  padding: 20px 0;
+  font-size: 7px;
+  letter-spacing: 1.4px;
+  color: var(--faint);
+}
+
+.products-row--item {
+  height: 74px;
+}
+
+.products-name {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
+}
+
+.products-img {
+  flex-shrink: 0;
+  width: 44px;
+  height: 48px;
+  object-fit: cover;
+  background: #1a1a1a;
+}
+
+.products-img--placeholder {
+  background: linear-gradient(160deg, #2a1a22 0%, #151015 100%);
+}
+
+.products-name-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.products-name-info strong {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.products-name-info span {
+  font-size: 7px;
+  letter-spacing: 1px;
+  color: var(--faint);
+}
+
+.products-category {
+  font-size: 10px;
+  color: #8a7d5a;
+}
+
+.products-price {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.products-stock {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.products-status {
+  display: inline-block;
+  padding: 7px 8px;
+  font-size: 7px;
+  letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+
+.products-status--active {
+  background: #12201a;
+  color: #7fc08a;
+}
+
+.products-status--low {
+  background: rgba(173, 24, 56, 0.2);
+  color: #e0556f;
+}
+
+.products-edit {
+  justify-self: end;
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.products-edit:hover {
+  color: #fff;
+}
+
+.products-empty {
+  margin: 0;
+  padding: 36px 0;
+  text-align: center;
+  font-size: 10px;
+  color: var(--faint);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width: 1100px) {
+  .products-summary {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .products-summary-item:nth-child(2) {
+    border-right: none;
+  }
+
+  .products-summary-item:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--border);
+  }
+}
+
+@media (max-width: 800px) {
+  .products-panel {
+    padding: 20px 20px 0;
+  }
+
+  .products-head {
+    flex-direction: column;
+  }
+
+  .products-row {
+    grid-template-columns: 1fr auto 40px;
+  }
+
+  .products-col-category,
+  .products-col-stock,
+  .products-col-status {
+    display: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .products-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .products-summary-item {
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .products-summary-item:last-child {
+    border-bottom: none;
+  }
+}

@@ -1,0 +1,219 @@
+/* =====================================================
+   AdminClientes.css
+   Depende de AdminDashboard.css (variáveis, header,
+   .dash-panel, .dash-avatar, botões...)
+   ===================================================== */
+
+/* ---- Indicadores ---- */
+.clients-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.clients-stat {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 28px 28px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  min-width: 0;
+}
+
+.clients-stat-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clients-stat-icon--red {
+  background: rgba(173, 24, 56, 0.18);
+  color: #c4455f;
+}
+
+.clients-stat-icon--purple {
+  background: rgba(77, 37, 105, 0.35);
+  color: #a672d0;
+}
+
+.clients-stat-icon--gray {
+  background: #1f1f21;
+  color: #8a8a8a;
+}
+
+.clients-stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.clients-stat-value {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.clients-stat-label {
+  font-size: 7px;
+  letter-spacing: 1.4px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.clients-stat-note {
+  margin-left: auto;
+  align-self: flex-end;
+  font-size: 8px;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+/* ---- Painel / tabela ---- */
+.clients-panel {
+  padding: 28px 28px 0;
+}
+
+.clients-export {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 8px;
+  letter-spacing: 1.4px;
+  color: var(--red);
+  cursor: pointer;
+}
+
+.clients-export:hover {
+  text-decoration: underline;
+}
+
+.clients-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.clients-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 0.5fr 0.8fr 24px;
+  align-items: center;
+  column-gap: 16px;
+  width: 100%;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.clients-row--head {
+  padding: 20px 0;
+  font-size: 7px;
+  letter-spacing: 1.4px;
+  color: var(--faint);
+}
+
+.clients-row--item {
+  padding: 0;
+  height: 74px;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clients-row--item:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.clients-name {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.clients-name strong {
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.clients-avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 11px;
+}
+
+.clients-phone {
+  font-size: 10px;
+  color: #777;
+}
+
+.clients-last {
+  font-size: 10px;
+  color: #777;
+}
+
+.clients-last.is-today {
+  color: #6f93c0;
+}
+
+.clients-visits {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.clients-total {
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.clients-chevron {
+  display: flex;
+  justify-content: flex-end;
+  color: #666;
+  transition: color 0.2s ease;
+}
+
+.clients-row--item:hover .clients-chevron {
+  color: #fff;
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width: 1100px) {
+  .clients-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 800px) {
+  .clients-panel {
+    padding: 20px 20px 0;
+  }
+
+  .clients-row {
+    grid-template-columns: 1fr auto 24px;
+  }
+
+  .clients-col-contact,
+  .clients-col-visits,
+  .clients-col-last {
+    display: none;
+  }
+
+  .clients-stat {
+    padding: 22px 20px;
+  }
+}

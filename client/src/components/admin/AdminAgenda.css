@@ -1,0 +1,370 @@
+/* =====================================================
+   AdminAgenda.css
+   Depende de AdminDashboard.css (variáveis, sidebar,
+   header, .dash-avatar, .dash-status, .dash-more...)
+   ===================================================== */
+
+/* ---- Barra: navegação de semana + toggle ---- */
+.agenda-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.agenda-range {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 276px;
+  height: 42px;
+  padding: 0 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.agenda-range span {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.6px;
+}
+
+.agenda-range button {
+  background: none;
+  border: none;
+  padding: 0 4px;
+  color: #8a8a8a;
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.agenda-range button:hover {
+  color: #fff;
+}
+
+.agenda-toggle {
+  display: flex;
+  height: 42px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.agenda-toggle button {
+  padding: 0 24px;
+  background: transparent;
+  border: none;
+  color: var(--faint);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  cursor: pointer;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.agenda-toggle button:hover {
+  color: #bbb;
+}
+
+.agenda-toggle button.is-active {
+  background: rgba(173, 24, 56, 0.14);
+  color: #fff;
+  font-weight: 700;
+}
+
+/* ---- Painel ---- */
+.agenda-panel {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  min-width: 0;
+}
+
+/* ---- Faixa dos dias ---- */
+.agenda-week {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+
+.agenda-weekday {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 112px;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.agenda-weekday:last-child {
+  border-right: none;
+}
+
+.agenda-weekday:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.agenda-weekday-label {
+  font-size: 8px;
+  letter-spacing: 1.8px;
+  color: var(--faint);
+}
+
+.agenda-weekday-number {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 1;
+  color: #5a5a5a;
+  transition: color 0.2s ease;
+}
+
+.agenda-weekday-count {
+  font-size: 8px;
+  color: var(--faint);
+}
+
+.agenda-weekday.is-active {
+  background: #1d0f14;
+  box-shadow: inset 0 -3px 0 var(--red);
+}
+
+.agenda-weekday.is-active .agenda-weekday-label,
+.agenda-weekday.is-active .agenda-weekday-count {
+  color: #fff;
+}
+
+.agenda-weekday.is-active .agenda-weekday-number {
+  color: #fff;
+}
+
+/* ---- Cabeçalho do dia ---- */
+.agenda-day + .agenda-day {
+  border-top: 1px solid var(--border);
+}
+
+.agenda-day-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 24px 28px 22px;
+  border-bottom: 1px solid var(--border);
+}
+
+.agenda-day-date {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1.6px;
+  color: var(--faint);
+  margin-bottom: 10px;
+}
+
+.agenda-day-count {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.agenda-legend {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.agenda-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 8px;
+  color: #8a8a8a;
+}
+
+.agenda-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.agenda-dot--free {
+  border: 1px solid #777;
+}
+
+.agenda-dot--busy {
+  background: var(--red);
+}
+
+/* ---- Timeline ---- */
+.agenda-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0 28px;
+}
+
+.agenda-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 35px 34px 34px 1fr auto 110px 20px;
+  align-items: center;
+  column-gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* linha vertical (centro da coluna do marcador) */
+.agenda-row::before {
+  content: "";
+  position: absolute;
+  left: 50px; /* 35 (hora) + 16 (gap) - 1 + metade de 34 */
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.agenda-row:first-child::before {
+  top: 14px;
+}
+
+.agenda-row:last-of-type::before {
+  bottom: -1px;
+}
+
+.agenda-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: #8a8a8a;
+}
+
+.agenda-marker {
+  position: relative;
+  justify-self: center;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #6a6a6a;
+  z-index: 1;
+}
+
+.agenda-marker.is-live {
+  background: var(--red);
+  box-shadow: 0 0 0 4px rgba(173, 24, 56, 0.25);
+}
+
+.agenda-avatar {
+  width: 34px;
+  height: 34px;
+  font-size: 11px;
+}
+
+.agenda-price {
+  justify-self: end;
+  margin-right: 30px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #aaa;
+}
+
+/* ---- Horário disponível ---- */
+.agenda-free {
+  display: grid;
+  grid-template-columns: 35px 34px auto;
+  align-items: center;
+  column-gap: 16px;
+  padding: 24px 0 26px;
+  margin-bottom: 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.agenda-free-time {
+  font-size: 15px;
+  font-weight: 400;
+  color: #5e5e5e;
+  white-space: nowrap;
+}
+
+.agenda-free-btn {
+  justify-self: center;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid #555;
+  border-radius: 50%;
+  color: #777;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.agenda-free-btn:hover {
+  color: #fff;
+  border-color: var(--red-bright);
+}
+
+.agenda-free-label {
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 1.4px;
+  color: var(--faint);
+  margin-left: 6px;
+}
+
+/* ============ RESPONSIVO ============ */
+@media (max-width: 800px) {
+  .agenda-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .agenda-range {
+    width: 100%;
+  }
+
+  .agenda-toggle button {
+    flex: 1;
+  }
+
+  .agenda-weekday {
+    height: 92px;
+    gap: 8px;
+  }
+
+  .agenda-weekday-number {
+    font-size: 24px;
+  }
+
+  .agenda-weekday-count {
+    display: none;
+  }
+
+  .agenda-day-head {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+  }
+
+  .agenda-timeline {
+    padding: 0 20px;
+  }
+
+  .agenda-row {
+    grid-template-columns: 35px 34px 34px 1fr auto;
+  }
+
+  .agenda-price,
+  .agenda-row .dash-more {
+    display: none;
+  }
+
+  .agenda-row .dash-status {
+    padding: 8px 10px;
+  }
+}

@@ -23,6 +23,11 @@ import { AuthProvider } from "./components/admin/AuthContext";
 import ProtectedRoute from "./components/admin/ProtectedRoute";
 import AdminLogin from "./components/admin/AdminLogin";
 import AdminDashboard from "./components/admin/AdminDashboard";
+import AdminAgenda from "./components/admin/AdminAgenda";
+import AdminLayout from "./components/admin/AdminLayout";
+import AdminClientes from "./components/admin/AdminClientes";
+import AdminProdutos from "./components/admin/AdminProdutos";
+import AdminConfiguracoes from "./components/admin/AdminConfiguracoes";
 
 function HomePage() {
   return (
@@ -56,19 +61,24 @@ export default function App() {
 
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
+
           <Route
-            path="/admin/dashboard"
             element={
               <ProtectedRoute>
-                <AdminDashboard />
+                <AdminLayout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/agenda" element={<AdminAgenda />} />
+            <Route path="/admin/clientes" element={<AdminClientes />} />
+            <Route path="/admin/produtos" element={<AdminProdutos />} />
+            <Route path="/admin/configuracoes" element={<AdminConfiguracoes />} />
+          </Route>
+
           {/* Mantém links antigos funcionando */}
           <Route path="/adm/login" element={<Navigate to="/admin/login" replace />} />
           <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-
-          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
     </Router>
