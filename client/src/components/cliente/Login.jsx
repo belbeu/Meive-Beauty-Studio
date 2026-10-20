@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import heroImg from "../../assets/Cilios1.jpeg";
+import { login } from "../../auth"; // src/auth.js (ajuste o caminho se o arquivo estiver em outra pasta)
+
 
 function IconeOlho({ aberto }) {
   return aberto ? (
@@ -22,6 +24,31 @@ function IconeOlho({ aberto }) {
 export default function Login() {
   const navigate = useNavigate();
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
+  // --- novo: estado do formulário ---
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [erro, setErro] = useState(null);
+  const [enviando, setEnviando] = useState(false);
+
+  // --- novo: envia e-mail e senha para o Django ---
+  async function entrar(e) {
+    e.preventDefault();
+    setErro(null);
+    setEnviando(true);
+    try {
+      await login(email, senha);
+      navigate("/minha-conta");
+    } catch (err) {
+      if (err.status === 401) {
+        setErro("E-mail ou senha incorretos.");
+      } else {
+        setErro("Não foi possível entrar agora. Tente novamente em instantes.");
+      }
+    } finally {
+      setEnviando(false);
+    }
+  }
 
   return (
     <div className="login-container">
@@ -59,16 +86,17 @@ export default function Login() {
             <p>Entre para gerenciar seus horários, pedidos e favoritos.</p>
           </div>
 
-          <form
-            className="login-form"
-            onSubmit={(e) => {
-              e.preventDefault();
-              navigate("/minha-conta");
-            }}
-          >
+          <form className="login-form" onSubmit={entrar}>
             <div className="login-field">
               <label>E-MAIL</label>
-              <input type="email" placeholder="voce@email.com" required />
+              <input
+                type="email"
+                placeholder="voce@email.com"
+                autoComplete="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
 
             <div className="login-field">
@@ -83,6 +111,8 @@ export default function Login() {
                   type={mostrarSenha ? "text" : "password"}
                   placeholder="Mínimo 8 caracteres"
                   autoComplete="current-password"
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
                   required
                 />
                 <button
@@ -96,8 +126,14 @@ export default function Login() {
               </div>
             </div>
 
-            <button type="submit" className="login-submit-btn">
-              ENTRAR <span>→</span>
+            {erro && (
+              <p className="login-error" role="alert" style={{ color: "#b3261e", fontSize: "0.85rem", margin: 0 }}>
+                {erro}
+              </p>
+            )}
+
+            <button type="submit" className="login-submit-btn" disabled={enviando}>
+              {enviando ? "ENTRANDO..." : "ENTRAR"} <span>→</span>
             </button>
           </form>
 

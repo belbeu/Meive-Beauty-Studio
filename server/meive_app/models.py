@@ -108,6 +108,9 @@ class Servico(models.Model):
     categoria = models.CharField(max_length=100, blank=True, null=True)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     duracao_minutos = models.IntegerField()
+    descricao = models.TextField(blank=True, null=True)
+    tag = models.CharField(max_length=50, blank=True, null=True)
+    preco_manutencao = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
         managed = False
