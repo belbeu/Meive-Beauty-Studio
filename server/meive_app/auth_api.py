@@ -1,10 +1,12 @@
 # Salvar como: meive_app/auth_api.py
 #
 # Cadastro de usuário e "quem sou eu" (dados do usuário logado).
-# O login em si é feito pelo simplejwt (ver api_urls.py).
+# O login usa o simplejwt, com limite de tentativas (LoginView).
 
 from django.contrib.auth import password_validation
 from rest_framework import generics, permissions, serializers
+from rest_framework.throttling import ScopedRateThrottle
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import Usuario
 from .serializers import UsuarioSerializer
@@ -43,6 +45,15 @@ class RegistroSerializer(serializers.ModelSerializer):
 class RegistroView(generics.CreateAPIView):
     serializer_class = RegistroSerializer
     permission_classes = [permissions.AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "registro"
+
+
+class LoginView(TokenObtainPairView):
+    """Login por e-mail e senha (JWT), com limite de tentativas."""
+
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = "login"
 
 
 class EuView(generics.RetrieveAPIView):

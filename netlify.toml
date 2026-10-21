@@ -1,0 +1,14 @@
+# Configuração do Netlify para o front (React/Vite).
+[build]
+  base = "client"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Páginas como /login e /cadastro precisam abrir o index.html (o React cuida da rota)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

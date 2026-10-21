@@ -1,11 +1,11 @@
-// Salvar como: client/src/api.js  (substitui o api.js anterior)
-//
 // Faz as chamadas ao Django e, se houver login, envia o token automaticamente.
 // Se o token estiver vencido, tenta renová-lo; se não der, desloga a pessoa.
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000/api";
-// Se o projeto usa Create React App, troque a linha acima por:
-// const BASE_URL = process.env.REACT_APP_API_URL ?? "http://127.0.0.1:8000/api";
+// Endereço da API: VITE_API_URL online; no computador local usa o Django em 127.0.0.1:8000.
+export const BASE_URL = (
+  import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? "http://127.0.0.1:8000/api" : "/api")
+).replace(/\/+$/, "");
 
 function enviar(path, options, token) {
   return fetch(`${BASE_URL}${path}`, {

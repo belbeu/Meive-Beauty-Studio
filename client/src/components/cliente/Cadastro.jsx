@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Cadastro.css";
 import heroImg from "../../assets/Cilios1.jpeg";
+import { registrar } from "../../auth"; // src/auth.js (ajuste o caminho se o arquivo estiver em outra pasta)
 
 const requisitos = [
   { id: "tamanho", texto: "Mínimo de 8 caracteres", teste: (s) => s.length >= 8 },
@@ -32,6 +33,12 @@ function IconeOlho({ aberto }) {
 export default function Cadastro() {
   const navigate = useNavigate();
 
+  // --- novo: nome, e-mail e estado do envio ---
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [erro, setErro] = useState(null);
+  const [enviando, setEnviando] = useState(false);
+
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -45,14 +52,34 @@ export default function Cadastro() {
   const mostrarErroConfirmacao =
     confirmarSenha.length > 0 && !senhasIguais;
 
-  const handleCadastro = (e) => {
+  // --- novo: envia o cadastro para o Django ---
+  const handleCadastro = async (e) => {
     e.preventDefault();
     setTentouEnviar(true);
+    setErro(null);
 
+    if (!nome.trim() || !email.trim()) {
+      setErro("Preencha seu nome e e-mail.");
+      return;
+    }
     if (!senhaValida || !senhasIguais) return;
 
-    // adicionar a lógica real do cadastro.
-    navigate("/login");
+    setEnviando(true);
+    try {
+      // cria a conta (sempre como CLIENTE) e já deixa a pessoa logada
+      await registrar({ nome, email, senha });
+      navigate("/minha-conta");
+    } catch (err) {
+      // o Django devolve algo como { email: ["Este e-mail já está cadastrado."] }
+      const primeira = err.dados && Object.values(err.dados).flat()[0];
+      setErro(
+        typeof primeira === "string"
+          ? primeira
+          : "Não foi possível criar a conta agora. Tente novamente em instantes."
+      );
+    } finally {
+      setEnviando(false);
+    }
   };
 
   return (
@@ -97,13 +124,25 @@ export default function Cadastro() {
               <input
                 type="text"
                 placeholder="Como podemos te chamar?"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+                autoComplete="name"
+                maxLength={150}
                 required
               />
             </div>
 
             <div className="cadastro-field">
               <label>E-MAIL</label>
-              <input type="email" placeholder="voce@email.com" required />
+              <input
+                type="email"
+                placeholder="voce@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                autoComplete="email"
+                maxLength={150}
+                required
+              />
             </div>
 
             {/* SENHA */}
@@ -184,8 +223,19 @@ export default function Cadastro() {
               )}
             </div>
 
-            <button type="submit" className="cadastro-submit-btn">
-              CRIAR MINHA CONTA <span>→</span>
+            {/* novo: erro vindo do servidor (e-mail repetido, senha fraca...) */}
+            {erro && (
+              <span className="cadastro-msg-erro" role="alert">
+                {erro}
+              </span>
+            )}
+
+            <button
+              type="submit"
+              className="cadastro-submit-btn"
+              disabled={enviando}
+            >
+              {enviando ? "CRIANDO CONTA..." : "CRIAR MINHA CONTA"} <span>→</span>
             </button>
           </form>
 

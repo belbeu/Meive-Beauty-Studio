@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Contact.css";
+import { BASE_URL } from "../api";
 
 // ==========================================================
 // SERVIÇOS DO MEVIE
@@ -285,7 +286,7 @@ export default function Contact() {
 
     try {
       const response = await fetch(
-        "http://127.0.0.1:8000/api/agendar/",
+        `${BASE_URL}/agendar/`,
         {
           method: "POST",
           headers: {
