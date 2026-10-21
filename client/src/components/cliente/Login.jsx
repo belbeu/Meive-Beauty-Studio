@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import heroImg from "../../assets/Cilios1.jpeg";
-import { login } from "../../auth"; // src/auth.js (ajuste o caminho se o arquivo estiver em outra pasta)
+import { login } from "../../auth";
 
 
 function IconeOlho({ aberto }) {
@@ -23,18 +23,21 @@ function IconeOlho({ aberto }) {
 
 export default function Login() {
   const navigate = useNavigate();
+  const [modoEsqueci, setModoEsqueci] = useState(false);
   const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [mostrarNovaSenha, setMostrarNovaSenha] = useState(false);
 
-  // --- novo: estado do formulário ---
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
   const [erro, setErro] = useState(null);
+  const [sucesso, setSucesso] = useState(null);
   const [enviando, setEnviando] = useState(false);
 
-  // --- novo: envia e-mail e senha para o Django ---
   async function entrar(e) {
     e.preventDefault();
     setErro(null);
+    setSucesso(null);
     setEnviando(true);
     try {
       await login(email, senha);
@@ -45,6 +48,33 @@ export default function Login() {
       } else {
         setErro("Não foi possível entrar agora. Tente novamente em instantes.");
       }
+    } finally {
+      setEnviando(false);
+    }
+  }
+
+  async function trocarSenha(e) {
+    e.preventDefault();
+    setErro(null);
+    setSucesso(null);
+    setEnviando(true);
+
+    try {
+      const response = await fetch("http://localhost:8000/api/auth/recuperar-senha/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password: novaSenha }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) throw new Error(data.erro || "Erro ao alterar senha");
+
+      setSucesso("Senha alterada com sucesso! Faça login com a nova senha.");
+      setModoEsqueci(false); // Volta para a tela de login
+      setSenha("");
+      setNovaSenha("");
+    } catch (err) {
+      setErro(err.message);
     } finally {
       setEnviando(false);
     }
@@ -79,71 +109,167 @@ export default function Login() {
           <div className="login-header">
             <span className="login-tag">— ÁREA MEIVE GIRL</span>
             <h2>
-              BEM-VINDA
-              <br />
-              DE VOLTA.
+              {modoEsqueci ? (
+                <>
+                  RECUPERAR
+                  <br />
+                  SENHA.
+                </>
+              ) : (
+                <>
+                  BEM-VINDA
+                  <br />
+                  DE VOLTA.
+                </>
+              )}
             </h2>
-            <p>Entre para gerenciar seus horários, pedidos e favoritos.</p>
+            <p>
+              {modoEsqueci
+                ? "Informe seu e-mail e defina uma nova senha."
+                : "Entre para gerenciar seus horários, pedidos e favoritos."}
+            </p>
           </div>
 
-          <form className="login-form" onSubmit={entrar}>
-            <div className="login-field">
-              <label>E-MAIL</label>
-              <input
-                type="email"
-                placeholder="voce@email.com"
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-
-            <div className="login-field">
-              <div className="field-top-label">
-                <label>SENHA</label>
-                <a href="#esqueci" className="forgot-link">
-                  Esqueci minha senha
-                </a>
-              </div>
-              <div className="login-input-wrapper">
+          {!modoEsqueci ? (
+            /* --- FORMULÁRIO DE LOGIN --- */
+            <form className="login-form" onSubmit={entrar}>
+              <div className="login-field">
+                <label>E-MAIL</label>
                 <input
-                  type={mostrarSenha ? "text" : "password"}
-                  placeholder="Mínimo 8 caracteres"
-                  autoComplete="current-password"
-                  value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
+                  type="email"
+                  placeholder="voce@email.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
-                <button
-                  type="button"
-                  className="login-eye-btn"
-                  onClick={() => setMostrarSenha((v) => !v)}
-                  aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}
-                >
-                  <IconeOlho aberto={mostrarSenha} />
-                </button>
               </div>
-            </div>
 
-            {erro && (
-              <p className="login-error" role="alert" style={{ color: "#b3261e", fontSize: "0.85rem", margin: 0 }}>
-                {erro}
-              </p>
-            )}
+              <div className="login-field">
+                <div className="field-top-label">
+                  <label>SENHA</label>
+                  <button
+                    type="button"
+                    className="forgot-link"
+                    style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                    onClick={() => {
+                      setModoEsqueci(true);
+                      setErro(null);
+                      setSucesso(null);
+                    }}
+                  >
+                    Esqueci minha senha
+                  </button>
+                </div>
+                <div className="login-input-wrapper">
+                  <input
+                    type={mostrarSenha ? "text" : "password"}
+                    placeholder="Mínimo 8 caracteres"
+                    autoComplete="current-password"
+                    value={senha}
+                    onChange={(e) => setSenha(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="login-eye-btn"
+                    onClick={() => setMostrarSenha((v) => !v)}
+                    aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}
+                  >
+                    <IconeOlho aberto={mostrarSenha} />
+                  </button>
+                </div>
+              </div>
 
-            <button type="submit" className="login-submit-btn" disabled={enviando}>
-              {enviando ? "ENTRANDO..." : "ENTRAR"} <span>→</span>
-            </button>
-          </form>
+              {erro && (
+                <p className="login-error" role="alert" style={{ color: "#b3261e", fontSize: "0.85rem", margin: 0 }}>
+                  {erro}
+                </p>
+              )}
 
-          <div className="login-divider">
-            <span>OU</span>
-          </div>
+              {sucesso && (
+                <p className="login-success" role="alert" style={{ color: "#2e7d32", fontSize: "0.85rem", margin: 0 }}>
+                  {sucesso}
+                </p>
+              )}
 
-          <button type="button" className="google-login-btn">
-            CONTINUAR COM GOOGLE
-          </button>
+              <button type="submit" className="login-submit-btn" disabled={enviando}>
+                {enviando ? "ENTRANDO..." : "ENTRAR"} <span>→</span>
+              </button>
+            </form>
+          ) : (
+            /* --- FORMULÁRIO DE RECUPERAÇÃO DE SENHA --- */
+            <form className="login-form" onSubmit={trocarSenha}>
+              <div className="login-field">
+                <label>E-MAIL CADASTRADO</label>
+                <input
+                  type="email"
+                  placeholder="voce@email.com"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="login-field">
+                <label>NOVA SENHA</label>
+                <div className="login-input-wrapper">
+                  <input
+                    type={mostrarNovaSenha ? "text" : "password"}
+                    placeholder="Mínimo 8 caracteres"
+                    autoComplete="new-password"
+                    value={novaSenha}
+                    onChange={(e) => setNovaSenha(e.target.value)}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="login-eye-btn"
+                    onClick={() => setMostrarNovaSenha((v) => !v)}
+                    aria-label={mostrarNovaSenha ? "Esconder senha" : "Mostrar senha"}
+                  >
+                    <IconeOlho aberto={mostrarNovaSenha} />
+                  </button>
+                </div>
+              </div>
+
+              {erro && (
+                <p className="login-error" role="alert" style={{ color: "#b3261e", fontSize: "0.85rem", margin: 0 }}>
+                  {erro}
+                </p>
+              )}
+
+              <button type="submit" className="login-submit-btn" disabled={enviando}>
+                {enviando ? "ALTERANDO..." : "ATUALIZAR SENHA"} <span>→</span>
+              </button>
+
+              <button
+                type="button"
+                className="forgot-link"
+                style={{ background: "none", border: "none", cursor: "pointer", marginTop: "1rem", textAlign: "center", width: "100%" }}
+                onClick={() => {
+                  setModoEsqueci(false);
+                  setErro(null);
+                  setSucesso(null);
+                }}
+              >
+                ← Voltar para o Login
+              </button>
+            </form>
+          )}
+
+          {!modoEsqueci && (
+            <>
+              <div className="login-divider">
+                <span>OU</span>
+              </div>
+
+              <button type="button" className="google-login-btn">
+                CONTINUAR COM GOOGLE
+              </button>
+            </>
+          )}
 
           <div className="login-footer-links">
             <p>

@@ -11,6 +11,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Usuario
 from .serializers import UsuarioSerializer
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
 
 class RegistroSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=150)
@@ -64,3 +67,25 @@ class EuView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+
+class RecuperarSenhaDiretaView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        email = request.data.get("email", "").strip().lower()
+        nova_senha = request.data.get("password", "")
+
+        if not email or not nova_senha:
+            return Response({"erro": "E-mail e nova senha são obrigatórios."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if len(nova_senha) < 8:
+            return Response({"erro": "A senha deve ter pelo menos 8 caracteres."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = Usuario.objects.get(email=email)
+            user.set_password(nova_senha)
+            user.save()
+            return Response({"mensagem": "Senha alterada com sucesso!"}, status=status.HTTP_200_OK)
+        except Usuario.DoesNotExist:
+            # Por segurança ou praticidade, avisamos que o e-mail não existe
+            return Response({"erro": "E-mail não cadastrado."}, status=status.HTTP_404_NOT_FOUND)

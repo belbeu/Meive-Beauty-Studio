@@ -36,6 +36,7 @@ export default function Cadastro() {
   // --- novo: nome, e-mail e estado do envio ---
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
+  const [telefone, setTelefone] = useState("");
   const [erro, setErro] = useState(null);
   const [enviando, setEnviando] = useState(false);
 
@@ -67,7 +68,7 @@ export default function Cadastro() {
     setEnviando(true);
     try {
       // cria a conta (sempre como CLIENTE) e já deixa a pessoa logada
-      await registrar({ nome, email, senha });
+      await registrar({ nome, email, telefone, senha });
       navigate("/minha-conta");
     } catch (err) {
       // o Django devolve algo como { email: ["Este e-mail já está cadastrado."] }
@@ -144,6 +145,17 @@ export default function Cadastro() {
                 required
               />
             </div>
+
+            <div className="cadastro-field">
+            <label>TELEFONE (OPCIONAL)</label>
+            <input
+              type="tel"
+              placeholder="(11) 99999-9999"
+              value={telefone}
+              onChange={(e) => setTelefone(e.target.value)}
+              autoComplete="tel"
+            />
+          </div>
 
             {/* SENHA */}
             <div className="cadastro-field">
