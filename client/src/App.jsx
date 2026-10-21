@@ -50,7 +50,7 @@ function HomePage() {
 
 export default function App() {
   return (
-    <Router basename="/Meive-Beauty-Studio">
+    <Router basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<HomePage />} />

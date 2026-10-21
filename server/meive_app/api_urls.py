@@ -2,10 +2,10 @@
 
 from django.urls import path
 from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import api_views as v
-from .auth_api import EuView, RegistroView
+from .auth_api import EuView, LoginView, RegistroView
 
 router = DefaultRouter()
 router.register("servicos", v.ServicoViewSet, basename="servico")
@@ -21,7 +21,7 @@ router.register("avaliacoes", v.AvaliacaoViewSet, basename="avaliacao")
 
 urlpatterns = [
     # Login: POST {"email": "...", "password": "..."} -> {"access": "...", "refresh": "..."}
-    path("auth/login/", TokenObtainPairView.as_view()),
+    path("auth/login/", LoginView.as_view()),
     # Renovar o token de acesso: POST {"refresh": "..."} -> {"access": "..."}
     path("auth/refresh/", TokenRefreshView.as_view()),
     # Cadastro de cliente

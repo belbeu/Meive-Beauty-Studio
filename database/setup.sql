@@ -1,8 +1,8 @@
 -- =====================================================
 -- Meive Beauty Studio - criação completa do banco (PostgreSQL)
 --
--- Cria as tabelas, carrega os serviços e libera as permissões
--- para o usuário da aplicação (app_meive).
+-- Cria as tabelas, carrega os serviços e (se existir) libera as permissões
+-- para o usuário da aplicação local (app_meive).
 --
 -- Como rodar (veja o README.md):
 --   1. Crie o banco e o usuário app_meive (README, passo 2A)
@@ -320,15 +320,24 @@ INSERT INTO servico (nome, categoria, tag, descricao, preco, preco_manutencao, d
 
 -- -----------------------------------------------------
 -- Permissões do usuário da aplicação (app_meive)
+-- Só roda se esse usuário existir (caso do PostgreSQL local).
+-- Em bancos online (ex.: Neon) o Django conecta com o próprio dono do banco,
+-- então este bloco é ignorado.
 -- -----------------------------------------------------
-GRANT USAGE, CREATE ON SCHEMA public TO app_meive;
-GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON ALL TABLES IN SCHEMA public TO app_meive;
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_meive;
+DO $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM pg_roles WHERE rolname = 'app_meive') THEN
+        GRANT USAGE, CREATE ON SCHEMA public TO app_meive;
+        GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON ALL TABLES IN SCHEMA public TO app_meive;
+        GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO app_meive;
 
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
-    GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON TABLES TO app_meive;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
-    GRANT USAGE, SELECT ON SEQUENCES TO app_meive;
+        ALTER DEFAULT PRIVILEGES IN SCHEMA public
+            GRANT SELECT, INSERT, UPDATE, DELETE, REFERENCES ON TABLES TO app_meive;
+        ALTER DEFAULT PRIVILEGES IN SCHEMA public
+            GRANT USAGE, SELECT ON SEQUENCES TO app_meive;
+    END IF;
+END
+$$;
 
 -- Conferência: deve mostrar CÍLIOS 10, SOBRANCELHAS 7, UNHAS 9
 SELECT categoria, COUNT(*) FROM servico GROUP BY categoria ORDER BY categoria;

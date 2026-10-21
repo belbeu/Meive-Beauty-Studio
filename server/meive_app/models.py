@@ -180,5 +180,4 @@ class Usuario(AbstractBaseUser):
         return self.is_staff
  
     class Meta:
-        managed = False
         db_table = "usuario"
