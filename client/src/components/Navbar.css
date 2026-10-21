@@ -168,4 +168,18 @@
   .account-box-button {
     padding: 0 8px;
   }
+
+  /*Rolagem suave para se adquar com a navbar fixa*/
+ html {
+  scroll-behavior: smooth;
+}
+
+[id="servicos"],
+[id="produtos"],
+[id="sobre"],
+[id="promocoes"],
+[id="contato"] {
+  scroll-margin-top: 110px;
+}
+
 }
