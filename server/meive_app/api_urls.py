@@ -1,4 +1,4 @@
-# Salvar como: meive_app/api_urls.py  (substitui o arquivo anterior)
+# Salvar como: meive_app/api_urls.py
 
 from django.urls import path
 from rest_framework.routers import DefaultRouter
@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import api_views as v
 from .auth_api import EuView, LoginView, RegistroView
+from meive_app.views import ClienteViewSet
 
 router = DefaultRouter()
 router.register("servicos", v.ServicoViewSet, basename="servico")
@@ -18,6 +19,8 @@ router.register("cestinha", v.CestinhaInteresseViewSet, basename="cestinha")
 router.register("turmas", v.TurmaViewSet, basename="turma")
 router.register("matriculas", v.MatriculaViewSet, basename="matricula")
 router.register("avaliacoes", v.AvaliacaoViewSet, basename="avaliacao")
+# Registra o endpoint exclusivo para CRUD de clientes
+router.register("clientes", ClienteViewSet, basename="cliente")
 
 urlpatterns = [
     # Login: POST {"email": "...", "password": "..."} -> {"access": "...", "refresh": "..."}

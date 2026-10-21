@@ -1,11 +1,4 @@
-﻿# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
-from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+﻿from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
 
@@ -18,7 +11,6 @@ class Agendamento(models.Model):
     data_agendamento = models.DateTimeField()
 
     class Meta:
-        managed = False
         db_table = 'agendamento'
 
 
@@ -31,7 +23,6 @@ class Avaliacao(models.Model):
     referencia_id = models.IntegerField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'avaliacao'
 
 
@@ -43,7 +34,6 @@ class CestinhaInteresse(models.Model):
     adicionado_em = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'cestinha_interesse'
 
 
@@ -53,10 +43,9 @@ class Curso(models.Model):
     descricao = models.TextField(blank=True, null=True)
     carga_horaria = models.IntegerField()
     preco = models.DecimalField(max_digits=10, decimal_places=2)
-    ativo = models.BooleanField(blank=True, null=True)
+    ativo = models.BooleanField(default=True, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'curso'
 
 
@@ -68,7 +57,6 @@ class MaterialCurso(models.Model):
     arquivo_url = models.CharField(max_length=255)
 
     class Meta:
-        managed = False
         db_table = 'material_curso'
 
 
@@ -80,7 +68,6 @@ class Matricula(models.Model):
     status = models.CharField(max_length=50)
 
     class Meta:
-        managed = False
         db_table = 'matricula'
         unique_together = (('id_usuario', 'id_turma'),)
 
@@ -92,12 +79,11 @@ class Produto(models.Model):
     categoria = models.CharField(max_length=100, blank=True, null=True)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     custo = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    estoque_atual = models.IntegerField()
+    estoque_atual = models.IntegerField(default=0)
     imagem_url = models.CharField(max_length=255, blank=True, null=True)
-    ativo = models.BooleanField(blank=True, null=True)
+    ativo = models.BooleanField(default=True, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'produto'
 
 
@@ -106,14 +92,13 @@ class Servico(models.Model):
     nome = models.CharField(max_length=150)
     tecnica = models.CharField(max_length=150, blank=True, null=True)
     categoria = models.CharField(max_length=100, blank=True, null=True)
-    preco = models.DecimalField(max_digits=10, decimal_places=2)
-    duracao_minutos = models.IntegerField()
+    preco = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    duracao_minutos = models.IntegerField(blank=True, null=True)
     descricao = models.TextField(blank=True, null=True)
     tag = models.CharField(max_length=50, blank=True, null=True)
     preco_manutencao = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'servico'
 
 
@@ -126,7 +111,6 @@ class Turma(models.Model):
     capacidade_maxima = models.IntegerField()
 
     class Meta:
-        managed = False
         db_table = 'turma'
 
 
@@ -140,44 +124,40 @@ class UsuarioManager(BaseUserManager):
         user.set_password(password)
         user.save(using=self._db)
         return user
- 
+
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields["tipo"] = "ADMIN"
         return self.create_user(email, password, **extra_fields)
- 
- 
+
+
 class Usuario(AbstractBaseUser):
     id_usuario = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=150)
     email = models.CharField(unique=True, max_length=150)
-    # o Django chama o campo de "password"; no banco a coluna é senha_hash
     password = models.CharField(max_length=255, db_column="senha_hash")
     tipo = models.CharField(max_length=30)
     telefone = models.CharField(max_length=20, blank=True, null=True)
     criado_em = models.DateTimeField(default=timezone.now, blank=True, null=True)
-    # coluna adicionada com ALTER TABLE (ver passo 2)
     last_login = models.DateTimeField(blank=True, null=True)
- 
+
     objects = UsuarioManager()
- 
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["nome"]
- 
-    # Quem acessa o painel /admin: só o tipo ADMIN.
-    # (para liberar também a FUNCIONARIA, use: self.tipo in ("ADMIN", "FUNCIONARIA"))
+
     @property
     def is_staff(self):
         return self.tipo == "ADMIN"
- 
+
     @property
     def is_superuser(self):
         return self.tipo == "ADMIN"
- 
+
     def has_perm(self, perm, obj=None):
         return self.is_staff
- 
+
     def has_module_perms(self, app_label):
         return self.is_staff
- 
+
     class Meta:
         db_table = "usuario"

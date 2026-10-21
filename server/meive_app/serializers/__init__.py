@@ -8,3 +8,5 @@ from .curso import CursoSerializer
 from .servico import ServicoSerializer
 from .usuario import UsuarioSerializer
 from .cestinha_interesse import CestinhaInteresseSerializer
+from .cliente_serializer import ClienteSerializer
+__all__ = ['ClienteSerializer']
