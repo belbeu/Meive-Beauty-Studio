@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./AuthContext";
+import "./AdminDashboard.css";
 
 const iconProps = {
   width: 18,
@@ -48,12 +49,6 @@ const Icons = {
       <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
     </svg>
   ),
-  search: (
-    <svg {...iconProps} width="20" height="20">
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" />
-    </svg>
-  ),
 };
 
 const MENU = [
@@ -66,36 +61,77 @@ const MENU = [
 
 export default function AdminSidebar() {
   const { logout } = useAuth();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleConfirmLogout = () => {
+    setIsLogoutModalOpen(false);
+    logout();
+  };
 
   return (
-    <aside className="dash-sidebar">
-      <div className="dash-brand">
-        <span className="dash-brand-name">MEIVE</span>
-        <span className="dash-brand-badge">ADMIN</span>
-      </div>
-
-      <nav className="dash-nav" aria-label="Navegação do painel">
-        {MENU.map((item) => (
-          <NavLink
-            key={item.id}
-            to={item.to}
-            className={({ isActive }) => `dash-nav-item ${isActive ? "is-active" : ""}`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
-      </nav>
-
-      <div className="dash-user">
-        <div className="dash-avatar dash-avatar--lg">MB</div>
-        <div className="dash-user-info">
-          <strong>Meive Beauty</strong>
-          <button type="button" className="dash-logout" onClick={logout}>
-            Sair do painel
-          </button>
+    <>
+      <aside className="dash-sidebar">
+        <div className="dash-brand">
+          <span className="dash-brand-name">MEIVE</span>
+          <span className="dash-brand-badge">ADMIN</span>
         </div>
-      </div>
-    </aside>
+
+        <nav className="dash-nav" aria-label="Navegação do painel">
+          {MENU.map((item) => (
+            <NavLink
+              key={item.id}
+              to={item.to}
+              className={({ isActive }) => `dash-nav-item ${isActive ? "is-active" : ""}`}
+            >
+              {item.icon}
+              <span>{item.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="dash-user">
+          <div className="dash-avatar dash-avatar--lg">MB</div>
+          <div className="dash-user-info">
+            <strong>Meive Beauty</strong>
+            <button type="button" className="dash-logout" onClick={() => setIsLogoutModalOpen(true)}>
+              Sair do painel
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      {/* ---- MODAL DE CONFIRMAÇÃO DE SAÍDA ---- */}
+      {isLogoutModalOpen && (
+        <div className="clients-modal-overlay" onClick={() => setIsLogoutModalOpen(false)}>
+          <div className="clients-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="clients-modal-header">
+              <h2>ENCERRAR SESSÃO</h2>
+              <button onClick={() => setIsLogoutModalOpen(false)} className="clients-modal-close">
+                ✕
+              </button>
+            </div>
+            <p style={{ fontSize: "12px", color: "#aaa", margin: 0 }}>
+              Tem certeza de que deseja sair do painel administrativo?
+            </p>
+            <div className="clients-modal-actions">
+              <button
+                type="button"
+                className="clients-btn-cancel"
+                onClick={() => setIsLogoutModalOpen(false)}
+              >
+                CANCELAR
+              </button>
+              <button
+                type="button"
+                className="dash-primary-btn"
+                onClick={handleConfirmLogout}
+              >
+                SIM, SAIR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

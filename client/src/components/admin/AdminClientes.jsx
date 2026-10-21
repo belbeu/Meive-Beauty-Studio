@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css"; // header, botões, painel, avatar (compartilhados)
 import "./AdminClientes.css";
 
-/* ---------- Ícones (SVG inline, sem dependências) ---------- */
+/* ---------- Ícones (SVG inline) ---------- */
 const iconProps = {
   width: 18,
   height: 18,
@@ -45,24 +45,24 @@ const Icons = {
       <path d="m9 6 6 6-6 6" />
     </svg>
   ),
+  close: (
+    <svg {...iconProps} width="18" height="18">
+      <path d="M18 6 6 18M6 6l12 12" />
+    </svg>
+  ),
 };
 
-/* ---------- Dados (troque por chamadas à sua API / Supabase) ---------- */
-const STATS = [
-  { icon: Icons.users, value: "186", label: "CLIENTES ATIVAS", note: "+12 este mês", variant: "red" },
-  { icon: Icons.star, value: "42", label: "CLIENTES VIP", note: "23% da base", variant: "purple" },
-  { icon: Icons.calendar, value: "68%", label: "RETORNO EM 30 DIAS", note: "+4,2% no mês", variant: "gray" },
-];
+const API_BASE = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/$/, "");
 
-const TOTAL_CLIENTS = 186;
-
-const CLIENTS = [
-  { id: 1, initials: "JM", name: "Juliana Mendes", phone: "(11) 99128-4450", lastVisit: "Hoje, 14:30", today: true, visits: 8, total: "R$ 1.840" },
-  { id: 2, initials: "CR", name: "Camila Rodrigues", phone: "(11) 98845-2106", lastVisit: "Hoje, 09:00", today: true, visits: 12, total: "R$ 2.760" },
-  { id: 3, initials: "BA", name: "Bianca Alves", phone: "(11) 99732-1184", lastVisit: "Hoje, 11:30", today: true, visits: 5, total: "R$ 980" },
-  { id: 4, initials: "AC", name: "Aline Costa", phone: "(11) 98211-7630", lastVisit: "28 Mai 2026", today: false, visits: 3, total: "R$ 570" },
-  { id: 5, initials: "MS", name: "Mariana Silva", phone: "(11) 99018-3327", lastVisit: "20 Mai 2026", today: false, visits: 6, total: "R$ 1.420" },
-];
+async function readApiError(response) {
+  const text = await response.text();
+  try {
+    const data = JSON.parse(text);
+    return Object.values(data).flat().join(" ");
+  } catch {
+    return text || `Erro HTTP ${response.status}`;
+  }
+}
 
 /* ---------- Helpers ---------- */
 function formatToday() {
@@ -71,8 +71,210 @@ function formatToday() {
     .toUpperCase();
 }
 
+function getInitials(name) {
+  if (!name) return "CL";
+  const parts = name.trim().split(" ");
+  if (parts.length >= 2) {
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  }
+  return name.substring(0, 2).toUpperCase();
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "Cadastrada recentemente";
+  const date = new Date(dateString);
+  if (isNaN(date)) return dateString;
+  return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
+}
+
 /* ---------- Componente ---------- */
 export default function AdminClientes() {
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  // Modais
+  const [isNewModalOpen, setIsNewModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null);
+
+  // Campos do formulário de Nova Cliente
+  const [newName, setNewName] = useState("");
+  const [newEmail, setNewEmail] = useState("");
+  const [newPhone, setNewPhone] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+
+  // Campos do modal de Edição/Exclusão
+  const [editName, setEditName] = useState("");
+  const [editEmail, setEditEmail] = useState("");
+  const [editPhone, setEditPhone] = useState("");
+
+  // Buscar clientes reais do banco via API do Django
+  
+const fetchClients = async () => {
+  try {
+    setLoading(true);
+
+    const token = localStorage.getItem("access");
+
+    const response = await fetch(
+      `${API_BASE}/clientes/`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      }
+    );
+
+    const contentType = response.headers.get("content-type");
+    console.log("Status da API:", response.status);
+    console.log("Tipo da resposta:", contentType);
+
+    if (!response.ok) {
+      throw new Error(
+        `Erro HTTP ${response.status}: ${await response.text()}`
+      );
+    }
+
+    if (!contentType?.includes("application/json")) {
+      throw new Error(
+        "A API não retornou JSON. Verifique a URL e as rotas do Django."
+      );
+    }
+
+    const data = await response.json();
+    const results = Array.isArray(data)
+      ? data
+      : data.results || [];
+
+    setClients(results);
+  } catch (error) {
+    console.error("Erro ao buscar clientes:", error);
+    alert(`Não foi possível carregar as clientes. ${error.message}`);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+  useEffect(() => {
+    fetchClients();
+  }, []);
+
+  const filteredClients = clients.filter(
+    (c) =>
+      c.nome?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      c.telefone?.includes(searchTerm) ||
+      c.email?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Criar Nova Cliente no Banco (POST)
+  const handleCreateClient = async (e) => {
+    e.preventDefault();
+    if (!newName.trim() || !newEmail.trim()) return;
+
+    try {
+      const token = localStorage.getItem("access");
+      const response = await fetch(`${API_BASE}/clientes/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          nome: newName,
+          email: newEmail,
+          telefone: newPhone,
+          password: newPassword,
+          tipo: "CLIENTE",
+        }),
+      });
+
+      if (response.ok) {
+        await fetchClients(); // Recarrega a lista do banco
+        setNewName("");
+        setNewEmail("");
+        setNewPhone("");
+        setNewPassword("");
+        setIsNewModalOpen(false);
+      } else {
+        alert("Erro ao cadastrar cliente: " + await readApiError(response));
+      }
+    } catch (error) {
+      console.error("Erro na requisição:", error);
+      alert(`Não foi possível cadastrar a cliente. ${error.message}`);
+    }
+  };
+
+  const handleOpenEditModal = (client) => {
+    setSelectedClient(client);
+    setEditName(client.nome || "");
+    setEditEmail(client.email || "");
+    setEditPhone(client.telefone || "");
+  };
+
+  // Atualizar Cliente no Banco (PUT/PATCH)
+  const handleUpdateClient = async (e) => {
+    e.preventDefault();
+    if (!selectedClient) return;
+
+    try {
+      const token = localStorage.getItem("access");
+      const response = await fetch(`${API_BASE}/clientes/${selectedClient.id_usuario}/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({
+          nome: editName,
+          email: editEmail,
+          telefone: editPhone,
+        }),
+      });
+
+      if (response.ok) {
+        await fetchClients();
+        setSelectedClient(null);
+      } else {
+        alert("Erro ao atualizar: " + await readApiError(response));
+      }
+    } catch (error) {
+      console.error("Erro na atualização:", error);
+      alert(`Não foi possível atualizar a cliente. ${error.message}`);
+    }
+  };
+
+  // Excluir Cliente do Banco (DELETE)
+  const handleDeleteClient = async (id) => {
+    if (!window.confirm("Tem certeza que deseja excluir esta cliente?")) return;
+
+    try {
+      const token = localStorage.getItem("access");
+      const response = await fetch(`${API_BASE}/clientes/${id}/`, {
+        method: "DELETE",
+        headers: {
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
+
+      if (response.ok) {
+        await fetchClients();
+        setSelectedClient(null);
+      } else {
+        alert("Erro ao excluir cliente: " + await readApiError(response));
+      }
+    } catch (error) {
+      console.error("Erro na exclusão:", error);
+      alert(`Não foi possível excluir a cliente. ${error.message}`);
+    }
+  };
+
+  // Contadores dinâmicos baseados no banco
+  const totalClientsCount = clients.length;
+  const vipCount = Math.round(totalClientsCount * 0.23); // Exemplo proporcional ou regra específica do banco
+
   return (
     <main className="dash-main">
       <header className="dash-header">
@@ -82,27 +284,62 @@ export default function AdminClientes() {
         </div>
 
         <div className="dash-header-actions">
-          <button type="button" className="dash-icon-btn" aria-label="Buscar">
-            {Icons.search}
-          </button>
-          <button type="button" className="dash-primary-btn">
+          <div className={`dash-search-container ${searchOpen ? "is-open" : ""}`}>
+            <input
+              type="text"
+              placeholder="Buscar cliente..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="dash-search-input"
+            />
+            <button
+              type="button"
+              className="dash-icon-btn"
+              aria-label="Buscar"
+              onClick={() => setSearchOpen(!searchOpen)}
+            >
+              {Icons.search}
+            </button>
+          </div>
+
+          <button
+            type="button"
+            className="dash-primary-btn"
+            onClick={() => setIsNewModalOpen(true)}
+          >
             + NOVA CLIENTE
           </button>
         </div>
       </header>
 
-      {/* ---- Indicadores ---- */}
+      {/* ---- Indicadores reais do banco ---- */}
       <section className="clients-stats" aria-label="Indicadores de clientes">
-        {STATS.map((s) => (
-          <article key={s.label} className="clients-stat">
-            <div className={`clients-stat-icon clients-stat-icon--${s.variant}`}>{s.icon}</div>
-            <div className="clients-stat-body">
-              <strong className="clients-stat-value">{s.value}</strong>
-              <span className="clients-stat-label">{s.label}</span>
-            </div>
-            <span className="clients-stat-note">{s.note}</span>
-          </article>
-        ))}
+        <article className="clients-stat">
+          <div className="clients-stat-icon clients-stat-icon--red">{Icons.users}</div>
+          <div className="clients-stat-body">
+            <strong className="clients-stat-value">{totalClientsCount}</strong>
+            <span className="clients-stat-label">CLIENTES ATIVAS</span>
+          </div>
+          <span className="clients-stat-note">Banco Neon</span>
+        </article>
+
+        <article className="clients-stat">
+          <div className="clients-stat-icon clients-stat-icon--purple">{Icons.star}</div>
+          <div className="clients-stat-body">
+            <strong className="clients-stat-value">{vipCount}</strong>
+            <span className="clients-stat-label">CLIENTES VIP</span>
+          </div>
+          <span className="clients-stat-note">23% da base</span>
+        </article>
+
+        <article className="clients-stat">
+          <div className="clients-stat-icon clients-stat-icon--gray">{Icons.calendar}</div>
+          <div className="clients-stat-body">
+            <strong className="clients-stat-value">0%</strong>
+            <span className="clients-stat-label">RETORNO EM 30 DIAS</span>
+          </div>
+          <span className="clients-stat-note">+4,2% no mês</span>
+        </article>
       </section>
 
       {/* ---- Base de clientes ---- */}
@@ -111,10 +348,10 @@ export default function AdminClientes() {
           <div>
             <h2 className="dash-panel-title">BASE DE CLIENTES</h2>
             <p className="dash-panel-sub">
-              {CLIENTS.length} de {TOTAL_CLIENTS} clientes
+              {filteredClients.length} de {totalClientsCount} clientes listadas
             </p>
           </div>
-          <button type="button" className="clients-export">
+          <button type="button" className="clients-export" onClick={() => window.print()}>
             EXPORTAR LISTA
           </button>
         </div>
@@ -122,33 +359,184 @@ export default function AdminClientes() {
         <div className="clients-table" role="table" aria-label="Base de clientes">
           <div className="clients-row clients-row--head" role="row">
             <span role="columnheader">CLIENTE</span>
-            <span role="columnheader" className="clients-col-contact">CONTATO</span>
-            <span role="columnheader" className="clients-col-last">ÚLTIMA VISITA</span>
+            <span role="columnheader" className="clients-col-contact">CONTATO / E-MAIL</span>
+            <span role="columnheader" className="clients-col-last">CADASTRO</span>
             <span role="columnheader" className="clients-col-visits">VISITAS</span>
             <span role="columnheader" className="clients-col-total">TOTAL INVESTIDO</span>
             <span aria-hidden="true" />
           </div>
 
-          {CLIENTS.map((c) => (
-            <button key={c.id} type="button" className="clients-row clients-row--item" role="row">
-              <span className="clients-name" role="cell">
-                <span className="dash-avatar clients-avatar">{c.initials}</span>
-                <strong>{c.name}</strong>
-              </span>
-              <span className="clients-phone clients-col-contact" role="cell">{c.phone}</span>
-              <span
-                className={`clients-last clients-col-last ${c.today ? "is-today" : ""}`}
-                role="cell"
+          {loading ? (
+            <div className="clients-empty-msg">Carregando clientes do banco...</div>
+          ) : filteredClients.length > 0 ? (
+            filteredClients.map((c) => (
+              <button
+                key={c.id_usuario}
+                type="button"
+                className="clients-row clients-row--item"
+                role="row"
+                onClick={() => handleOpenEditModal(c)}
               >
-                {c.lastVisit}
-              </span>
-              <strong className="clients-visits clients-col-visits" role="cell">{c.visits}</strong>
-              <strong className="clients-total clients-col-total" role="cell">{c.total}</strong>
-              <span className="clients-chevron" aria-hidden="true">{Icons.chevron}</span>
-            </button>
-          ))}
+                <span className="clients-name" role="cell">
+                  <span className="dash-avatar clients-avatar">{getInitials(c.nome)}</span>
+                  <strong>{c.nome}</strong>
+                </span>
+                <span className="clients-phone clients-col-contact" role="cell">
+                  {c.telefone || c.email}
+                </span>
+                <span className="clients-last clients-col-last" role="cell">
+                  {formatDate(c.criado_em)}
+                </span>
+                <strong className="clients-visits clients-col-visits" role="cell">-</strong>
+                <strong className="clients-total clients-col-total" role="cell">R$ 0,00</strong>
+                <span className="clients-chevron" aria-hidden="true">{Icons.chevron}</span>
+              </button>
+            ))
+          ) : (
+            <div className="clients-empty-msg">Nenhuma cliente encontrada no banco.</div>
+          )}
         </div>
       </section>
+
+      {/* ---- MODAL: NOVA CLIENTE ---- */}
+      {isNewModalOpen && (
+        <div className="clients-modal-overlay" onClick={() => setIsNewModalOpen(false)}>
+          <div className="clients-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="clients-modal-header">
+              <h2>ADICIONAR NOVA CLIENTE</h2>
+              <button onClick={() => setIsNewModalOpen(false)} className="clients-modal-close">
+                {Icons.close}
+              </button>
+            </div>
+            <form onSubmit={handleCreateClient} className="clients-form">
+              <div className="clients-form-group">
+                <label>Nome Completo</label>
+                <input
+                  type="text"
+                  placeholder="Ex: Ana Souza"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="clients-form-group">
+                <label>E-mail</label>
+                <input
+                  type="email"
+                  placeholder="ana@email.com"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="clients-form-group">
+                <label>Telefone / WhatsApp</label>
+                <input
+                  type="text"
+                  placeholder="(11) 99999-9999"
+                  value={newPhone}
+                  onChange={(e) => setNewPhone(e.target.value)}
+                />
+              </div>
+              <div className="clients-form-group">
+                <label>Senha inicial (mínimo de 8 caracteres)</label>
+                <input
+                  type="password"
+                  placeholder="Defina uma senha inicial"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  minLength={8}
+                  autoComplete="new-password"
+                  required
+                />
+              </div>
+              <div className="clients-modal-actions">
+                <button
+                  type="button"
+                  className="clients-btn-cancel"
+                  onClick={() => setIsNewModalOpen(false)}
+                >
+                  CANCELAR
+                </button>
+                <button type="submit" className="dash-primary-btn">
+                  CADASTRAR CLIENTE
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ---- MODAL: EDITAR / EXCLUIR CLIENTE ---- */}
+      {selectedClient && (
+        <div className="clients-modal-overlay" onClick={() => setSelectedClient(null)}>
+          <div className="clients-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="clients-modal-header">
+              <div className="clients-modal-title-wrap">
+                <span className="dash-avatar clients-avatar">{getInitials(selectedClient.nome)}</span>
+                <h2>EDITAR CLIENTE</h2>
+              </div>
+              <button onClick={() => setSelectedClient(null)} className="clients-modal-close">
+                {Icons.close}
+              </button>
+            </div>
+            <form onSubmit={handleUpdateClient} className="clients-form">
+              <div className="clients-form-group">
+                <label>Nome Completo</label>
+                <input
+                  type="text"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="clients-form-group">
+                <label>E-mail</label>
+                <input
+                  type="email"
+                  value={editEmail}
+                  onChange={(e) => setEditEmail(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="clients-form-group">
+                <label>Telefone / WhatsApp</label>
+                <input
+                  type="text"
+                  value={editPhone}
+                  onChange={(e) => setEditPhone(e.target.value)}
+                />
+              </div>
+
+              <div className="clients-modal-info-row">
+                <span>Cliente desde: <strong>{formatDate(selectedClient.criado_em)}</strong></span>
+              </div>
+
+              <div className="clients-modal-actions clients-modal-actions--split">
+                <button
+                  type="button"
+                  className="clients-btn-delete"
+                  onClick={() => handleDeleteClient(selectedClient.id_usuario)}
+                >
+                  EXCLUIR CLIENTE
+                </button>
+                <div className="clients-modal-right-btns">
+                  <button
+                    type="button"
+                    className="clients-btn-cancel"
+                    onClick={() => setSelectedClient(null)}
+                  >
+                    CANCELAR
+                  </button>
+                  <button type="submit" className="dash-primary-btn">
+                    SALVAR ALTERAÇÕES
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

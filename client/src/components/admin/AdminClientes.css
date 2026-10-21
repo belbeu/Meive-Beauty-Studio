@@ -16,16 +16,17 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 28px 28px;
+  padding: 24px 20px;
   border: 1px solid var(--border);
   background: var(--surface);
   min-width: 0;
+  box-sizing: border-box;
 }
 
 .clients-stat-icon {
   flex-shrink: 0;
-  width: 44px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,23 +50,26 @@
 .clients-stat-body {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   min-width: 0;
+  flex: 1;
 }
 
 .clients-stat-value {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-weight: 400;
-  font-size: 28px;
+  font-size: 24px;
   letter-spacing: 0.5px;
   line-height: 1;
 }
 
 .clients-stat-label {
   font-size: 7px;
-  letter-spacing: 1.4px;
+  letter-spacing: 1.2px;
   color: var(--faint);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .clients-stat-note {
@@ -79,6 +83,7 @@
 /* ---- Painel / tabela ---- */
 .clients-panel {
   padding: 28px 28px 0;
+  overflow-x: hidden;
 }
 
 .clients-export {
@@ -98,6 +103,8 @@
 .clients-table {
   display: flex;
   flex-direction: column;
+  width: 100%;
+  overflow-x: auto;
 }
 
 .clients-row {
@@ -154,16 +161,18 @@
   width: 34px;
   height: 34px;
   font-size: 11px;
+  flex-shrink: 0;
 }
 
-.clients-phone {
+.clients-phone,
+.clients-last,
+.clients-visits,
+.clients-total {
   font-size: 10px;
   color: #777;
-}
-
-.clients-last {
-  font-size: 10px;
-  color: #777;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .clients-last.is-today {
@@ -171,13 +180,13 @@
 }
 
 .clients-visits {
-  font-size: 10px;
   font-weight: 700;
 }
 
 .clients-total {
   font-size: 11px;
   font-weight: 700;
+  color: #fff;
 }
 
 .clients-chevron {
@@ -191,16 +200,230 @@
   color: #fff;
 }
 
-/* ============ RESPONSIVO ============ */
-@media (max-width: 1100px) {
-  .clients-stats {
-    grid-template-columns: 1fr;
-  }
+.clients-empty-msg {
+  padding: 30px 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--faint);
+  letter-spacing: 1px;
 }
 
+/* ---- Barra de Pesquisa Animada no Header ---- */
+.dash-search-container {
+  display: flex;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-search-input {
+  width: 0;
+  opacity: 0;
+  padding: 0;
+  border: none;
+  background: var(--surface, #121214);
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-bottom: 1px solid transparent;
+}
+
+.dash-search-container.is-open .dash-search-input {
+  width: 170px;
+  opacity: 1;
+  padding: 6px 10px;
+  border-bottom-color: var(--border, #2a2a2e);
+  margin-right: 8px;
+}
+
+/* ---- Modais Customizados ---- */
+.clients-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  box-sizing: border-box;
+  animation: fadeInModal 0.2s ease forwards;
+}
+
+.clients-modal-card {
+  background: #141416;
+  border: 1px solid var(--border, #2a2a2e);
+  width: 100%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  animation: scaleUpModal 0.2s ease forwards;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.clients-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.clients-modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.clients-modal-header h2 {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  margin: 0;
+}
+
+.clients-modal-close {
+  background: none;
+  border: none;
+  color: var(--faint, #666);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s;
+}
+
+.clients-modal-close:hover {
+  color: #fff;
+}
+
+.clients-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.clients-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.clients-form-group label {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: var(--faint, #888);
+}
+
+.clients-form-group input {
+  background: #1a1a1e;
+  border: 1px solid var(--border, #2a2a2e);
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 12px;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.clients-form-group input:focus {
+  border-color: var(--red, #ad1238);
+}
+
+.clients-modal-info-row {
+  display: flex;
+  justify-content: space-between;
+  background: #1a1a1e;
+  padding: 10px 14px;
+  border: 1px solid var(--border, #2a2a2e);
+  font-size: 10px;
+  color: #aaa;
+}
+
+.clients-modal-info-row strong {
+  color: #fff;
+}
+
+.clients-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.clients-modal-actions--split {
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.clients-modal-right-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.clients-btn-cancel {
+  background: none;
+  border: 1px solid var(--border, #2a2a2e);
+  color: #aaa;
+  padding: 8px 14px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clients-btn-cancel:hover {
+  border-color: #666;
+  color: #fff;
+}
+
+.clients-btn-delete {
+  background: none;
+  border: 1px solid rgba(173, 24, 56, 0.4);
+  color: #c4455f;
+  padding: 8px 12px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clients-btn-delete:hover {
+  background: rgba(173, 24, 56, 0.15);
+  border-color: var(--red, #ad1238);
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUpModal {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ============ RESPONSIVO PARA SMARTPHONES (<= 800px) ============ */
 @media (max-width: 800px) {
+  .clients-stats {
+    grid-template-columns: 1fr; /* Transforma os 3 cards em coluna empilhada sem estourar a tela */
+    gap: 10px;
+  }
+
+  .clients-stat {
+    padding: 16px;
+  }
+
   .clients-panel {
-    padding: 20px 20px 0;
+    padding: 16px 16px 0;
   }
 
   .clients-row {
@@ -210,10 +433,26 @@
   .clients-col-contact,
   .clients-col-visits,
   .clients-col-last {
-    display: none;
+    display: none; /* Oculta colunas secundárias no mobile para focar no nome e valor */
+  }
+  
+  .clients-modal-actions--split {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+  
+  .clients-modal-right-btns {
+    width: 100%;
+    flex-direction: column;
   }
 
-  .clients-stat {
-    padding: 22px 20px;
+  .clients-btn-delete,
+  .clients-btn-cancel,
+  .clients-modal-right-btns button,
+  .clients-modal-actions .dash-primary-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
