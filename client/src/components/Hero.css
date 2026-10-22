@@ -8,7 +8,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 50px;
+  padding: 80px 50px 40px 50px; /* Garante margem do topo para a Navbar fixada */
+  box-sizing: border-box;
 }
 
 .hero-background {
@@ -51,8 +52,6 @@
   position: relative;
   z-index: 5;
   width: 100%;
-  padding-top: 45px;
-  align-self: stretch;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,8 +62,8 @@
   display: flex;
   flex-direction: column;
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(80px, 9vw, 225px);
-  line-height: 0.82;
+  font-size: clamp(75px, 8vw, 180px);
+  line-height: 0.85;
   font-weight: bolder;
   letter-spacing: 1px;
 }
@@ -79,7 +78,7 @@
 }
 
 .hero-description {
-  margin-top: 23px;
+  margin-top: 20px;
   font-size: 15px;
   font-weight: 500;
   color: #9b9b9b;
@@ -87,24 +86,27 @@
 
 .hero-buttons {
   display: flex;
-  gap: 9px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-top: 28px;
+  flex-wrap: wrap;
 }
 
 .primary-button,
 .secondary-button {
   height: 43px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   padding: 0 25px;
   font-size: 12px;
   letter-spacing: 2px;
+  text-decoration: none;
   transition: all 0.2s ease;
 }
 
 .primary-button {
   background: #ad1838;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -125,9 +127,10 @@
 .stats {
   display: flex;
   gap: 28px;
-  margin-top: 45px;
+  margin-top: 35px;
   padding-top: 25px;
-  width: 438px;
+  max-width: 438px;
+  width: 100%;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -150,19 +153,17 @@
   color: #666;
 }
 
+/* Card Destacado no Desktop */
 .featured-card {
   position: relative;
   z-index: 6;
-  right: 19px;
-  bottom: 16px;
   width: 330px;
-  min-height: 200px;
   padding: 24px;
-  background: rgba(8, 8, 8, 0.82);
+  background: rgba(8, 8, 8, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.17);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   align-self: flex-end;
-  margin-bottom: 40px;
+  box-sizing: border-box;
 }
 
 .card-label {
@@ -170,7 +171,8 @@
   margin-bottom: 8px;
   font-size: 9px;
   letter-spacing: 2px;
-  color: #7e316e;
+  color: #ae1737;
+  font-weight: 700;
 }
 
 .featured-card h2 {
@@ -178,6 +180,8 @@
   font-size: 30px;
   line-height: 1;
   letter-spacing: 0.5px;
+  color: #ffffff;
+  margin: 0;
 }
 
 .featured-card p {
@@ -204,71 +208,80 @@
 
 .card-footer span {
   font-size: 9px;
-  color: #555;
+  color: #666;
 }
 
 /* ==========================================
    Responsividade do Hero (Media Queries)
    ========================================== */
-@media (max-width: 800px) {
+@media (max-width: 950px) {
+  .hero {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    padding: 80px 20px 30px 20px;
+    height: auto;
+    min-height: auto; 
+  }
+
+  .hero-container {
+    gap: 20px; 
+  }
+
   .hero-content {
-    padding-left: 25px;
-    padding-right: 25px;
-    padding-bottom: 220px;
+    max-width: 100%;
   }
 
   .hero-title {
-    font-size: clamp(70px, 17vw, 105px);
+    font-size: clamp(50px, 14vw, 85px);
   }
 
   .stats {
-    width: 100%;
-    max-width: 438px;
+    margin-top: 20px;
+    padding-top: 18px;
   }
 
   .featured-card {
-    left: 25px;
-    right: auto;
-    width: 270px;
+    align-self: stretch;
+    width: 100%;
+    margin-top: 18px; 
+    margin-bottom: 0;
+    padding: 18px 20px; 
+    right: 0;
+    left: 0;
+    bottom: 0;
   }
 }
 
-@media (max-width: 480px) {
-  .hero {
-    min-height: 750px;
-  }
-
-  .hero-content {
-    justify-content: flex-start;
-    padding-top: 120px;
-    padding-bottom: 220px;
-  }
-
-  .hero-title {
-    font-size: 76px;
-  }
-
-  .hero-description {
-    max-width: 250px;
-    line-height: 1.5;
-  }
-
+@media (max-width: 500px) {
   .hero-buttons {
     flex-direction: column;
-    width: 190px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .primary-button,
+  .secondary-button {
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .stats {
-    gap: 20px;
+    gap: 12px;
+    justify-content: space-between;
+    margin-top: 18px;
+    padding-top: 15px;
   }
 
   .stat strong {
-    font-size: 23px;
+    font-size: 22px;
+  }
+
+  .stat span {
+    font-size: 8px;
   }
 
   .featured-card {
-    bottom: 20px;
-    width: calc(100% - 40px);
-    left: 20px;
+    margin-top: 15px; /* Ajuste fino para ecrãs de telemóvel */
   }
 }

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
+
 .site-footer {
   background-color: #050505;
   color: #a0a0a0;
@@ -10,7 +12,6 @@
   max-width: 1300px;
   margin: 0 auto;
   display: grid;
-  /* Agora configurado para 4 colunas proporcionais */
   grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
   gap: 40px;
   padding-bottom: 60px;
@@ -57,6 +58,7 @@
   font-size: 10px;
   letter-spacing: 2px;
   font-weight: 500;
+  text-decoration: none;
   transition: all 0.2s ease;
   background-color: transparent;
 }
@@ -75,7 +77,11 @@
   font-weight: 600;
 }
 
-/* Nova Coluna - Explore (Links) */
+.footer-title.highlight-title {
+  color: #ad1838;
+}
+
+/* Coluna - Explore */
 .explore-list {
   list-style: none;
   padding: 0;
@@ -86,14 +92,17 @@
   margin-bottom: 16px;
 }
 
+/* Todos os links da lista (incluindo Agendar e Minha Conta) */
 .explore-list li a {
   font-size: 13px;
   letter-spacing: 1.5px;
-  color: #bbbbbb;
+  color: #bbbbbb; /* Cor padrão igual para todos */
   font-weight: 500;
+  text-decoration: none;
   transition: color 0.2s ease;
 }
 
+/* Fica vermelho apenas ao passar o mouse por cima */
 .explore-list li a:hover {
   color: #ad1838;
 }
@@ -105,17 +114,17 @@
   margin: 0;
 }
 
-.schedule-list li span:first-child {
-  width: 90px; 
-}
-
 .schedule-list li {
   display: flex;
-  justify-content: flex-start; 
-  gap: 30px; 
+  justify-content: flex-start;
+  gap: 30px;
   margin-bottom: 16px;
   font-size: 14px;
   color: #bbbbbb;
+}
+
+.schedule-list li span:first-child {
+  width: 90px;
 }
 
 .highlight-time {
@@ -157,11 +166,11 @@
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  color: #333333;
+  color: #555555;
 }
 
 .hashtag {
-  color: #5c1b50;
+  color: #a91635;
   font-weight: 600;
 }
 
@@ -170,10 +179,6 @@
   .footer-content {
     grid-template-columns: repeat(2, 1fr);
     gap: 40px;
-  }
-
-  .schedule-list li {
-    max-width: 100%;
   }
 }
 
@@ -185,6 +190,10 @@
 }
 
 @media (max-width: 480px) {
+  .site-footer {
+    padding: 50px 20px 25px 20px;
+  }
+
   .footer-bottom {
     flex-direction: column;
     gap: 10px;

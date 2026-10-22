@@ -1,6 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
+html {
+  scroll-behavior: smooth;
+}
+
+[id="servicos"],
+[id="produtos"],
+[id="sobre"],
+[id="promocoes"],
+[id="contato"] {
+  scroll-margin-top: 70px;
+}
+
 .navbar {
   position: fixed;
   z-index: 1000;
@@ -11,9 +23,8 @@
   display: flex;
   align-items: center;
   padding: 0 19px 0 20px;
-  background: rgba(8, 8, 8, 0.94);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   background-color: #0f0f0f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-sizing: border-box;
 }
 
@@ -39,6 +50,7 @@
   color: #9f1834;
 }
 
+/* Links Desktop */
 .nav-links {
   display: flex;
   align-items: center;
@@ -60,13 +72,14 @@
   color: #ffffff;
 }
 
+/* Ações Desktop */
 .nav-actions {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-/* Botão do Carrinho (Caixa) */
+/* Botão do Carrinho */
 .cart-box-button {
   display: flex;
   align-items: center;
@@ -113,41 +126,108 @@
   background: rgba(255, 255, 255, 0.02);
 }
 
-/* Botão Agendar */
-.schedule-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 35px;
-  min-width: 89px;
-  padding: 0 15px;
-  background: #a91635;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
-  text-decoration: none;
-  transition: background 0.2s ease;
+/* Botão Hambúrguer e Menu Mobile - OCULTOS POR PADRÃO NO DESKTOP */
+.hamburger-toggle {
+  display: none;
 }
 
-.schedule-button:hover {
-  background: #c01c40;
+.mobile-menu {
+  display: none;
 }
 
-/* ========================
-   Responsividade da Navbar
-   ======================== */
+/* ===================================
+   Responsividade: Telas <= 950px
+   =================================== */
 @media (max-width: 950px) {
+  .navbar {
+    justify-content: space-between;
+  }
+
   .logo {
     min-width: auto;
   }
 
-  .nav-links {
+  /* Esconde os elementos desktop */
+  .nav-links,
+  .nav-actions {
     display: none;
   }
 
-  .navbar {
-    justify-content: space-between;
+  /* Exibe o botão do hambúrguer */
+  .hamburger-toggle {
+    display: flex;
+    background: transparent;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Menu Dropdown Mobile */
+  .mobile-menu {
+    position: absolute;
+    top: 49px;
+    left: 0;
+    width: 100%;
+    background-color: #0f0f0f;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    gap: 15px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+  }
+
+  .mobile-menu.open {
+    max-height: 500px;
+    opacity: 1;
+    padding: 20px;
+  }
+
+  .mobile-menu .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .mobile-menu .mobile-nav-links a {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 2px;
+    color: #bbb;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-menu .mobile-nav-links a:hover {
+    color: #ffffff;
+  }
+
+  .mobile-menu .mobile-divider {
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.08);
+    margin: 5px 0;
+  }
+
+  .mobile-menu .mobile-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-menu .mobile-actions .account-box-button,
+  .mobile-menu .mobile-actions .cart-box-button {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
   }
 }
 
@@ -155,31 +235,4 @@
   .logo-sub {
     display: none;
   }
-
-  .schedule-button {
-    min-width: 80px;
-    padding: 0 10px;
-  }
-
-  .account-box-button span {
-    display: none; /* Oculta o texto "MINHA CONTA" em telas muito pequenas, deixando apenas o ícone */
-  }
-  
-  .account-box-button {
-    padding: 0 8px;
-  }
-
-  /*Rolagem suave para se adquar com a navbar fixa*/
- html {
-  scroll-behavior: smooth;
-}
-
-[id="servicos"],
-[id="produtos"],
-[id="sobre"],
-[id="promocoes"],
-[id="contato"] {
-  scroll-margin-top: 110px;
-}
-
 }

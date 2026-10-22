@@ -1,5 +1,10 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import React, {useEffect} from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -28,6 +33,19 @@ import AdminLayout from "./components/admin/AdminLayout";
 import AdminClientes from "./components/admin/AdminClientes";
 import AdminProdutos from "./components/admin/AdminProdutos";
 import AdminConfiguracoes from "./components/admin/AdminConfiguracoes";
+
+// URL constante do Booksy
+const BOOKSY_URL =
+  "https://booksy.com/pt-br/390978_nicolle-neris-studio-cilios-sobrancelhas-e-unhas-zona-leste-vila-re_sobrancelhas-cilios_1047773_sao-paulo?utm_source=ig&utm_medium=social&utm_content=link_in_bio";
+
+// Componente auxiliar para redirecionamento externo
+function RedirectExternal({ url }) {
+  useEffect(() => {
+    window.location.href = url;
+  }, [url]);
+
+  return null;
+}
 
 function HomePage() {
   return (
@@ -59,6 +77,16 @@ export default function App() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/minha-conta" element={<ClientDashboard />} />
 
+          {/* Rotas de Agendamento Booksy */}
+          <Route
+            path="/agendar"
+            element={<RedirectExternal url={BOOKSY_URL} />}
+          />
+          <Route
+            path="/booksy"
+            element={<RedirectExternal url={BOOKSY_URL} />}
+          />
+
           {/* Admin */}
           <Route path="/admin/login" element={<AdminLogin />} />
 
@@ -73,12 +101,21 @@ export default function App() {
             <Route path="/admin/agenda" element={<AdminAgenda />} />
             <Route path="/admin/clientes" element={<AdminClientes />} />
             <Route path="/admin/produtos" element={<AdminProdutos />} />
-            <Route path="/admin/configuracoes" element={<AdminConfiguracoes />} />
+            <Route
+              path="/admin/configuracoes"
+              element={<AdminConfiguracoes />}
+            />
           </Route>
 
           {/* Mantém links antigos funcionando */}
-          <Route path="/adm/login" element={<Navigate to="/admin/login" replace />} />
-          <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+          <Route
+            path="/adm/login"
+            element={<Navigate to="/admin/login" replace />}
+          />
+          <Route
+            path="/admin"
+            element={<Navigate to="/admin/dashboard" replace />}
+          />
         </Routes>
       </AuthProvider>
     </Router>

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./Hero.css";
 
 export default function Hero() {
@@ -19,9 +20,10 @@ export default function Hero() {
         </p>
 
         <div className="hero-buttons">
-          <a href="#contato" className="primary-button">
+          {/* Aponta para a rota interna /agendar que redireciona para o Booksy */}
+          <Link to="/agendar" className="primary-button">
             AGENDAR AGORA
-          </a>
+          </Link>
 
           <a href="#servicos" className="secondary-button">
             VER SERVIÇOS
