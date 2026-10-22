@@ -4,34 +4,60 @@ import { useAuth } from "./AuthContext";
 import "./AdminLogin.css";
 import heroImg from "../../assets/fotoAdm.jpeg"; 
 
+// Componente do ícone do olhinho (mesmo padrão do login de usuário)
+function IconeOlho({ aberto }) {
+  return aberto ? (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </svg>
+  ) : (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a19.77 19.77 0 0 1 5.06-5.94" />
+      <path d="M9.9 4.24A10.94 10.94 0 0 1 12 5c7 0 11 7 11 7a19.86 19.86 0 0 1-3.17 4.19" />
+      <path d="M14.12 14.12A3 3 0 1 1 9.88 9.88" />
+      <line x1="1" y1="1" x2="23" y2="23" />
+    </svg>
+  );
+}
+
 export default function AdminLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [attempts, setAttempts] = useState(0);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+  const [mostrarSenha, setMostrarSenha] = useState(false); // Estado para o olhinho
 
   const { loginAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isBlocked) return;
+    if (isBlocked || enviando) return;
 
-    const result = await loginAdmin(email, password);
+    setError("");
+    setEnviando(true);
 
-    if (result.success) {
-      navigate("/admin/dashboard");
-    } else {
-      const newAttempts = attempts + 1;
-      setAttempts(newAttempts);
+    try {
+      const result = await loginAdmin(email, password);
 
-      if (newAttempts >= 3) {
-        setIsBlocked(true);
-        setError("Muitas tentativas falhas. Acesso temporariamente bloqueado por segurança.");
+      if (result.success) {
+        navigate("/admin/dashboard");
       } else {
-        setError(`${result.message} (Tentativa ${newAttempts} de 3)`);
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+
+        if (newAttempts >= 3) {
+          setIsBlocked(true);
+          setError("Muitas tentativas falhas. Acesso temporariamente bloqueado por segurança.");
+        } else {
+          setError(`${result.message} (Tentativa ${newAttempts} de 3)`);
+        }
       }
+    } finally {
+      setEnviando(false);
     }
   };
 
@@ -82,7 +108,7 @@ export default function AdminLogin() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                disabled={isBlocked}
+                disabled={isBlocked || enviando}
               />
             </div>
 
@@ -93,18 +119,34 @@ export default function AdminLogin() {
                   Esqueci minha senha
                 </a>
               </div>
-              <input
-                type="password"
-                placeholder="Mínimo 8 caracteres"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                disabled={isBlocked}
-              />
+              
+              {/* Wrapper do input com o botão do olhinho integrado */}
+              <div className="login-input-wrapper">
+                <input
+                  type={mostrarSenha ? "text" : "password"}
+                  placeholder="Mínimo 8 caracteres"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  disabled={isBlocked || enviando}
+                />
+                <button
+                  type="button"
+                  className="login-eye-btn"
+                  onClick={() => setMostrarSenha((v) => !v)}
+                  aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}
+                >
+                  <IconeOlho aberto={mostrarSenha} />
+                </button>
+              </div>
             </div>
 
-            <button type="submit" className="login-submit-btn" disabled={isBlocked}>
-              {isBlocked ? "ACESSO BLOQUEADO" : <>ACESSAR PAINEL <span>→</span></>}
+            <button type="submit" className="login-submit-btn" disabled={isBlocked || enviando}>
+              {isBlocked 
+                ? "ACESSO BLOQUEADO" 
+                : enviando 
+                  ? "ACESSANDO..." 
+                  : <>ACESSAR PAINEL <span>→</span></>}
             </button>
           </form>
 

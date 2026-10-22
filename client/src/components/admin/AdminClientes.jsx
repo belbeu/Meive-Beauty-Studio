@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./AdminDashboard.css"; // header, botões, painel, avatar (compartilhados)
+import "./AdminDashboard.css"; 
 import "./AdminClientes.css";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
@@ -89,6 +89,19 @@ function formatDate(dateString) {
   return date.toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" });
 }
 
+/* Máscara de WhatsApp / Telefone: (00) 00000-0000 */
+function applyPhoneMask(value) {
+  if (!value) return "";
+  const numbers = value.replace(/\D/g, "").slice(0, 11);
+  if (numbers.length <= 2) {
+    return `(${numbers}`;
+  }
+  if (numbers.length <= 7) {
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+  }
+  return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+}
+
 /* ---------- Componente ---------- */
 export default function AdminClientes() {
   const [clients, setClients] = useState([]);
@@ -112,53 +125,37 @@ export default function AdminClientes() {
   const [editPhone, setEditPhone] = useState("");
 
   // Buscar clientes reais do banco via API do Django
-  
-const fetchClients = async () => {
-  try {
-    setLoading(true);
+  const fetchClients = async () => {
+    try {
+      setLoading(true);
+      const token = localStorage.getItem("access");
 
-    const token = localStorage.getItem("access");
-
-    const response = await fetch(
-      `${API_BASE}/clientes/`,
-      {
+      const response = await fetch(`${API_BASE}/clientes/`, {
         headers: {
           "Content-Type": "application/json",
           ...(token ? { Authorization: `Bearer ${token}` } : {}),
         },
+      });
+
+      const contentType = response.headers.get("content-type");
+      if (!response.ok) {
+        throw new Error(`Erro HTTP ${response.status}: ${await response.text()}`);
       }
-    );
 
-    const contentType = response.headers.get("content-type");
-    console.log("Status da API:", response.status);
-    console.log("Tipo da resposta:", contentType);
+      if (!contentType?.includes("application/json")) {
+        throw new Error("A API não retornou JSON. Verifique a URL e as rotas do Django.");
+      }
 
-    if (!response.ok) {
-      throw new Error(
-        `Erro HTTP ${response.status}: ${await response.text()}`
-      );
+      const data = await response.json();
+      const results = Array.isArray(data) ? data : data.results || [];
+      setClients(results);
+    } catch (error) {
+      console.error("Erro ao buscar clientes:", error);
+      alert(`Não foi possível carregar as clientes. ${error.message}`);
+    } finally {
+      setLoading(false);
     }
-
-    if (!contentType?.includes("application/json")) {
-      throw new Error(
-        "A API não retornou JSON. Verifique a URL e as rotas do Django."
-      );
-    }
-
-    const data = await response.json();
-    const results = Array.isArray(data)
-      ? data
-      : data.results || [];
-
-    setClients(results);
-  } catch (error) {
-    console.error("Erro ao buscar clientes:", error);
-    alert(`Não foi possível carregar as clientes. ${error.message}`);
-  } finally {
-    setLoading(false);
-  }
-};
-
+  };
 
   useEffect(() => {
     fetchClients();
@@ -171,7 +168,7 @@ const fetchClients = async () => {
       c.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Criar Nova Cliente no Banco (POST)
+  // Criar Nova Cliente no Banco (POST) com mensagem de sucesso
   const handleCreateClient = async (e) => {
     e.preventDefault();
     if (!newName.trim() || !newEmail.trim()) return;
@@ -194,12 +191,13 @@ const fetchClients = async () => {
       });
 
       if (response.ok) {
-        await fetchClients(); // Recarrega a lista do banco
+        await fetchClients(); 
         setNewName("");
         setNewEmail("");
         setNewPhone("");
         setNewPassword("");
         setIsNewModalOpen(false);
+        alert("Cliente cadastrada com sucesso!");
       } else {
         alert("Erro ao cadastrar cliente: " + await readApiError(response));
       }
@@ -216,7 +214,7 @@ const fetchClients = async () => {
     setEditPhone(client.telefone || "");
   };
 
-  // Atualizar Cliente no Banco (PUT/PATCH)
+  // Atualizar Cliente no Banco (PATCH) com mensagem de sucesso
   const handleUpdateClient = async (e) => {
     e.preventDefault();
     if (!selectedClient) return;
@@ -239,6 +237,7 @@ const fetchClients = async () => {
       if (response.ok) {
         await fetchClients();
         setSelectedClient(null);
+        alert("Informações da cliente atualizadas com sucesso!");
       } else {
         alert("Erro ao atualizar: " + await readApiError(response));
       }
@@ -248,9 +247,10 @@ const fetchClients = async () => {
     }
   };
 
-  // Excluir Cliente do Banco (DELETE)
+  // Excluir Cliente do Banco (DELETE) com janela de decisão e aviso de sucesso
   const handleDeleteClient = async (id) => {
-    if (!window.confirm("Tem certeza que deseja excluir esta cliente?")) return;
+    const confirmacao = window.confirm("Deseja mesmo excluir essa cliente?");
+    if (!confirmacao) return;
 
     try {
       const token = localStorage.getItem("access");
@@ -264,6 +264,7 @@ const fetchClients = async () => {
       if (response.ok) {
         await fetchClients();
         setSelectedClient(null);
+        alert("A cliente foi excluída com sucesso!");
       } else {
         alert("Erro ao excluir cliente: " + await readApiError(response));
       }
@@ -273,131 +274,86 @@ const fetchClients = async () => {
     }
   };
 
-  // Contadores dinâmicos baseados no banco
   const totalClientsCount = clients.length;
-  const vipCount = Math.round(totalClientsCount * 0.23); // Exemplo proporcional ou regra específica do banco
+  const vipCount = Math.round(totalClientsCount * 0.23);
 
-  
-const exportClientsPdf = () => {
-  const doc = new jsPDF({
-    orientation: "landscape",
-    unit: "mm",
-    format: "a4",
-  });
+  const exportClientsPdf = () => {
+    const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
+    const hoje = new Date();
+    const dataAtual = hoje.toLocaleDateString("pt-BR", { day: "2-digit", month: "long", year: "numeric" });
+    const horaAtual = hoje.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    const clientesExportadas = filteredClients;
 
-  const hoje = new Date();
-  const dataAtual = hoje.toLocaleDateString("pt-BR", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
+    doc.setFillColor(36, 31, 32);
+    doc.rect(0, 0, 297, 42, "F");
 
-  const horaAtual = hoje.toLocaleTimeString("pt-BR", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(20);
+    doc.text("MEVIE", 15, 17);
 
-  const clientesExportadas = filteredClients;
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text("STUDIO BEAUTY", 15, 24);
 
-  // Cabeçalho
-  doc.setFillColor(36, 31, 32);
-  doc.rect(0, 0, 297, 42, "F");
+    doc.setFontSize(15);
+    doc.setFont("helvetica", "bold");
+    doc.text("LISTA DE CLIENTES", 15, 34);
 
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.text("MEVIE", 15, 17);
+    doc.setTextColor(65, 58, 60);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Emitido em: ${dataAtual} às ${horaAtual}`, 15, 52);
+    doc.text(`Total de clientes: ${clientesExportadas.length}`, 15, 59);
 
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-  doc.text("STUDIO BEAUTY", 15, 24);
+    autoTable(doc, {
+      startY: 66,
+      head: [["Nº", "NOME", "TELEFONE / WHATSAPP", "E-MAIL", "DATA DE CADASTRO"]],
+      body: clientesExportadas.map((cliente, index) => [
+        index + 1,
+        cliente.nome || "-",
+        cliente.telefone || "-",
+        cliente.email || "-",
+        cliente.criado_em ? new Date(cliente.criado_em).toLocaleDateString("pt-BR") : "-",
+      ]),
+      theme: "grid",
+      margin: { left: 15, right: 15, bottom: 20 },
+      styles: {
+        font: "helvetica",
+        fontSize: 9,
+        cellPadding: 4,
+        textColor: [55, 48, 50],
+        lineColor: [230, 223, 225],
+        lineWidth: 0.2,
+        overflow: "linebreak",
+      },
+      headStyles: {
+        fillColor: [130, 91, 104],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      alternateRowStyles: {
+        fillColor: [250, 246, 247],
+      },
+      columnStyles: {
+        0: { cellWidth: 12 },
+        1: { cellWidth: 48 },
+        2: { cellWidth: 43 },
+        3: { cellWidth: 95 },
+        4: { cellWidth: 39 },
+      },
+      didDrawPage: () => {
+        const pagina = doc.internal.getNumberOfPages();
+        const altura = doc.internal.pageSize.getHeight();
+        doc.setFontSize(8);
+        doc.setTextColor(120, 110, 113);
+        doc.text("MEVIE - STUDIO BEAUTY | Relatório de clientes", 15, altura - 8);
+        doc.text(`Página ${pagina}`, doc.internal.pageSize.getWidth() - 15, altura - 8, { align: "right" });
+      },
+    });
 
-  doc.setFontSize(15);
-  doc.setFont("helvetica", "bold");
-  doc.text("LISTA DE CLIENTES", 15, 34);
-
-  // Data e resumo
-  doc.setTextColor(65, 58, 60);
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(`Emitido em: ${dataAtual} às ${horaAtual}`, 15, 52);
-  doc.text(
-    `Total de clientes: ${clientesExportadas.length}`,
-    15,
-    59
-  );
-
-  // Tabela
-  autoTable(doc, {
-    startY: 66,
-    head: [[
-      "Nº",
-      "NOME",
-      "TELEFONE / WHATSAPP",
-      "E-MAIL",
-      "DATA DE CADASTRO",
-    ]],
-    body: clientesExportadas.map((cliente, index) => [
-      index + 1,
-      cliente.nome || "-",
-      cliente.telefone || "-",
-      cliente.email || "-",
-      cliente.criado_em
-        ? new Date(cliente.criado_em).toLocaleDateString("pt-BR")
-        : "-",
-    ]),
-    theme: "grid",
-    margin: { left: 15, right: 15, bottom: 20 },
-    styles: {
-      font: "helvetica",
-      fontSize: 9,
-      cellPadding: 4,
-      textColor: [55, 48, 50],
-      lineColor: [230, 223, 225],
-      lineWidth: 0.2,
-      overflow: "linebreak",
-    },
-    headStyles: {
-      fillColor: [130, 91, 104],
-      textColor: [255, 255, 255],
-      fontStyle: "bold",
-    },
-    alternateRowStyles: {
-      fillColor: [250, 246, 247],
-    },
-    columnStyles: {
-      0: { cellWidth: 12 },
-      1: { cellWidth: 48 },
-      2: { cellWidth: 43 },
-      3: { cellWidth: 95 },
-      4: { cellWidth: 39 },
-    },
-    didDrawPage: () => {
-      const pagina = doc.internal.getNumberOfPages();
-      const altura = doc.internal.pageSize.getHeight();
-
-      doc.setFontSize(8);
-      doc.setTextColor(120, 110, 113);
-      doc.text(
-        "MEVIE - STUDIO BEAUTY | Relatório de clientes",
-        15,
-        altura - 8
-      );
-      doc.text(
-        `Página ${pagina}`,
-        doc.internal.pageSize.getWidth() - 15,
-        altura - 8,
-        { align: "right" }
-      );
-    },
-  });
-
-  const nomeArquivo = `mevie-clientes-${hoje
-    .toISOString()
-    .slice(0, 10)}.pdf`;
-
-  doc.save(nomeArquivo);
-};
+    doc.save(`mevie-clientes-${hoje.toISOString().slice(0, 10)}.pdf`);
+  };
 
   return (
     <main className="dash-main">
@@ -436,7 +392,6 @@ const exportClientsPdf = () => {
         </div>
       </header>
 
-      {/* ---- Indicadores reais do banco ---- */}
       <section className="clients-stats" aria-label="Indicadores de clientes">
         <article className="clients-stat">
           <div className="clients-stat-icon clients-stat-icon--red">{Icons.users}</div>
@@ -466,7 +421,6 @@ const exportClientsPdf = () => {
         </article>
       </section>
 
-      {/* ---- Base de clientes ---- */}
       <section className="dash-panel clients-panel">
         <div className="dash-panel-head">
           <div>
@@ -475,11 +429,7 @@ const exportClientsPdf = () => {
               {filteredClients.length} de {totalClientsCount} clientes listadas
             </p>
           </div>
-          <button
-            type="button"
-            className="clients-export"
-            onClick={exportClientsPdf}
-          >
+          <button type="button" className="clients-export" onClick={exportClientsPdf}>
             EXPORTAR LISTA
           </button>
         </div>
@@ -563,7 +513,8 @@ const exportClientsPdf = () => {
                   type="text"
                   placeholder="(11) 99999-9999"
                   value={newPhone}
-                  onChange={(e) => setNewPhone(e.target.value)}
+                  onChange={(e) => setNewPhone(applyPhoneMask(e.target.value))}
+                  maxLength={15}
                 />
               </div>
               <div className="clients-form-group">
@@ -632,7 +583,8 @@ const exportClientsPdf = () => {
                 <input
                   type="text"
                   value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
+                  onChange={(e) => setEditPhone(applyPhoneMask(e.target.value))}
+                  maxLength={15}
                 />
               </div>
 

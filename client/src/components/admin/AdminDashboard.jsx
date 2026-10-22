@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./AdminDashboard.css";
 
@@ -22,14 +22,6 @@ const Icons = {
     </svg>
   ),
 };
-
-/* ---------- Dados (troque por chamadas à sua API / Supabase) ---------- */
-const STATS = [
-  { label: "FATURAMENTO DO MÊS", value: "R$ 12.480", note: "+18,4%", variant: "red" },
-  { label: "AGENDAMENTOS", value: "48", note: "+6 esta semana", variant: "purple" },
-  { label: "NOVAS CLIENTES", value: "14", note: "+21% no mês", variant: "dark" },
-  { label: "TICKET MÉDIO", value: "R$ 260", note: "+R$ 18", variant: "dark" },
-];
 
 const APPOINTMENTS = [
   { time: "09:00", initials: "CR", name: "Camila Rodrigues", service: "Volume Russo", price: "R$ 280", status: "concluded" },
@@ -59,6 +51,8 @@ const WEEK = [
   { day: "SÁB", value: 3.5 },
 ];
 
+const API_BASE = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/$/, "");
+
 /* ---------- Helpers ---------- */
 function formatToday() {
   const text = new Date().toLocaleDateString("pt-BR", {
@@ -71,7 +65,40 @@ function formatToday() {
 
 /* ---------- Componente ---------- */
 export default function AdminDashboard() {
+  const [totalClients, setTotalClients] = useState(0);
   const maxWeek = Math.max(...WEEK.map((d) => d.value));
+
+  // Buscar total de clientes do banco via API do Django
+  useEffect(() => {
+    const fetchClientsCount = async () => {
+      try {
+        const token = localStorage.getItem("access");
+        const response = await fetch(`${API_BASE}/clientes/`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const results = Array.isArray(data) ? data : data.results || [];
+          setTotalClients(results.length);
+        }
+      } catch (error) {
+        console.error("Erro ao buscar total de clientes para o dashboard:", error);
+      }
+    };
+
+    fetchClientsCount();
+  }, []);
+
+  const STATS = [
+    { label: "FATURAMENTO DO MÊS", value: "R$ 12.480", note: "+18,4%", variant: "red" },
+    { label: "AGENDAMENTOS", value: "48", note: "+6 esta semana", variant: "purple" },
+    { label: "NOVAS CLIENTES", value: totalClients.toString(), note: "Total no banco", variant: "dark" },
+    { label: "TICKET MÉDIO", value: "R$ 260", note: "+R$ 18", variant: "dark" },
+  ];
 
   return (
     <main className="dash-main">

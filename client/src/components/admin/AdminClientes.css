@@ -263,9 +263,11 @@
   flex-direction: column;
   gap: 20px;
   box-sizing: border-box;
-  animation: scaleUpModal 0.2s ease forwards;
   max-height: 90vh;
   overflow-y: auto;
+  
+  /* Removemos a animação de scaleUpModal para evitar o re-render borrado da fonte */
+  animation: fadeInModal 0.2s ease forwards;
 }
 
 .clients-modal-header {
@@ -280,11 +282,19 @@
   gap: 12px;
 }
 
+/* Título nítido, sem distorção e sem espaçamento exagerado */
 .clients-modal-header h2 {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-size: 18px;
   letter-spacing: 0.5px;
   margin: 0;
+  color: #fff;
+  
+  /* Força a renderização limpa da fonte no navegador */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transform: translateZ(0);
 }
 
 .clients-modal-close {
