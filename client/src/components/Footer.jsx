@@ -1,7 +1,21 @@
 import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Footer.css";
 
 export default function Footer() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  // Função para rolar suavemente até seções internas na Home
+  const irPara = (e, id) => {
+    e.preventDefault();
+    if (pathname === "/") {
+      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      navigate({ pathname: "/", hash: `#${id}` });
+    }
+  };
+
   return (
     <footer className="site-footer">
       <div className="footer-content">
@@ -36,18 +50,28 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Coluna 2: Nova coluna EXPLORE */}
+        {/* Coluna 2: EXPLORE */}
         <div className="footer-col explore-col">
-          <h4 className="footer-title" style={{ color: "#ad1838" }}>EXPLORE</h4>
+          <h4 className="footer-title highlight-title">EXPLORE</h4>
           <ul className="explore-list">
             <li>
-              <a href="#servicos">SERVIÇOS & CURSOS</a>
+              <a href="#servicos" onClick={(e) => irPara(e, "servicos")}>
+                SERVIÇOS & CURSOS
+              </a>
             </li>
             <li>
-              <a href="#produtos">PRODUTOS</a>
+              <a href="#produtos" onClick={(e) => irPara(e, "produtos")}>
+                PRODUTOS
+              </a>
             </li>
             <li>
-              <a href="#contato">MINHA CONTA</a>
+              <Link to="/login">MINHA CONTA</Link>
+            </li>
+          
+            <li>
+                <Link to="/agendar">
+                AGENDAR
+                </Link>
             </li>
           </ul>
         </div>

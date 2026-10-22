@@ -160,16 +160,11 @@
 
 
 .services-top-note {
-  max-width: 300px;
-
-  font-family: "Inter", sans-serif;
-
-  font-size: 12px;
-
-  line-height: 1.5;
-
-  color: #777;
-
+  max-width: 340px;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 15px; 
+  line-height: 1.6;
+  color: #a0a0a0;  
   margin: 0;
 }
 
