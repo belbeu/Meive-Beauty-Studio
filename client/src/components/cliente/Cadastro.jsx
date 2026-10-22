@@ -30,10 +30,26 @@ function IconeOlho({ aberto }) {
   );
 }
 
+// Função para aplicar a máscara de telefone dinamicamente
+function aplicarMascaraTelefone(valor) {
+  const apenasNumeros = valor.replace(/\D/g, "").slice(0, 11);
+
+  if (apenasNumeros.length <= 10) {
+    return apenasNumeros
+      .replace(/^(\d{0,2})/, "($1")
+      .replace(/^(\(\d{2})(\d{0,4})/, "$1) $2")
+      .replace(/(\(\d{2}\)\s\d{4})(\d{0,4})/, "$1-$2");
+  } else {
+    return apenasNumeros
+      .replace(/^(\d{0,2})/, "($1")
+      .replace(/^(\(\d{2})(\d{0,5})/, "$1) $2")
+      .replace(/(\(\d{2}\)\s\d{5})(\d{0,4})/, "$1-$2");
+  }
+}
+
 export default function Cadastro() {
   const navigate = useNavigate();
 
-  // --- novo: nome, e-mail e estado do envio ---
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -53,7 +69,11 @@ export default function Cadastro() {
   const mostrarErroConfirmacao =
     confirmarSenha.length > 0 && !senhasIguais;
 
-  // --- novo: envia o cadastro para o Django ---
+  const handleTelefoneChange = (e) => {
+    const valorFormatado = aplicarMascaraTelefone(e.target.value);
+    setTelefone(valorFormatado);
+  };
+
   const handleCadastro = async (e) => {
     e.preventDefault();
     setTentouEnviar(true);
@@ -67,11 +87,9 @@ export default function Cadastro() {
 
     setEnviando(true);
     try {
-      // cria a conta (sempre como CLIENTE) e já deixa a pessoa logada
       await registrar({ nome, email, telefone, senha });
       navigate("/minha-conta");
     } catch (err) {
-      // o Django devolve algo como { email: ["Este e-mail já está cadastrado."] }
       const primeira = err.dados && Object.values(err.dados).flat()[0];
       setErro(
         typeof primeira === "string"
@@ -147,15 +165,16 @@ export default function Cadastro() {
             </div>
 
             <div className="cadastro-field">
-            <label>TELEFONE (OPCIONAL)</label>
-            <input
-              type="tel"
-              placeholder="(11) 99999-9999"
-              value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
-              autoComplete="tel"
-            />
-          </div>
+              <label>TELEFONE (OPCIONAL)</label>
+              <input
+                type="tel"
+                placeholder="(11) 99999-9999"
+                value={telefone}
+                onChange={handleTelefoneChange}
+                autoComplete="tel"
+                maxLength={15}
+              />
+            </div>
 
             {/* SENHA */}
             <div className="cadastro-field">
@@ -174,7 +193,7 @@ export default function Cadastro() {
                 <button
                   type="button"
                   className="cadastro-eye-btn"
-                  onMouseDown={(e) => e.preventDefault()} /* não tira o foco do input */
+                  onMouseDown={(e) => e.preventDefault()}
                   onClick={() => setMostrarSenha((v) => !v)}
                   aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}
                 >
@@ -235,7 +254,6 @@ export default function Cadastro() {
               )}
             </div>
 
-            {/* novo: erro vindo do servidor (e-mail repetido, senha fraca...) */}
             {erro && (
               <span className="cadastro-msg-erro" role="alert">
                 {erro}

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
+import { usuarioAtual, logout as fazerLogout } from "../../auth";
 import "./ClienteDashboard.css";
 
 /* ---------- Dados mockados (troque pela API/back depois) ---------- */
@@ -13,7 +14,6 @@ const NEXT_APPOINTMENT = {
   status: "confirmed",
 };
 
-// Lista vazia = mostra o estado "Pronta para o próximo?"
 const APPOINTMENTS = [];
 
 const ORDERS = [
@@ -22,7 +22,7 @@ const ORDERS = [
     product: "Sérum Lash Power",
     deliveredAt: "02 Jun",
     status: "delivered",
-    image: null, // ex.: import serum from "../assets/serum.jpg"
+    image: null,
   },
 ];
 
@@ -59,19 +59,9 @@ const CalendarIcon = () => (
 );
 
 /* ---------- Helpers ---------- */
-function getClientFullName() {
-  // Front-only: usa o nome salvo no cadastro/login, se existir.
-  try {
-    const saved = JSON.parse(localStorage.getItem("@Studio:client"));
-    if (saved?.name?.trim()) return saved.name.trim();
-  } catch {
-    /* ignora */
-  }
-  return "Juliana Mendes";
-}
-
 function getInitials(fullName) {
-  const parts = fullName.split(/\s+/).filter(Boolean);
+  if (!fullName) return "MG";
+  const parts = fullName.trim().split(/\s+/).filter(Boolean);
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
@@ -80,17 +70,44 @@ function getInitials(fullName) {
 export default function ClientDashboard() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [modalSairAberto, setModalSairAberto] = useState(false);
+  const [usuario, setUsuario] = useState(null);
+  const [carregando, setCarregando] = useState(true);
 
-  const fullName = getClientFullName();
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        const dados = await usuarioAtual();
+        setUsuario(dados);
+      } catch (err) {
+        fazerLogout();
+        navigate("/login");
+      } finally {
+        setCarregando(false);
+      }
+    }
+
+    carregarDados();
+  }, [navigate]);
+
+  const confirmarLogout = () => {
+    fazerLogout();
+    navigate("/login");
+  };
+
+  if (carregando) {
+    return (
+      <div className="client-page" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+        <p>Carregando sua conta...</p>
+      </div>
+    );
+  }
+
+  const fullName = usuario?.nome || "Meive Girl";
   const name = fullName.split(/\s+/)[0];
   const initials = getInitials(fullName);
   const percent = Math.min(100, Math.round((POINTS.current / POINTS.goal) * 100));
   const missing = Math.max(0, POINTS.goal - POINTS.current);
-
-  const handleLogout = () => {
-    localStorage.removeItem("@Studio:client");
-    navigate("/login");
-  };
 
   return (
     <>
@@ -124,7 +141,14 @@ export default function ClientDashboard() {
                   <Link to="/" role="menuitem" onClick={() => setMenuOpen(false)}>
                     Voltar ao site
                   </Link>
-                  <button type="button" role="menuitem" onClick={handleLogout}>
+                  <button 
+                    type="button" 
+                    role="menuitem" 
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setModalSairAberto(true);
+                    }}
+                  >
                     Sair
                   </button>
                 </div>
@@ -263,6 +287,32 @@ export default function ClientDashboard() {
           </section>
         </div>
       </main>
+
+      {/* ---------- Modal de Confirmação de Saída ---------- */}
+      {modalSairAberto && (
+        <div className="client-modal-overlay">
+          <div className="client-modal-content">
+            <h3>DESEJA SAIR?</h3>
+            <p>Tem certeza de que deseja encerrar sua sessão atual?</p>
+            <div className="client-modal-actions">
+              <button
+                type="button"
+                className="client-outline-btn"
+                onClick={() => setModalSairAberto(false)}
+              >
+                CANCELAR
+              </button>
+              <button
+                type="button"
+                className="client-primary-btn"
+                onClick={confirmarLogout}
+              >
+                SIM, SAIR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>

@@ -463,6 +463,65 @@
   color: var(--faint);
 }
 
+/* ============ MODAL DE CONFIRMAÇÃO DE SAÍDA ============ */
+.client-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease;
+}
+
+.client-modal-card {
+  background: #121212;
+  border: 1px solid var(--border);
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.client-modal-card h3 {
+  margin: 0;
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-size: 26px;
+  letter-spacing: 1px;
+  color: #ffffff;
+}
+
+.client-modal-card p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.client-modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.client-modal-actions button {
+  flex: 1;
+  height: 44px;
+  font-size: 10px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* ============ RESPONSIVO ============ */
 @media (max-width: 1000px) {
   .client-grid {
