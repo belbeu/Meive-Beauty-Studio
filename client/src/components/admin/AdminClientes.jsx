@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css"; // header, botões, painel, avatar (compartilhados)
 import "./AdminClientes.css";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 /* ---------- Ícones (SVG inline) ---------- */
 const iconProps = {
@@ -275,6 +277,128 @@ const fetchClients = async () => {
   const totalClientsCount = clients.length;
   const vipCount = Math.round(totalClientsCount * 0.23); // Exemplo proporcional ou regra específica do banco
 
+  
+const exportClientsPdf = () => {
+  const doc = new jsPDF({
+    orientation: "landscape",
+    unit: "mm",
+    format: "a4",
+  });
+
+  const hoje = new Date();
+  const dataAtual = hoje.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+
+  const horaAtual = hoje.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  const clientesExportadas = filteredClients;
+
+  // Cabeçalho
+  doc.setFillColor(36, 31, 32);
+  doc.rect(0, 0, 297, 42, "F");
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("MEVIE", 15, 17);
+
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "normal");
+  doc.text("STUDIO BEAUTY", 15, 24);
+
+  doc.setFontSize(15);
+  doc.setFont("helvetica", "bold");
+  doc.text("LISTA DE CLIENTES", 15, 34);
+
+  // Data e resumo
+  doc.setTextColor(65, 58, 60);
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Emitido em: ${dataAtual} às ${horaAtual}`, 15, 52);
+  doc.text(
+    `Total de clientes: ${clientesExportadas.length}`,
+    15,
+    59
+  );
+
+  // Tabela
+  autoTable(doc, {
+    startY: 66,
+    head: [[
+      "Nº",
+      "NOME",
+      "TELEFONE / WHATSAPP",
+      "E-MAIL",
+      "DATA DE CADASTRO",
+    ]],
+    body: clientesExportadas.map((cliente, index) => [
+      index + 1,
+      cliente.nome || "-",
+      cliente.telefone || "-",
+      cliente.email || "-",
+      cliente.criado_em
+        ? new Date(cliente.criado_em).toLocaleDateString("pt-BR")
+        : "-",
+    ]),
+    theme: "grid",
+    margin: { left: 15, right: 15, bottom: 20 },
+    styles: {
+      font: "helvetica",
+      fontSize: 9,
+      cellPadding: 4,
+      textColor: [55, 48, 50],
+      lineColor: [230, 223, 225],
+      lineWidth: 0.2,
+      overflow: "linebreak",
+    },
+    headStyles: {
+      fillColor: [130, 91, 104],
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+    },
+    alternateRowStyles: {
+      fillColor: [250, 246, 247],
+    },
+    columnStyles: {
+      0: { cellWidth: 12 },
+      1: { cellWidth: 48 },
+      2: { cellWidth: 43 },
+      3: { cellWidth: 95 },
+      4: { cellWidth: 39 },
+    },
+    didDrawPage: () => {
+      const pagina = doc.internal.getNumberOfPages();
+      const altura = doc.internal.pageSize.getHeight();
+
+      doc.setFontSize(8);
+      doc.setTextColor(120, 110, 113);
+      doc.text(
+        "MEVIE - STUDIO BEAUTY | Relatório de clientes",
+        15,
+        altura - 8
+      );
+      doc.text(
+        `Página ${pagina}`,
+        doc.internal.pageSize.getWidth() - 15,
+        altura - 8,
+        { align: "right" }
+      );
+    },
+  });
+
+  const nomeArquivo = `mevie-clientes-${hoje
+    .toISOString()
+    .slice(0, 10)}.pdf`;
+
+  doc.save(nomeArquivo);
+};
+
   return (
     <main className="dash-main">
       <header className="dash-header">
@@ -351,7 +475,11 @@ const fetchClients = async () => {
               {filteredClients.length} de {totalClientsCount} clientes listadas
             </p>
           </div>
-          <button type="button" className="clients-export" onClick={() => window.print()}>
+          <button
+            type="button"
+            className="clients-export"
+            onClick={exportClientsPdf}
+          >
             EXPORTAR LISTA
           </button>
         </div>
