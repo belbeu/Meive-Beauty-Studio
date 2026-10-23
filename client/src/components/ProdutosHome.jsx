@@ -4,6 +4,7 @@ import serumImg from "../assets/serum de cilios.webp";
 import removedorImg from "../assets/removedor.webp";
 import espumaImg from "../assets/espuma para cilios.webp";
 import gelImg from "../assets/gel de limpeza.webp";
+import { Link } from "react-router-dom";
 
 export default function ProdutosSection() {
   // O estado para controlar qual produto está com o texto expandido qual não
@@ -90,15 +91,15 @@ export default function ProdutosSection() {
       </div>
 
       <div className="products-section-footer">
-        <a href="#todos-produtos" className="section-more-link">
-          <span>Ver mais produtos</span>
-          <div className="section-arrow-box">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
+        <Link to="/produtos" className="section-more-link">
+              <span>Ver mais produtos</span>
+              <div className="section-arrow-box">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+           </svg>
           </div>
-        </a>
+        </Link>
       </div>
     </section>
   );
