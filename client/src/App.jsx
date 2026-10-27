@@ -19,6 +19,7 @@ import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante";
 import Courses from "./components/Courses";
 import PromocoesSection from "./components/Promocao";
+import Produtos from "./components/Produtos";
 
 import Login from "./components/cliente/Login";
 import Cadastro from "./components/cliente/Cadastro";
@@ -76,6 +77,7 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/minha-conta" element={<ClientDashboard />} />
+          <Route path="/produtos" element={<Produtos />} />
 
           {/* Rotas de Agendamento Booksy */}
           <Route
