@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./AdminDashboard.css"; 
 import "./AdminClientes.css";
+import "./AdminAvisos.css";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import { api } from "../../api";
 
 /* ---------- Ícones (SVG inline) ---------- */
 const iconProps = {
@@ -54,18 +56,6 @@ const Icons = {
   ),
 };
 
-const API_BASE = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/$/, "");
-
-async function readApiError(response) {
-  const text = await response.text();
-  try {
-    const data = JSON.parse(text);
-    return Object.values(data).flat().join(" ");
-  } catch {
-    return text || `Erro HTTP ${response.status}`;
-  }
-}
-
 /* ---------- Helpers ---------- */
 function formatToday() {
   return new Date()
@@ -102,6 +92,26 @@ function applyPhoneMask(value) {
   return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
 }
 
+/* ---------- Validação e mensagens de erro ---------- */
+const ROTULOS_CAMPOS = { nome: "Nome", email: "E-mail", telefone: "Telefone", password: "Senha" };
+
+function formatarErroApi(error) {
+  const d = error?.dados;
+  if (!d) return error?.message || "Erro inesperado. Tente novamente.";
+  if (typeof d === "string") return d;
+  if (d.detail) return d.detail;
+  return Object.entries(d)
+    .map(([campo, msgs]) => `${ROTULOS_CAMPOS[campo] || campo}: ${[].concat(msgs).join(" ")}`)
+    .join("\n");
+}
+
+function validarCliente({ nome, email, senha }, exigirSenha = false) {
+  if (!nome.trim()) return "Informe o nome completo.";
+  if (!/^\S+@\S+\.\S+$/.test(email.trim())) return "Informe um e-mail válido.";
+  if (exigirSenha && senha.length < 8) return "A senha inicial deve ter no mínimo 8 caracteres.";
+  return null;
+}
+
 /* ---------- Componente ---------- */
 export default function AdminClientes() {
   const [clients, setClients] = useState([]);
@@ -109,9 +119,13 @@ export default function AdminClientes() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   
-  // Modais
+  // Modais de formulário
   const [isNewModalOpen, setIsNewModalOpen] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null);
+
+  // Estados dos modais customizados de aviso e confirmação
+  const [toastInfo, setToastInfo] = useState(null); 
+  const [confirmInfo, setConfirmInfo] = useState(null); 
 
   // Campos do formulário de Nova Cliente
   const [newName, setNewName] = useState("");
@@ -119,39 +133,24 @@ export default function AdminClientes() {
   const [newPhone, setNewPhone] = useState("");
   const [newPassword, setNewPassword] = useState("");
 
-  // Campos do modal de Edição/Exclusão
+  // Campos do modal de Edição
   const [editName, setEditName] = useState("");
   const [editEmail, setEditEmail] = useState("");
   const [editPhone, setEditPhone] = useState("");
 
-  // Buscar clientes reais do banco via API do Django
+  // Buscar clientes via API centralizada
   const fetchClients = async () => {
     try {
       setLoading(true);
-      const token = localStorage.getItem("access");
-
-      const response = await fetch(`${API_BASE}/clientes/`, {
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-
-      const contentType = response.headers.get("content-type");
-      if (!response.ok) {
-        throw new Error(`Erro HTTP ${response.status}: ${await response.text()}`);
-      }
-
-      if (!contentType?.includes("application/json")) {
-        throw new Error("A API não retornou JSON. Verifique a URL e as rotas do Django.");
-      }
-
-      const data = await response.json();
+      const data = await api("/clientes/");
       const results = Array.isArray(data) ? data : data.results || [];
       setClients(results);
     } catch (error) {
       console.error("Erro ao buscar clientes:", error);
-      alert(`Não foi possível carregar as clientes. ${error.message}`);
+      setToastInfo({
+        title: "ERRO DE CONEXÃO",
+        message: `Não foi possível carregar as clientes.\n${formatarErroApi(error)}`
+      });
     } finally {
       setLoading(false);
     }
@@ -168,42 +167,47 @@ export default function AdminClientes() {
       c.email?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Criar Nova Cliente no Banco (POST) com mensagem de sucesso
+  // Criar Nova Cliente
   const handleCreateClient = async (e) => {
     e.preventDefault();
-    if (!newName.trim() || !newEmail.trim()) return;
+    const erroValidacao = validarCliente(
+      { nome: newName, email: newEmail, senha: newPassword },
+      true
+    );
+    if (erroValidacao) {
+      setToastInfo({ title: "CAMPOS INVÁLIDOS", message: erroValidacao });
+      return;
+    }
 
     try {
-      const token = localStorage.getItem("access");
-      const response = await fetch(`${API_BASE}/clientes/`, {
+      await api("/clientes/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
         body: JSON.stringify({
-          nome: newName,
-          email: newEmail,
-          telefone: newPhone,
+          nome: newName.trim(),
+          email: newEmail.trim().toLowerCase(),
+          telefone: newPhone?.trim() || null,
           password: newPassword,
           tipo: "CLIENTE",
         }),
       });
 
-      if (response.ok) {
-        await fetchClients(); 
-        setNewName("");
-        setNewEmail("");
-        setNewPhone("");
-        setNewPassword("");
-        setIsNewModalOpen(false);
-        alert("Cliente cadastrada com sucesso!");
-      } else {
-        alert("Erro ao cadastrar cliente: " + await readApiError(response));
-      }
+      await fetchClients(); 
+      setNewName("");
+      setNewEmail("");
+      setNewPhone("");
+      setNewPassword("");
+      setIsNewModalOpen(false);
+      setToastInfo({
+        title: "SUCESSO",
+        message: "Cliente cadastrada com sucesso!"
+      });
     } catch (error) {
       console.error("Erro na requisição:", error);
-      alert(`Não foi possível cadastrar a cliente. ${error.message}`);
+      const errorDetail = formatarErroApi(error);
+      setToastInfo({
+        title: "ERRO AO CADASTRAR",
+        message: `Não foi possível cadastrar a cliente.\n${errorDetail}`
+      });
     }
   };
 
@@ -214,64 +218,71 @@ export default function AdminClientes() {
     setEditPhone(client.telefone || "");
   };
 
-  // Atualizar Cliente no Banco (PATCH) com mensagem de sucesso
+  // Atualizar Cliente
   const handleUpdateClient = async (e) => {
     e.preventDefault();
     if (!selectedClient) return;
 
+    const erroValidacao = validarCliente({ nome: editName, email: editEmail, senha: "" });
+    if (erroValidacao) {
+      setToastInfo({ title: "CAMPOS INVÁLIDOS", message: erroValidacao });
+      return;
+    }
+
     try {
-      const token = localStorage.getItem("access");
-      const response = await fetch(`${API_BASE}/clientes/${selectedClient.id_usuario}/`, {
+      await api(`/clientes/${selectedClient.id_usuario}/`, {
         method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
         body: JSON.stringify({
-          nome: editName,
-          email: editEmail,
-          telefone: editPhone,
+          nome: editName.trim(),
+          email: editEmail.trim().toLowerCase(),
+          telefone: editPhone?.trim() || null,
         }),
       });
 
-      if (response.ok) {
-        await fetchClients();
-        setSelectedClient(null);
-        alert("Informações da cliente atualizadas com sucesso!");
-      } else {
-        alert("Erro ao atualizar: " + await readApiError(response));
-      }
+      await fetchClients();
+      setSelectedClient(null);
+      setToastInfo({
+        title: "SUCESSO",
+        message: "Informações da cliente atualizadas com sucesso!"
+      });
     } catch (error) {
       console.error("Erro na atualização:", error);
-      alert(`Não foi possível atualizar a cliente. ${error.message}`);
+      const errorDetail = formatarErroApi(error);
+      setToastInfo({
+        title: "ERRO AO ATUALIZAR",
+        message: `Não foi possível atualizar a cliente.\n${errorDetail}`
+      });
     }
   };
 
-  // Excluir Cliente do Banco (DELETE) com janela de decisão e aviso de sucesso
-  const handleDeleteClient = async (id) => {
-    const confirmacao = window.confirm("Deseja mesmo excluir essa cliente?");
-    if (!confirmacao) return;
+  // Excluir Cliente (com confirmação customizada)
+  const requestDeleteClient = (id) => {
+    setConfirmInfo({
+      title: "EXCLUIR CLIENTE",
+      message: "Tem certeza de que deseja excluir esta cliente? Esta ação não poderá ser desfeita.",
+      onConfirm: async () => {
+        setConfirmInfo(null);
+        try {
+          await api(`/clientes/${id}/`, {
+            method: "DELETE",
+          });
 
-    try {
-      const token = localStorage.getItem("access");
-      const response = await fetch(`${API_BASE}/clientes/${id}/`, {
-        method: "DELETE",
-        headers: {
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-
-      if (response.ok) {
-        await fetchClients();
-        setSelectedClient(null);
-        alert("A cliente foi excluída com sucesso!");
-      } else {
-        alert("Erro ao excluir cliente: " + await readApiError(response));
+          await fetchClients();
+          setSelectedClient(null);
+          setToastInfo({
+            title: "SUCESSO",
+            message: "A cliente foi excluída com sucesso!"
+          });
+        } catch (error) {
+          console.error("Erro na exclusão:", error);
+          const errorDetail = formatarErroApi(error);
+          setToastInfo({
+            title: "ERRO AO EXCLUIR",
+            message: `Não foi possível excluir a cliente.\n${errorDetail}`
+          });
+        }
       }
-    } catch (error) {
-      console.error("Erro na exclusão:", error);
-      alert(`Não foi possível excluir a cliente. ${error.message}`);
-    }
+    });
   };
 
   const totalClientsCount = clients.length;
@@ -486,7 +497,7 @@ export default function AdminClientes() {
                 {Icons.close}
               </button>
             </div>
-            <form onSubmit={handleCreateClient} className="clients-form">
+            <form onSubmit={handleCreateClient} className="clients-form" noValidate>
               <div className="clients-form-group">
                 <label>Nome Completo</label>
                 <input
@@ -559,7 +570,7 @@ export default function AdminClientes() {
                 {Icons.close}
               </button>
             </div>
-            <form onSubmit={handleUpdateClient} className="clients-form">
+            <form onSubmit={handleUpdateClient} className="clients-form" noValidate>
               <div className="clients-form-group">
                 <label>Nome Completo</label>
                 <input
@@ -596,7 +607,7 @@ export default function AdminClientes() {
                 <button
                   type="button"
                   className="clients-btn-delete"
-                  onClick={() => handleDeleteClient(selectedClient.id_usuario)}
+                  onClick={() => requestDeleteClient(selectedClient.id_usuario)}
                 >
                   EXCLUIR CLIENTE
                 </button>
@@ -614,6 +625,51 @@ export default function AdminClientes() {
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* ---- MODAL CUSTOMIZADO DE AVISOS (TOAST) ---- */}
+      {toastInfo && (
+        <div className="clients-toast-overlay" onClick={() => setToastInfo(null)}>
+          <div className="clients-toast-card" onClick={(e) => e.stopPropagation()}>
+            <h3 className="clients-toast-title">{toastInfo.title}</h3>
+            <p className="clients-toast-message">{toastInfo.message}</p>
+            <div className="clients-toast-actions">
+              <button
+                type="button"
+                className="dash-primary-btn"
+                onClick={() => setToastInfo(null)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ---- MODAL CUSTOMIZADO DE CONFIRMAÇÃO (EXCLUSÃO) ---- */}
+      {confirmInfo && (
+        <div className="clients-toast-overlay" onClick={() => setConfirmInfo(null)}>
+          <div className="clients-toast-card" onClick={(e) => e.stopPropagation()}>
+            <h3 className="clients-toast-title">{confirmInfo.title}</h3>
+            <p className="clients-toast-message">{confirmInfo.message}</p>
+            <div className="clients-toast-actions">
+              <button
+                type="button"
+                className="clients-btn-cancel"
+                onClick={() => setConfirmInfo(null)}
+              >
+                CANCELAR
+              </button>
+              <button
+                type="button"
+                className="clients-btn-delete"
+                onClick={confirmInfo.onConfirm}
+              >
+                CONFIRMAR EXCLUSÃO
+              </button>
+            </div>
           </div>
         </div>
       )}
