@@ -184,6 +184,16 @@
   color: #e0556f;
 }
 
+.products-status--out {
+  background: rgba(173, 24, 56, 0.35);
+  color: #ff7a93;
+}
+
+.products-status--inactive {
+  background: #1d1d1d;
+  color: #8a8a8a;
+}
+
 .products-edit {
   justify-self: end;
   background: none;
@@ -207,6 +217,174 @@
   font-size: 10px;
   color: var(--faint);
   border-bottom: 1px solid var(--border);
+}
+
+/* ---- Modal: novo produto (mesmo visual do modal de clientes) ---- */
+.products-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  box-sizing: border-box;
+  animation: productsFadeIn 0.2s ease forwards;
+}
+
+.products-modal-card {
+  background: #141416;
+  border: 1px solid var(--border, #2a2a2e);
+  width: 100%;
+  max-width: 560px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  box-sizing: border-box;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.products-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.products-modal-header h2 {
+  font-family: "Anton", "Bebas Neue", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.products-modal-close {
+  background: none;
+  border: none;
+  color: var(--faint, #666);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  transition: color 0.2s;
+}
+
+.products-modal-close:hover {
+  color: #fff;
+}
+
+.products-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.products-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.products-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.products-form-group label {
+  font-size: 8px;
+  letter-spacing: 1.2px;
+  color: var(--faint, #888);
+}
+
+.products-form-group input,
+.products-form-group textarea {
+  background: #1a1a1e;
+  border: 1px solid var(--border, #2a2a2e);
+  padding: 10px 12px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+  border-radius: 0;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.products-form-group textarea {
+  min-height: 84px;
+  resize: vertical;
+}
+
+.products-form-group input:focus,
+.products-form-group textarea:focus {
+  border-color: var(--red, #ad1238);
+}
+
+.products-form-hint {
+  font-size: 9px;
+  color: var(--faint, #777);
+}
+
+.products-form-check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #1a1a1e;
+  border: 1px solid var(--border, #2a2a2e);
+  font-size: 10px;
+  color: #aaa;
+  cursor: pointer;
+}
+
+.products-form-check input {
+  accent-color: var(--red, #ad1238);
+  width: 15px;
+  height: 15px;
+  margin: 0;
+}
+
+.products-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.products-btn-cancel {
+  background: none;
+  border: 1px solid var(--border, #2a2a2e);
+  color: #aaa;
+  padding: 0 18px;
+  height: 40px;
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.products-btn-cancel:hover {
+  border-color: #666;
+  color: #fff;
+}
+
+.products-modal-actions .dash-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+@keyframes productsFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 /* ============ RESPONSIVO ============ */
@@ -245,6 +423,18 @@
 }
 
 @media (max-width: 520px) {
+  .products-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .products-modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .products-modal-actions button {
+    width: 100%;
+  }
+
   .products-summary {
     grid-template-columns: 1fr;
   }

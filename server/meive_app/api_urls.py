@@ -11,6 +11,7 @@ from meive_app.views import ClienteViewSet
 router = DefaultRouter()
 router.register("servicos", v.ServicoViewSet, basename="servico")
 router.register("produtos", v.ProdutoViewSet, basename="produto")
+router.register("admin/produtos", v.ProdutoAdminViewSet, basename="produto-admin")
 router.register("cursos", v.CursoViewSet, basename="curso")
 router.register("usuarios", v.UsuarioViewSet, basename="usuario")
 router.register("agendamentos", v.AgendamentoViewSet, basename="agendamento")

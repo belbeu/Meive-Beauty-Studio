@@ -5,7 +5,7 @@
 #  - Todas as outras tabelas: somente administrador (tipo ADMIN).
 #
 
-from rest_framework import permissions, viewsets
+from rest_framework import mixins, permissions, viewsets
 
 from .models import (
     Agendamento,
@@ -54,6 +54,18 @@ class CursoViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 # ---------- Somente administrador ----------
+
+class ProdutoAdminViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
+    """Todos os produtos (inclusive inativos) para o painel admin: lista e cadastra.
+
+    A rota pública /produtos/ só devolve os ativos; o painel precisa ver
+    também os inativos para contar e listar o estoque completo.
+    """
+
+    queryset = Produto.objects.all().order_by("id_produto")
+    serializer_class = ProdutoSerializer
+    permission_classes = [permissions.IsAdminUser]
+
 
 class UsuarioViewSet(viewsets.ModelViewSet):
     queryset = Usuario.objects.all().order_by("id_usuario")
