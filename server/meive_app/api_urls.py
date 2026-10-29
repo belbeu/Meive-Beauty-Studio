@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import api_views as v
 from .auth_api import EuView, LoginView, RegistroView, RecuperarSenhaDiretaView
+from .produto_imagem import ProdutoImagemUploadView, ProdutoImagemView
 from meive_app.views import ClienteViewSet
 
 router = DefaultRouter()
@@ -27,6 +28,8 @@ urlpatterns = [
     path("auth/refresh/", TokenRefreshView.as_view()),
     path("auth/registro/", RegistroView.as_view()),
     path("auth/eu/", EuView.as_view()),
+    path("admin/upload/produto-imagem/", ProdutoImagemUploadView.as_view()),
+    path("produtos/imagem/<int:pk>/", ProdutoImagemView.as_view(), name="produto-imagem"),
     # ADICIONE ESTA LINHA ABAIXO:
     path("auth/recuperar-senha/", RecuperarSenhaDiretaView.as_view()),
 ] + router.urls

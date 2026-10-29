@@ -87,6 +87,19 @@ class Produto(models.Model):
         db_table = 'produto'
 
 
+class ProdutoImagem(models.Model):
+    """Foto enviada pelo painel admin. Fica no banco (Neon) porque o disco do
+    Render é apagado a cada deploy/reinício; o endereço dela vai em Produto.imagem_url."""
+
+    id_imagem = models.AutoField(primary_key=True)
+    tipo_conteudo = models.CharField(max_length=50)
+    conteudo = models.BinaryField()
+    criado_em = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'produto_imagem'
+
+
 class Servico(models.Model):
     id_servico = models.AutoField(primary_key=True)
     nome = models.CharField(max_length=150)

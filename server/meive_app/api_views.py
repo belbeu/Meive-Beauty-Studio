@@ -5,7 +5,13 @@
 #  - Todas as outras tabelas: somente administrador (tipo ADMIN).
 #
 
+import re
+
+from django.db import transaction
+from django.http import Http404
 from rest_framework import mixins, permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import (
     Agendamento,
@@ -55,8 +61,12 @@ class CursoViewSet(viewsets.ReadOnlyModelViewSet):
 
 # ---------- Somente administrador ----------
 
-class ProdutoAdminViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet):
-    """Todos os produtos (inclusive inativos) para o painel admin: lista e cadastra.
+class ProdutoAdminViewSet(
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.ReadOnlyModelViewSet,
+):
+    """Todos os produtos (inclusive inativos) para o painel admin: lista, cadastra e edita.
 
     A rota pública /produtos/ só devolve os ativos; o painel precisa ver
     também os inativos para contar e listar o estoque completo.
@@ -65,6 +75,36 @@ class ProdutoAdminViewSet(mixins.CreateModelMixin, viewsets.ReadOnlyModelViewSet
     queryset = Produto.objects.all().order_by("id_produto")
     serializer_class = ProdutoSerializer
     permission_classes = [permissions.IsAdminUser]
+
+    @action(detail=True, methods=["post"])
+    def vender(self, request, pk=None):
+        """Registra uma venda manual: só baixa o estoque (não guarda histórico).
+
+        A conta é feita aqui, com o produto travado na transação, para que a lista
+        desatualizada na tela ou dois cliques ao mesmo tempo nunca deixem o estoque negativo.
+        """
+        valor = str(request.data.get("quantidade", "")).strip()
+        if not re.fullmatch(r"\d+", valor) or int(valor) < 1:
+            return Response(
+                {"quantidade": ["Informe uma quantidade inteira, de 1 em diante."]}, status=400
+            )
+        quantidade = int(valor)
+
+        with transaction.atomic():
+            produto = Produto.objects.select_for_update().filter(pk=pk).first()
+            if produto is None:
+                raise Http404
+            if produto.ativo is False:
+                return Response({"detail": "Este produto está inativo."}, status=400)
+            if quantidade > produto.estoque_atual:
+                return Response(
+                    {"quantidade": [f"Estoque insuficiente: restam {produto.estoque_atual} un."]},
+                    status=400,
+                )
+            produto.estoque_atual -= quantidade
+            produto.save(update_fields=["estoque_atual"])
+
+        return Response(self.get_serializer(produto).data)
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):

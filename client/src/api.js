@@ -8,10 +8,12 @@ export const BASE_URL = (
 ).replace(/\/+$/, "");
 
 function enviar(path, options, token) {
+  // Em upload (FormData) o navegador define o Content-Type sozinho, com o boundary.
+  const ehUpload = typeof FormData !== "undefined" && options.body instanceof FormData;
   return fetch(`${BASE_URL}${path}`, {
     ...options,
     headers: {
-      "Content-Type": "application/json",
+      ...(ehUpload ? {} : { "Content-Type": "application/json" }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...options.headers,
     },
