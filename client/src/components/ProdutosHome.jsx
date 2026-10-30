@@ -1,52 +1,22 @@
 import React, { useState } from "react";
 import "./ProdutosHome.css";
-import serumImg from "../assets/serum de cilios.webp";
-import removedorImg from "../assets/removedor.webp";
-import espumaImg from "../assets/espuma para cilios.webp";
-import gelImg from "../assets/gel de limpeza.webp";
 import { Link } from "react-router-dom";
+import FotoProduto from "./FotoProduto";
+import { useProdutosLoja, ordenarParaLoja, formatarPreco } from "../produtosLoja";
+
+const QUANTIDADE_NA_HOME = 4;
 
 export default function ProdutosSection() {
-  // O estado para controlar qual produto está com o texto expandido qual não
   const [expandedId, setExpandedId] = useState(null);
+  const { produtos, carregando, erro, tentarNovamente } = useProdutosLoja();
 
-  const productsData = [
-    {
-      id: "prod-1",
-      image: serumImg,
-      title: "Sérum para Cílios",
-      price: "R$ 89",
-      description: "Fórmula multissérum leve para umas pestanas e sobrancelhas mais espessas, densas e com aspeto saudável.",
-    },
-    {
-      id: "prod-2",
-      image: removedorImg,
-      title: "Removedor Óleo-Free",
-      price: "R$ 45",
-      description: "Remove suavemente a maquilhagem e as impurezas diárias sem deixar resíduos oleosos na sua pele.",
-    },
-    {
-      id: "prod-3",
-      image: espumaImg,
-      title: "Espuma para Cílios",
-      price: "R$ 55",
-      description: "Limpeza profunda e delicada, ideal para a manutenção perfeita e duradoura das suas extensões.",
-    },
-    {
-      id: "prod-4",
-      image: gelImg,
-      title: "Gel de Limpeza Facial",
-      price: "R$ 68",
-      description: "Purifica a pele diariamente, controlando a oleosidade e mantendo a hidratação natural do rosto.",
-    },
-  ];
+  const destaques = ordenarParaLoja(produtos).slice(0, QUANTIDADE_NA_HOME);
 
-  // Função que abre ou fecha a descrição do produto clicado
   const handleToggleDescription = (id) => {
     if (expandedId === id) {
-      setExpandedId(null); // Fecha se já estiver aberto
+      setExpandedId(null);
     } else {
-      setExpandedId(id); // Abre o novo e fecha os outros
+      setExpandedId(id);
     }
   };
 
@@ -62,42 +32,92 @@ export default function ProdutosSection() {
         </p>
       </div>
 
-      <div className="products-grid">
-        {productsData.map((product) => (
-          <div key={product.id} className="product-card">
-            <div 
-              className="product-image" 
-              style={{ backgroundImage: `url(${product.image})` }}
-            ></div>
-            <div className="product-info">
-              <h3>{product.title}</h3>
-              
-              {/* Descrição agora é clicável e muda de classe dinamicamente */}
-              <p 
-                className={`product-description ${expandedId === product.id ? "expanded" : ""}`}
-                onClick={() => handleToggleDescription(product.id)}
-                title="Clique para ler mais"
-              >
-                {product.description}
-              </p>
-              
-              <div className="product-footer">
-                <span className="product-price">{product.price}</span>
-                <button className="product-buy-btn">COMPRAR</button>
+      {/* Banner Informativo da Tierlist na Home */}
+      <div className="products-tierlist-banner">
+        <div className="banner-icon">✨</div>
+        <div className="banner-text">
+          <h4>Monte sua tierlist de beleza com o que utilizamos aqui!</h4>
+          <p>
+            Como funciona: você cria sua cestinha de interesse e pode solicitar a compra dos produtos 
+            entrando em contato conosco ou presencialmente no estúdio.
+          </p>
+        </div>
+      </div>
+
+      {carregando && (
+        <div className="products-grid" aria-busy="true" aria-label="Carregando produtos">
+          {Array.from({ length: QUANTIDADE_NA_HOME }).map((_, i) => (
+            <div key={i} className="product-card product-card--skeleton">
+              <div className="product-image" />
+              <div className="product-info">
+                <span className="skeleton-line skeleton-line--title" />
+                <span className="skeleton-line" />
+                <span className="skeleton-line skeleton-line--short" />
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
+
+      {!carregando && erro && (
+        <div className="products-message">
+          <p>Não foi possível carregar os produtos no momento.</p>
+          <button type="button" className="product-buy-btn" onClick={tentarNovamente}>
+            TENTAR NOVAMENTE
+          </button>
+        </div>
+      )}
+
+      {!carregando && !erro && destaques.length === 0 && (
+        <div className="products-message">
+          <p>Novidades chegando em breve por aqui.</p>
+        </div>
+      )}
+
+      {!carregando && !erro && destaques.length > 0 && (
+        <div className="products-grid">
+          {destaques.map((product) => (
+            <div key={product.id_produto} className="product-card">
+              <div className="product-image">
+                <FotoProduto src={product.imagem_url} alt={product.nome} />
+              </div>
+              <div className="product-info">
+                <h3>{product.nome}</h3>
+
+                {product.descricao ? (
+                  <p
+                    className={`product-description ${expandedId === product.id_produto ? "expanded" : ""}`}
+                    onClick={() => handleToggleDescription(product.id_produto)}
+                    title="Clique para ler mais"
+                  >
+                    {product.descricao}
+                  </p>
+                ) : (
+                  <p className="product-description product-description--static">
+                    {product.categoria || ""}
+                  </p>
+                )}
+
+                <div className="product-footer">
+                  <span className="product-price">{formatarPreco(product.preco)}</span>
+                  <button className="product-buy-btn" disabled={!product.em_estoque}>
+                    {product.em_estoque ? "ADICIONAR NA CESTINHA" : "ESGOTADO"}
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="products-section-footer">
         <Link to="/produtos" className="section-more-link">
-              <span>Ver mais produtos</span>
-              <div className="section-arrow-box">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-           </svg>
+          <span>Ver mais produtos</span>
+          <div className="section-arrow-box">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </div>
         </Link>
       </div>

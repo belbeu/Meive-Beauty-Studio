@@ -82,11 +82,11 @@ export default function Footer() {
           <ul className="schedule-list">
             <li>
               <span>Ter - Sex</span>
-              <span className="highlight-time">13h às 21h</span>
+              <span className="highlight-time">9h às 22h</span>
             </li>
             <li>
               <span>Sábado</span>
-              <span className="highlight-time">9h às 1h</span>
+              <span className="highlight-time">9h às 17h</span>
             </li>
             <li>
               <span>Dom - Seg</span>
@@ -109,7 +109,7 @@ export default function Footer() {
             </li>
             <li>
               <span className="icon">📧</span>
-              <span>meivestudio@email.com</span>
+              <span>meivebeautystudio@gmail.com</span>
             </li>
           </ul>
         </div>

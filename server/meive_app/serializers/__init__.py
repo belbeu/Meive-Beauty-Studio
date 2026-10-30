@@ -1,7 +1,7 @@
 ﻿from .turma import TurmaSerializer
 from .avaliacao import AvaliacaoSerializer
 from .material_curso import MaterialCursoSerializer
-from .produto import ProdutoSerializer
+from .produto import ProdutoSerializer, ProdutoPublicoSerializer
 from .agendamento import AgendamentoSerializer
 from .matricula import MatriculaSerializer
 from .curso import CursoSerializer

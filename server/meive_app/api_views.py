@@ -32,6 +32,7 @@ from .serializers import (
     CursoSerializer,
     MaterialCursoSerializer,
     MatriculaSerializer,
+    ProdutoPublicoSerializer,
     ProdutoSerializer,
     ServicoSerializer,
     TurmaSerializer,
@@ -49,7 +50,7 @@ class ServicoViewSet(viewsets.ReadOnlyModelViewSet):
 
 class ProdutoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Produto.objects.filter(ativo=True).order_by("id_produto")
-    serializer_class = ProdutoSerializer
+    serializer_class = ProdutoPublicoSerializer  # sem custo nem estoque exato
     permission_classes = [permissions.AllowAny]
 
 

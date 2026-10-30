@@ -301,6 +301,226 @@ body {
   background: #c8102e;
 }
 
+/* --- Produtos vindos do banco --- */
+
+/* Sem foto (ou link quebrado): a marca aparece em marca-d'água atrás da imagem */
+.image-container {
+  isolation: isolate;
+}
+
+.image-container::before {
+  content: "MEIVE";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  color: #2a2a2a;
+}
+
+.image-container img {
+  display: block;
+}
+
+.cart-btn:disabled,
+.product-buy-btn:disabled,
+.product-buy-btn:disabled:hover {
+  background: #2a2a2a;
+  color: #777777;
+  border-color: #2a2a2a;
+  cursor: not-allowed;
+}
+
+.product-message {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  color: var(--text-secondary);
+}
+
+.product-message p {
+  margin: 0;
+}
+
+.product-message .product-buy-btn {
+  margin-left: 0;
+}
+
+.product-card--skeleton .image-container {
+  cursor: default;
+  animation: produtoPulse 1.4s ease-in-out infinite;
+}
+
+.product-card--skeleton .image-container::before {
+  content: none;
+}
+
+/* Cartões vazios enquanto os produtos carregam */
+@keyframes produtoPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.skeleton-line {
+  display: block;
+  height: 12px;
+  width: 100%;
+  margin-top: 10px;
+  background: #1d1d1d;
+  animation: produtoPulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line--title {
+  height: 16px;
+  width: 60%;
+}
+
+.skeleton-line--short {
+  width: 40%;
+}
+
+/* --- Padronização de Tamanho e Enquadramento das Fotos --- */
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #141414; /* Fundo uniforme nos espaços vazios */
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Mantém a proporção inteira da foto sem cortar ou estourar */
+  padding: 16px;       /* Respiro elegante para as embalagens */
+  transition: transform 0.4s ease;
+}
+
+/* Para o componente ProdutosHome.css também */
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 260px; /* Altura fixa padronizada na Home */
+  background-color: #141414;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16px;
+}
+
+/* --- Nova Barra de Pesquisa Estilizada --- */
+.search-box-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #161616;
+  border: 1px solid #333333;
+  border-radius: 6px;
+  padding: 8px 14px;
+  gap: 10px;
+  width: 280px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-box-wrapper:focus-within {
+  border-color: var(--accent-red, #c91e3e);
+  box-shadow: 0 0 0 2px rgba(201, 30, 62, 0.15);
+}
+
+.search-icon-svg {
+  color: #777777;
+  flex-shrink: 0;
+}
+
+.search-input-field {
+  background: none;
+  border: none;
+  color: #ffffff;
+  outline: none;
+  font-size: 0.85rem;
+  width: 100%;
+  letter-spacing: 0.5px;
+}
+
+.search-input-field::placeholder {
+  color: #666666;
+}
+
+.search-clear-btn {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0;
+  line-height: 1;
+}
+
+.search-clear-btn:hover {
+  color: #fff;
+}
+
+/* --- Banner Informativo Elegante (Tierlist) --- */
+.products-tierlist-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: linear-gradient(135deg, #161214 0%, #111111 100%);
+  border: 1px solid #2c1a1f;
+  border-left: 4px solid var(--accent-red, #c91e3e);
+  padding: 20px 24px;
+  margin: 0 40px 30px 40px;
+  border-radius: 6px;
+}
+
+.banner-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.banner-text h4 {
+  margin: 0 0 6px 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.banner-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .products-tierlist-banner {
+    margin: 0 20px 20px 20px;
+    padding: 16px;
+  }
+  .search-box-wrapper {
+    width: 100%;
+  }
+}
+
 /* --- Mobile --- */
 @media (max-width: 768px) {
   .hero-section {

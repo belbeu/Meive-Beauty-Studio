@@ -308,3 +308,155 @@
   /* Muda ligeiramente a cor para indicar que está ativo (opcional) */
   color: #E5E5E5; 
 }
+
+/* ---- Produtos vindos do banco ---- */
+
+/* Sem foto (ou link quebrado): a marca aparece em marca-d'água atrás da imagem */
+.product-image {
+  position: relative;
+  isolation: isolate;
+}
+
+.product-image::before {
+  content: "MEIVE";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 6px;
+  color: #2a2a2a;
+}
+
+.product-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Sem descrição cadastrada, mostra a categoria (não é clicável) */
+.product-description--static {
+  cursor: default;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 11px;
+}
+
+.product-buy-btn:disabled,
+.product-buy-btn:disabled:hover {
+  background-color: #333333;
+  color: #888888;
+  cursor: not-allowed;
+}
+
+.products-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 50px 0;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: #cccccc;
+  text-align: center;
+}
+
+.products-message p {
+  margin: 0;
+}
+
+.product-card--skeleton .product-image {
+  animation: produtoPulse 1.4s ease-in-out infinite;
+}
+
+.product-card--skeleton .product-image::before {
+  content: none;
+}
+
+/* Cartões vazios enquanto os produtos carregam */
+@keyframes produtoPulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.skeleton-line {
+  display: block;
+  height: 12px;
+  width: 100%;
+  margin-top: 10px;
+  background: #1d1d1d;
+  animation: produtoPulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-line--title {
+  height: 16px;
+  width: 60%;
+}
+
+.skeleton-line--short {
+  width: 40%;
+}
+
+/* --- Padronização de Altura e Enquadramento das Fotos na Home --- */
+.product-image {
+  position: relative;
+  width: 100%;
+  height: 280px; /* Altura fixa rigorosa para alinhar todos os cards */
+  background-color: #141414; /* Fundo uniforme nos espaços vazios */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Encaixa a foto inteira perfeitamente sem estourar ou cortar */
+  padding: 16px;       /* Respiro elegante ao redor das embalagens */
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.04);
+}
+
+/* --- Banner Informativo Elegante na Home --- */
+.products-tierlist-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  background: linear-gradient(135deg, #161214 0%, #111111 100%);
+  border: 1px solid #2c1a1f;
+  border-left: 4px solid #a71932;
+  padding: 20px 24px;
+  margin-bottom: 35px;
+  border-radius: 6px;
+}
+
+.banner-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  padding-top: 2px;
+}
+
+.banner-text h4 {
+  margin: 0 0 6px 0;
+  font-family: Arial, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.banner-text p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #aaaaaa;
+  line-height: 1.5;
+}
