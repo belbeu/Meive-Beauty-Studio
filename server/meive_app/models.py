@@ -5,10 +5,12 @@ from django.utils import timezone
 
 class Agendamento(models.Model):
     id_agendamento = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_usuario')
-    id_servico = models.ForeignKey('Servico', models.DO_NOTHING, db_column='id_servico')
-    status = models.CharField(max_length=50)
+    id_usuario = models.ForeignKey('Usuario', on_delete=models.CASCADE, db_column='id_usuario')
+    id_servico = models.ForeignKey('Servico', on_delete=models.RESTRICT, db_column='id_servico')
+    status = models.CharField(max_length=50, default='confirmed')
     data_agendamento = models.DateTimeField()
+    valor = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    sinal_pago = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
 
     class Meta:
         db_table = 'agendamento'

@@ -1,6 +1,8 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import "./AdminDashboard.css"; // sidebar, header, botões, avatar e status reaproveitados
 import "./AdminAgenda.css";
+import { api } from "../../api";
+import NovoAgendamentoModal from "./NovoAgendamentoModal";
 
 /* ---------- Ícones (SVG inline, sem dependências) ---------- */
 const iconProps = {
@@ -29,48 +31,11 @@ const Icons = {
   ),
 };
 
-/* ---------- Dados (troque por chamadas à sua API / Supabase) ---------- */
 const STATUS_LABEL = {
   concluded: "CONCLUÍDO",
   ongoing: "EM ATENDIMENTO",
   confirmed: "CONFIRMADO",
 };
-
-// Agendamentos mockados por dia da semana (0 = segunda ... 5 = sábado)
-const MOCK_BY_WEEKDAY = [
-  [
-    { time: "09:00", initials: "LP", name: "Larissa Pires", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "confirmed" },
-    { time: "13:00", initials: "TS", name: "Taís Santos", service: "Manutenção", duration: "2h", price: "R$ 140", status: "confirmed" },
-    { time: "16:00", initials: "NF", name: "Natália Freitas", service: "Lash Lifting", duration: "2h", price: "R$ 150", status: "confirmed" },
-  ],
-  [
-    { time: "09:00", initials: "MC", name: "Marina Castro", service: "Volume Brasileiro", duration: "2h", price: "R$ 230", status: "confirmed" },
-    { time: "11:30", initials: "RB", name: "Renata Barros", service: "Manutenção", duration: "2h", price: "R$ 140", status: "confirmed" },
-    { time: "14:30", initials: "PL", name: "Paula Lima", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "confirmed" },
-    { time: "17:00", initials: "DG", name: "Daniela Gomes", service: "Lash Lifting", duration: "2h", price: "R$ 150", status: "confirmed" },
-  ],
-  [
-    { time: "09:00", initials: "CR", name: "Camila Rodrigues", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "concluded" },
-    { time: "11:30", initials: "BA", name: "Bianca Alves", service: "Manutenção", duration: "2h", price: "R$ 140", status: "ongoing" },
-    { time: "14:30", initials: "JM", name: "Juliana Mendes", service: "Volume Brasileiro", duration: "2h", price: "R$ 230", status: "confirmed" },
-    { time: "17:00", initials: "AC", name: "Aline Costa", service: "Lash Lifting", duration: "2h", price: "R$ 150", status: "confirmed" },
-  ],
-  [
-    { time: "10:00", initials: "FR", name: "Fernanda Reis", service: "Volume Brasileiro", duration: "2h", price: "R$ 230", status: "confirmed" },
-    { time: "13:30", initials: "GM", name: "Gabriela Melo", service: "Manutenção", duration: "2h", price: "R$ 140", status: "confirmed" },
-    { time: "16:00", initials: "IS", name: "Isabela Souza", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "confirmed" },
-  ],
-  [
-    { time: "09:00", initials: "VA", name: "Vanessa Araújo", service: "Lash Lifting", duration: "2h", price: "R$ 150", status: "confirmed" },
-    { time: "11:30", initials: "KT", name: "Karen Teixeira", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "confirmed" },
-    { time: "14:30", initials: "SO", name: "Sabrina Oliveira", service: "Manutenção", duration: "2h", price: "R$ 140", status: "confirmed" },
-    { time: "17:00", initials: "LM", name: "Letícia Moura", service: "Volume Brasileiro", duration: "2h", price: "R$ 230", status: "confirmed" },
-  ],
-  [
-    { time: "09:00", initials: "EC", name: "Eduarda Campos", service: "Volume Russo", duration: "2h", price: "R$ 280", status: "confirmed" },
-    { time: "11:30", initials: "HB", name: "Helena Batista", service: "Manutenção", duration: "2h", price: "R$ 140", status: "confirmed" },
-  ],
-];
 
 const NEXT_FREE_SLOT = "18:30";
 
@@ -93,14 +58,12 @@ function addDays(date, n) {
 const monthName = (d) => d.toLocaleDateString("pt-BR", { month: "long" });
 
 function formatLongDate(d) {
-  // QUARTA-FEIRA, 12 DE JUNHO
   return d
     .toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })
     .toUpperCase();
 }
 
 function formatShortDate(d) {
-  // QUARTA, 12 DE JUNHO
   return formatLongDate(d).replace(/^(\S+?)-FEIRA/, "$1");
 }
 
@@ -115,7 +78,7 @@ function formatRange(start, end) {
 const horarios = (n) => `${n} ${n === 1 ? "horário" : "horários"}`;
 
 /* ---------- Painel de um dia ---------- */
-function DayPanel({ date, appointments }) {
+function DayPanel({ date, appointments, onOpenNew }) {
   const total = appointments.length;
 
   return (
@@ -140,7 +103,7 @@ function DayPanel({ date, appointments }) {
 
       <ul className="agenda-timeline">
         {appointments.map((a) => (
-          <li key={a.time} className="agenda-row">
+          <li key={a.time + a.name} className="agenda-row">
             <span className="agenda-time">{a.time}</span>
             <span
               className={`agenda-marker ${a.status === "ongoing" ? "is-live" : ""}`}
@@ -155,7 +118,7 @@ function DayPanel({ date, appointments }) {
             </div>
             <span className="agenda-price">{a.price}</span>
             <span className={`dash-status dash-status--${a.status}`}>
-              {STATUS_LABEL[a.status]}
+              {STATUS_LABEL[a.status] || "CONFIRMADO"}
             </span>
             <button type="button" className="dash-more" aria-label={`Mais opções de ${a.name}`}>
               •••
@@ -165,7 +128,7 @@ function DayPanel({ date, appointments }) {
 
         <li className="agenda-free">
           <span className="agenda-free-time">{NEXT_FREE_SLOT}</span>
-          <button type="button" className="agenda-free-btn" aria-label="Adicionar agendamento">
+          <button type="button" className="agenda-free-btn" aria-label="Adicionar agendamento" onClick={onOpenNew}>
             {Icons.plus}
           </button>
           <span className="agenda-free-label">HORÁRIO DISPONÍVEL</span>
@@ -175,19 +138,64 @@ function DayPanel({ date, appointments }) {
   );
 }
 
-/* ---------- Componente ---------- */
+/* ---------- Componente Principal ---------- */
 export default function AdminAgenda() {
   const [weekStart, setWeekStart] = useState(() => getMonday(new Date()));
   const [selected, setSelected] = useState(() => Math.min((new Date().getDay() + 6) % 7, 5));
   const [view, setView] = useState("week"); // "week" | "list"
+  
+  const [agendamentosDoBanco, setAgendamentosDoBanco] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Buscar agendamentos reais da API
+  const carregarAgenda = async () => {
+    try {
+      const data = await api("/agendamentos/");
+      const resultados = Array.isArray(data) ? data : data.results || [];
+      setAgendamentosDoBanco(resultados);
+    } catch (err) {
+      console.error("Erro ao carregar agendamentos:", err);
+    }
+  };
+
+  useEffect(() => {
+    carregarAgenda();
+  }, []);
+
+  // Mapeia e filtra os agendamentos por dia da semana com base na data atual selecionada
   const days = useMemo(
     () =>
       WEEK_LABELS.map((label, i) => {
         const date = addDays(weekStart, i);
-        return { label, date, appointments: MOCK_BY_WEEKDAY[i] };
+        const dataStr = date.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+
+        const appointmentsDoDia = agendamentosDoBanco
+          .filter((ag) => ag.data_agendamento && ag.data_agendamento.startsWith(dataStr))
+          .map((ag) => {
+            const horaStr = ag.data_agendamento.split("T")[1]?.substring(0, 5) || "00:00";
+            const nomeCliente = ag.cliente_nome || "Cliente";
+            const iniciais = nomeCliente
+              .split(" ")
+              .map((n) => n[0])
+              .slice(0, 2)
+              .join("")
+              .toUpperCase();
+
+            return {
+              time: horaStr,
+              initials: iniciais || "CL",
+              name: nomeCliente,
+              service: ag.servico_nome || "Serviço",
+              duration: "2h",
+              price: `R$ ${ag.valor || 0}`,
+              status: ag.status || "confirmed",
+            };
+          })
+          .sort((a, b) => a.time.localeCompare(b.time));
+
+        return { label, date, appointments: appointmentsDoDia };
       }),
-    [weekStart]
+    [weekStart, agendamentosDoBanco]
   );
 
   const current = days[selected];
@@ -204,7 +212,7 @@ export default function AdminAgenda() {
           <button type="button" className="dash-icon-btn" aria-label="Buscar">
             {Icons.search}
           </button>
-          <button type="button" className="dash-primary-btn">
+          <button type="button" className="dash-primary-btn" onClick={() => setIsModalOpen(true)}>
             + NOVO AGENDAMENTO
           </button>
         </div>
@@ -273,14 +281,30 @@ export default function AdminAgenda() {
               ))}
             </div>
 
-            <DayPanel date={current.date} appointments={current.appointments} />
+            <DayPanel 
+              date={current.date} 
+              appointments={current.appointments} 
+              onOpenNew={() => setIsModalOpen(true)} 
+            />
           </>
         ) : (
           days.map((d) => (
-            <DayPanel key={d.label} date={d.date} appointments={d.appointments} />
+            <DayPanel 
+              key={d.label} 
+              date={d.date} 
+              appointments={d.appointments} 
+              onOpenNew={() => setIsModalOpen(true)} 
+            />
           ))
         )}
       </section>
+
+      {/* ---- Modal de Cadastro de Novo Agendamento ---- */}
+      <NovoAgendamentoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSuccess={carregarAgenda}
+      />
     </main>
   );
 }
