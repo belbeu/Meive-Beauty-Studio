@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import ThemeToggle from "./ThemeToggle"
 import "./Navbar.css";
 
 export default function Navbar() {
@@ -54,6 +55,7 @@ export default function Navbar() {
 
       {/* Ações da Navbar Desktop */}
       <div className="nav-actions">
+        <ThemeToggle />
         <button className="cart-box-button" aria-label="Carrinho">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
             <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>

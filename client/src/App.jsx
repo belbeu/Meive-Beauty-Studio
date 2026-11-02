@@ -5,6 +5,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { ThemeProvider } from "../src/theme/ThemeContext"; 
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -60,7 +61,6 @@ function HomePage() {
       <ProdutosSection />
       {/* <Testimonials /> */}
       <Contact />
-      <div className="section-divider"></div>
       <Footer />
       <FloatingSocials />
     </main>
@@ -69,6 +69,7 @@ function HomePage() {
 
 export default function App() {
   return (
+    <ThemeProvider>
     <Router basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <Routes>
@@ -121,5 +122,6 @@ export default function App() {
         </Routes>
       </AuthProvider>
     </Router>
+    </ThemeProvider>
   );
 }

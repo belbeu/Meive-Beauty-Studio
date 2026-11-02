@@ -27,28 +27,27 @@ def _limpar(valor, limite):
     return " ".join(str(valor or "").split())[:limite]
 
 
+
 @api_view(["POST"])
-@authentication_classes([])  # rota pública: não depende de login nem de token
+@authentication_classes([])
 @permission_classes([AllowAny])
 @throttle_classes([AgendarThrottle])
 def enviar_agendamento(request):
     nome = _limpar(request.data.get("nome"), 150)
     whatsapp = _limpar(request.data.get("whatsapp"), 30)
-    servico = _limpar(request.data.get("servico"), 200)
     mensagem = str(request.data.get("mensagem") or "").strip()[:2000]
 
-    if not nome or not whatsapp or not servico or not mensagem:
+    if not nome or not whatsapp or not mensagem:
         return Response(
             {"status": "erro", "mensagem": "Preencha todos os campos."},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
     corpo = f"""
-Novo contato recebido pelo site do Meive Beauty Studio.
+Nova mensagem recebida pelo site do Mevie Beauty Studio.
 
 Nome: {nome}
 WhatsApp: {whatsapp}
-Serviço desejado: {servico}
 
 Mensagem:
 {mensagem}
@@ -56,14 +55,15 @@ Mensagem:
 
     try:
         send_mail(
-            subject=f"Novo Agendamento - {nome}",
+            subject=f"Nova mensagem pelo site - {nome}",
             message=corpo,
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[settings.EMAIL_HOST_USER],
         )
+
     except Exception:
-        # o detalhe do erro vai para o log do servidor, não para quem enviou o formulário
-        logger.exception("Erro ao enviar e-mail do formulário de agendamento")
+        logger.exception("Erro ao enviar e-mail do formulário de contato")
+
         return Response(
             {
                 "status": "erro",
@@ -73,6 +73,6 @@ Mensagem:
         )
 
     return Response(
-        {"status": "sucesso", "mensagem": "E-mail enviado com sucesso!"},
+        {"status": "sucesso", "mensagem": "Mensagem enviada com sucesso!"},
         status=status.HTTP_200_OK,
     )

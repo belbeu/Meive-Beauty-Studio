@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../components/Footer";
 import { usuarioAtual, logout as fazerLogout } from "../../auth";
 import "./ClienteDashboard.css";
+import ThemeToggle from "../ThemeToggle";
 
 /* ---------- Dados mockados (troque pela API/back depois) ---------- */
 const NEXT_APPOINTMENT = {
@@ -126,6 +127,7 @@ export default function ClientDashboard() {
             </div>
 
             <div className="client-user">
+              <ThemeToggle />
               <button
                 type="button"
                 className="client-avatar"

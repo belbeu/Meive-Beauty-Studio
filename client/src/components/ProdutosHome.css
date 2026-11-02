@@ -460,3 +460,63 @@
   color: #aaaaaa;
   line-height: 1.5;
 }
+
+
+/* ========================================
+   CORREÇÃO DO TEMA CLARO - PRODUTOS
+======================================== */
+
+.products-section {
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.products-header-container {
+  border-bottom-color: var(--c-border);
+}
+
+.products-title {
+  color: var(--c-text);
+}
+
+.products-top-note {
+  color: var(--c-text-muted);
+}
+
+.products-section .product-card {
+  background-color: var(--c-surface);
+  border-color: var(--c-border);
+}
+
+.products-section .product-image {
+  background-color: var(--c-surface);
+}
+
+.products-section .product-info h3 {
+  color: var(--c-text);
+}
+
+.products-section .product-price {
+  color: var(--c-primary);
+}
+
+.products-section .product-buy-btn {
+  background-color: var(--c-primary);
+  color: #ffffff;
+}
+
+.products-section .section-more-link {
+  color: var(--c-text);
+}
+
+.products-section .section-arrow-box {
+  background-color: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.products-section .section-more-link:hover .section-arrow-box {
+  background-color: var(--c-primary);
+  color: #ffffff;
+}

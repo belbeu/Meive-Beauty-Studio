@@ -1,31 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600&display=swap");
 
-:root {
-  --bg-color: #0d0d0d;
-  --text-primary: #ffffff;
-  --text-secondary: #888888;
-  --accent-red: #c91e3e;
-  --border-color: #333333;
-  --card-bg: #111111;
-
-  /* Cores do hero */
-  --hero-white: #f5f2f2 ;
-  --hero-wine: #9e1b32;
-  --hero-label: #9f1834;
-  --hero-line: #8a8a8a;
-}
-
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-primary);
-}
-
 .produto-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 20px;
+  width: 100%;
+  min-height: 80vh;
+  box-sizing: border-box;
+  padding: 0 40px 80px 40px; 
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* --- Hero Section --- */
@@ -35,10 +17,9 @@ body {
   align-items: flex-start;
   text-align: left;
   padding: 80px 0 60px 40px;
-  background: radial-gradient(circle at 100% 0%, rgba(60, 30, 90, 0.35) 0%, transparent 45%);
+  background: radial-gradient(circle at 100% 0%, rgba(173, 24, 56, 0.1) 0%, transparent 45%);
 }
 
-/* "— MEIVE SHOP" */
 .hero-subtitle {
   display: flex;
   align-items: center;
@@ -49,40 +30,36 @@ body {
   font-weight: 600;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--hero-label);
+  color: #ad1838;
 }
 
-/* linha fininha antes do texto */
 .red-line {
   display: inline-block;
   width: 36px;
   height: 1px;
-  background-color: var(--hero-line);
+  background-color: var(--c-text-muted, #8a8a8a);
 }
 
-/* BEAUTY ESSENTIALS. */
 .hero-title {
   margin: 0;
   font-family: 'Anton', sans-serif;
-  font-weight: 400; /* a Anton já é pesada, não use bold */
+  font-weight: 400;
   font-size: clamp(3.5rem, 11vw, 8rem);
   line-height: 1;
   letter-spacing: 0.01em;
   text-transform: uppercase;
-  color:var(--hero-wine);
- color: var(--hero-white);
+  color: var(--c-text);
 }
 
-/* só o título usa o vinho; o resto do site continua com --accent-red */
-.text-red {
-  color: var(--hero-wine);
+.texto-vermelho {
+  color: #ad1838;
 }
 
 .hero-description {
   margin: 20px 0 0;
   font-family: 'Poppins', sans-serif;
   font-size: 1.1rem;
-  color: var(--text-secondary);
+  color: var(--c-text-muted, #888888);
 }
 
 /* --- Filter Section --- */
@@ -90,8 +67,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  border-top: 1px solid var(--c-border, #333333);
+  border-bottom: 1px solid var(--c-border, #333333);
   padding: 20px 0;
   margin: 0 40px;
 }
@@ -104,7 +81,7 @@ body {
 .filter-btn {
   background: none;
   border: none;
-  color: var(--text-secondary);
+  color: var(--c-text-muted, #888888);
   font-size: 0.85rem;
   letter-spacing: 1.5px;
   cursor: pointer;
@@ -113,37 +90,18 @@ body {
 }
 
 .filter-btn:hover {
-  color: var(--text-primary);
+  color: var(--c-text);
 }
 
 .filter-btn.active {
-  color: var(--text-primary);
-  border-bottom: 2px solid var(--accent-red);
-}
-
-.search-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.search-box input {
-  background: none;
-  border: none;
-  color: var(--text-primary);
-  outline: none;
-  font-size: 0.85rem;
-  letter-spacing: 1px;
-}
-
-.search-icon {
-  color: var(--text-secondary);
+  color: var(--c-text);
+  border-bottom: 2px solid #ad1838;
 }
 
 /* --- Product Grid --- */
 .product-count {
   margin: 30px 40px;
-  color: var(--text-secondary);
+  color: var(--c-text-muted, #888888);
   font-size: 0.8rem;
   letter-spacing: 1px;
 }
@@ -165,15 +123,21 @@ body {
   position: relative;
   width: 100%;
   aspect-ratio: 1 / 1;
-  background-color: var(--card-bg);
+  background-color: var(--c-surface, #141414);
+  border: 1px solid var(--c-border, transparent);
   overflow: hidden;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .image-container img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 16px;
   transition: transform 0.4s ease;
 }
 
@@ -185,7 +149,7 @@ body {
   position: absolute;
   top: 15px;
   left: 15px;
-  background-color: var(--accent-red);
+  background-color: #ad1838;
   color: white;
   font-size: 0.7rem;
   font-weight: bold;
@@ -232,7 +196,6 @@ body {
 }
 
 /* --- Product Info --- */
-/* coluna: categoria/nome em cima, preço + botões embaixo (ocupando a largura toda) */
 .product-info {
   display: flex;
   flex-direction: column;
@@ -240,7 +203,7 @@ body {
 }
 
 .product-category {
-  color: var(--text-secondary);
+  color: var(--c-text-muted, #888888);
   font-size: 0.7rem;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -250,6 +213,7 @@ body {
   margin: 5px 0 0 0;
   font-size: 1rem;
   font-weight: normal;
+  color: var(--c-text);
 }
 
 .product-price-action {
@@ -260,15 +224,15 @@ body {
 }
 
 .product-price {
-  color: var(--accent-red);
+  color: #ad1838;
   font-size: 1.1rem;
   font-weight: 500;
 }
 
 .cart-btn {
   background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  border: 1px solid var(--c-border, #333333);
+  color: var(--c-text);
   width: 40px;
   height: 40px;
   display: flex;
@@ -277,18 +241,19 @@ body {
   border-radius: 4px;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
+  padding: 10px;
 }
 
 .cart-btn:hover {
-  border-color: var(--accent-red);
-  background-color: rgba(201, 30, 62, 0.1);
+  border-color: #ad1838;
+  background-color: rgba(173, 24, 56, 0.1);
 }
 
 .product-buy-btn {
-  margin-left: auto; /* empurra o botão para o canto direito */
+  margin-left: auto;
   padding: 12px 22px;
   border: none;
-  background: var(--hero-wine);
+  background: #ad1838;
   color: #fff;
   font-weight: 700;
   font-size: 0.85rem;
@@ -298,120 +263,14 @@ body {
 }
 
 .product-buy-btn:hover {
-  background: #c8102e;
+  background: #c31c40;
 }
 
-/* --- Produtos vindos do banco --- */
-
-/* Sem foto (ou link quebrado): a marca aparece em marca-d'água atrás da imagem */
-.image-container {
-  isolation: isolate;
-}
-
-.image-container::before {
-  content: "MEIVE";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  font-weight: 700;
-  letter-spacing: 0.4em;
-  color: #2a2a2a;
-}
-
-.image-container img {
-  display: block;
-}
-
-.cart-btn:disabled,
-.product-buy-btn:disabled,
-.product-buy-btn:disabled:hover {
-  background: #2a2a2a;
-  color: #777777;
-  border-color: #2a2a2a;
-  cursor: not-allowed;
-}
-
-.product-message {
-  grid-column: 1 / -1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 18px;
-  color: var(--text-secondary);
-}
-
-.product-message p {
-  margin: 0;
-}
-
-.product-message .product-buy-btn {
-  margin-left: 0;
-}
-
-.product-card--skeleton .image-container {
-  cursor: default;
-  animation: produtoPulse 1.4s ease-in-out infinite;
-}
-
-.product-card--skeleton .image-container::before {
-  content: none;
-}
-
-/* Cartões vazios enquanto os produtos carregam */
-@keyframes produtoPulse {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 1; }
-}
-
-.skeleton-line {
-  display: block;
-  height: 12px;
-  width: 100%;
-  margin-top: 10px;
-  background: #1d1d1d;
-  animation: produtoPulse 1.4s ease-in-out infinite;
-}
-
-.skeleton-line--title {
-  height: 16px;
-  width: 60%;
-}
-
-.skeleton-line--short {
-  width: 40%;
-}
-
-/* --- Padronização de Tamanho e Enquadramento das Fotos --- */
-.image-container {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background-color: #141414; /* Fundo uniforme nos espaços vazios */
-  overflow: hidden;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image-container img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Mantém a proporção inteira da foto sem cortar ou estourar */
-  padding: 16px;       /* Respiro elegante para as embalagens */
-  transition: transform 0.4s ease;
-}
-
-/* Para o componente ProdutosHome.css também */
 .product-image {
   position: relative;
   width: 100%;
-  height: 260px; /* Altura fixa padronizada na Home */
-  background-color: #141414;
+  height: 260px;
+  background-color: var(--c-surface, #141414);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -425,12 +284,12 @@ body {
   padding: 16px;
 }
 
-/* --- Nova Barra de Pesquisa Estilizada --- */
+/* --- Barra de Pesquisa --- */
 .search-box-wrapper {
   display: flex;
   align-items: center;
-  background-color: #161616;
-  border: 1px solid #333333;
+  background-color: var(--c-surface, #161616);
+  border: 1px solid var(--c-border, #333333);
   border-radius: 6px;
   padding: 8px 14px;
   gap: 10px;
@@ -439,19 +298,19 @@ body {
 }
 
 .search-box-wrapper:focus-within {
-  border-color: var(--accent-red, #c91e3e);
-  box-shadow: 0 0 0 2px rgba(201, 30, 62, 0.15);
+  border-color: #ad1838;
+  box-shadow: 0 0 0 2px rgba(173, 24, 56, 0.15);
 }
 
 .search-icon-svg {
-  color: #777777;
+  color: var(--c-text-muted, #777777);
   flex-shrink: 0;
 }
 
 .search-input-field {
   background: none;
   border: none;
-  color: #ffffff;
+  color: var(--c-text);
   outline: none;
   font-size: 0.85rem;
   width: 100%;
@@ -459,13 +318,13 @@ body {
 }
 
 .search-input-field::placeholder {
-  color: #666666;
+  color: var(--c-text-muted, #666666);
 }
 
 .search-clear-btn {
   background: none;
   border: none;
-  color: #777;
+  color: var(--c-text-muted, #777);
   cursor: pointer;
   font-size: 1rem;
   padding: 0;
@@ -473,17 +332,17 @@ body {
 }
 
 .search-clear-btn:hover {
-  color: #fff;
+  color: var(--c-text);
 }
 
-/* --- Banner Informativo Elegante (Tierlist) --- */
+/* --- Banner Informativo (Tierlist) --- */
 .products-tierlist-banner {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: linear-gradient(135deg, #161214 0%, #111111 100%);
-  border: 1px solid #2c1a1f;
-  border-left: 4px solid var(--accent-red, #c91e3e);
+  background: var(--c-surface, #141414);
+  border: 1px solid var(--c-border, #2c1a1f);
+  border-left: 4px solid #ad1838;
   padding: 20px 24px;
   margin: 0 40px 30px 40px;
   border-radius: 6px;
@@ -500,15 +359,91 @@ body {
   font-family: 'Poppins', sans-serif;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #ffffff;
+  color: var(--c-text);
   letter-spacing: 0.5px;
 }
 
 .banner-text p {
   margin: 0;
   font-size: 0.85rem;
-  color: #aaaaaa;
+  color: var(--c-text-muted, #aaaaaa);
   line-height: 1.5;
+}
+
+
+/* =========================================
+   CORREÇÃO DOS CARDS - PÁGINA DE PRODUTOS
+   Evita conflito com ProdutosHome.css
+========================================= */
+
+.produto-container .product-card {
+  background-color: var(--c-surface);
+  border: 1px solid var(--c-border);
+  color: var(--c-text);
+  overflow: hidden;
+  transition: background-color 0.3s ease,
+              border-color 0.3s ease,
+              color 0.3s ease;
+}
+
+.produto-container .product-card:hover {
+  border-color: var(--c-primary);
+}
+
+.produto-container .product-info {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.produto-container .product-info h3,
+.produto-container .product-name {
+  color: var(--c-text);
+}
+
+.produto-container .product-category {
+  color: var(--c-text-muted);
+}
+
+.produto-container .product-price {
+  color: var(--c-primary);
+}
+
+.produto-container .cart-btn {
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+.produto-container .cart-btn:hover {
+  border-color: var(--c-primary);
+  background-color: var(--w-008);
+}
+
+.produto-container .product-buy-btn {
+  background-color: var(--c-primary);
+  color: #ffffff;
+}
+
+.produto-container .product-buy-btn:disabled {
+  background-color: var(--c-border);
+  color: var(--c-text-muted);
+  cursor: not-allowed;
+}
+
+.produto-container .image-container {
+  background-color: var(--c-surface);
+  border-color: var(--c-border);
+}
+
+.produto-container .product-card,
+.produto-container .product-info,
+.produto-container .image-container {
+  transition: background-color 0.3s ease,
+              color 0.3s ease,
+              border-color 0.3s ease;
 }
 
 @media (max-width: 768px) {
@@ -519,30 +454,22 @@ body {
   .search-box-wrapper {
     width: 100%;
   }
-}
-
-/* --- Mobile --- */
-@media (max-width: 768px) {
   .hero-section {
     padding: 56px 0 40px 20px;
   }
-
   .filter-section {
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
     margin: 0 20px;
   }
-
   .filters {
     flex-wrap: wrap;
     gap: 16px 24px;
   }
-
   .product-count {
     margin: 24px 20px;
   }
-
   .product-grid {
     padding: 0 20px 40px;
   }

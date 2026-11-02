@@ -8,8 +8,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 80px 50px 40px 50px; /* Garante margem do topo para a Navbar fixada */
+  padding: 80px 50px 40px 50px;
   box-sizing: border-box;
+  background-color: var(--c-bg);
+  transition: background-color 0.3s ease;
 }
 
 .hero-background {
@@ -21,17 +23,21 @@
   transform: scale(1.01);
 }
 
+/* FOTO ALTERNATIVA NO TEMA CLARO */
+:root[data-theme="light"] .hero-background {
+  background-image: url("../assets/Hero.jpg");
+}
+
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.92) 0%,
-    rgba(0, 0, 0, 0.72) 30%,
-    rgba(0, 0, 0, 0.48) 65%,
-    rgba(0, 0, 0, 0.55) 95%
-  );
+  background: transparent;
   z-index: 1;
+}
+
+/* Ajuste do overlay dinâmico para o modo claro */
+:root[data-theme="light"] .hero-overlay {
+  background: transparent;
 }
 
 .hero::after {
@@ -46,6 +52,10 @@
   );
   z-index: 2;
   pointer-events: none;
+}
+
+:root[data-theme="light"] .hero::after {
+  display: none;
 }
 
 .hero-content {
@@ -69,7 +79,7 @@
 }
 
 .hero-title span:nth-child(1) {
-  color: #ffffff;
+  color: var(--c-text);
 }
 
 .hero-title span:nth-child(2),
@@ -81,7 +91,7 @@
   margin-top: 20px;
   font-size: 15px;
   font-weight: 500;
-  color: #9b9b9b;
+  color: var(--c-text-muted, #9b9b9b);
 }
 
 .hero-buttons {
@@ -115,13 +125,13 @@
 }
 
 .secondary-button {
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: #858585;
+  border: 1px solid var(--c-border, rgba(255, 255, 255, 0.15));
+  color: var(--c-text-muted, #858585);
 }
 
 .secondary-button:hover {
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #ffffff;
+  border-color: var(--w-02, rgba(255, 255, 255, 0.4));
+  color: var(--c-text);
 }
 
 .stats {
@@ -131,7 +141,7 @@
   padding-top: 25px;
   max-width: 438px;
   width: 100%;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--c-border, rgba(255, 255, 255, 0.12));
 }
 
 .stat {
@@ -144,13 +154,13 @@
   font-family: "Bebas Neue", sans-serif;
   font-size: 30px;
   line-height: 1;
-  color: #ffffff;
+  color: var(--c-text);
 }
 
 .stat span {
   font-size: 9px;
   letter-spacing: 1.2px;
-  color: #666;
+  color: var(--c-text-muted, #666);
 }
 
 /* Card Destacado no Desktop */
@@ -159,11 +169,12 @@
   z-index: 6;
   width: 330px;
   padding: 24px;
-  background: rgba(8, 8, 8, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.17);
+  background: var(--c-surface, rgba(8, 8, 8, 0.85));
+  border: 1px solid var(--c-border, rgba(255, 255, 255, 0.17));
   backdrop-filter: blur(8px);
   align-self: flex-end;
   box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .card-label {
@@ -180,7 +191,7 @@
   font-size: 30px;
   line-height: 1;
   letter-spacing: 0.5px;
-  color: #ffffff;
+  color: var(--c-text);
   margin: 0;
 }
 
@@ -189,7 +200,7 @@
   max-width: 100%;
   font-size: 11px;
   line-height: 1.5;
-  color: #999;
+  color: var(--c-text-muted, #999);
 }
 
 .card-footer {
@@ -198,17 +209,17 @@
   justify-content: space-between;
   margin-top: 15px;
   padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid var(--c-border, rgba(255, 255, 255, 0.12));
 }
 
 .card-footer strong {
   font-size: 15px;
-  color: #ffffff;
+  color: var(--c-text);
 }
 
 .card-footer span {
   font-size: 9px;
-  color: #666;
+  color: var(--c-text-muted, #666);
 }
 
 /* ==========================================
@@ -282,6 +293,6 @@
   }
 
   .featured-card {
-    margin-top: 15px; /* Ajuste fino para ecrãs de telemóvel */
+    margin-top: 15px;
   }
 }

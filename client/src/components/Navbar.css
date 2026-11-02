@@ -23,9 +23,10 @@ html {
   display: flex;
   align-items: center;
   padding: 0 19px 0 20px;
-  background-color: #0f0f0f;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--c-surface, #0f0f0f);
+  border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
   box-sizing: border-box;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .logo {
@@ -34,7 +35,7 @@ html {
   gap: 7px;
   min-width: 250px;
   text-decoration: none;
-  color: #ffffff;
+  color: var(--c-text, #ffffff);
 }
 
 .logo-main {
@@ -63,13 +64,13 @@ html {
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 2px;
-  color: #777;
+  color: var(--c-text-muted, #777);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: var(--c-text, #ffffff);
 }
 
 /* Ações Desktop */
@@ -84,9 +85,9 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #777;
+  background: var(--w-003, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
+  color: var(--c-text-muted, #777);
   width: 35px;
   height: 35px;
   cursor: pointer;
@@ -95,7 +96,7 @@ html {
 
 .cart-box-button:hover {
   border-color: #a91635;
-  color: #ffffff;
+  color: var(--c-text, #ffffff);
   background: rgba(169, 22, 53, 0.1);
 }
 
@@ -107,8 +108,8 @@ html {
   height: 35px;
   padding: 0 12px;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  color: #777;
+  border: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
+  color: var(--c-text-muted, #777);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 1.5px;
@@ -121,9 +122,9 @@ html {
 }
 
 .account-box-button:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.02);
+  border-color: var(--w-02, rgba(255, 255, 255, 0.2));
+  color: var(--c-text, #ffffff);
+  background: var(--w-003, rgba(255, 255, 255, 0.02));
 }
 
 /* Botão Hambúrguer e Menu Mobile - OCULTOS POR PADRÃO NO DESKTOP */
@@ -158,7 +159,7 @@ html {
     display: flex;
     background: transparent;
     border: none;
-    color: #ffffff;
+    color: var(--c-text, #ffffff);
     cursor: pointer;
     padding: 5px;
     align-items: center;
@@ -171,19 +172,19 @@ html {
     top: 49px;
     left: 0;
     width: 100%;
-    background-color: #0f0f0f;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: var(--c-surface, #0f0f0f);
+    border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
     display: flex;
     flex-direction: column;
     padding: 0;
     gap: 15px;
     box-sizing: border-box;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, background-color 0.3s ease;
   }
 
   .mobile-menu.open {
@@ -202,18 +203,18 @@ html {
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 2px;
-    color: #bbb;
+    color: var(--c-text-muted, #bbb);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .mobile-menu .mobile-nav-links a:hover {
-    color: #ffffff;
+    color: var(--c-text, #ffffff);
   }
 
   .mobile-menu .mobile-divider {
     height: 1px;
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: var(--c-border, rgba(255, 255, 255, 0.08));
     margin: 5px 0;
   }
 

@@ -1,8 +1,8 @@
-importe
 .promo-section {
   padding: 60px 20px;
-  background-color: #0a0a0a; /* Fundo muito escuro/preto */
-  color: #ffffff;
+  background-color: var(--c-bg);
+  color: var(--c-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .promo-header {
@@ -11,7 +11,7 @@ importe
 }
 
 .promo-subtitle {
-  color: #c9184a; /* Cor de destaque (vermelho/rosa escuro) */
+  color: #c9184a;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
@@ -20,6 +20,9 @@ importe
 .promo-title {
   font-size: 32px;
   margin-top: 8px;
+  color: var(--c-text);
+  font-family: "Bebas Neue", sans-serif;
+  letter-spacing: 1px;
 }
 
 .promo-grid {
@@ -32,15 +35,15 @@ importe
 }
 
 .promo-card {
-  background-color: #141414; /* Fundo do cartão ligeiramente mais claro que a secção */
-  border: 1px solid #2a2a2a;
+  background-color: var(--c-surface, #141414);
+  border: 1px solid var(--c-border, #2a2a2a);
   border-radius: 8px;
   padding: 32px 24px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   position: relative;
-  transition: transform 0.3s ease, border-color 0.3s ease;
+  transition: transform 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .promo-card:hover {
@@ -51,7 +54,11 @@ importe
 /* Estilo para o cartão em destaque */
 .promo-card.highlighted {
   border: 2px solid #c9184a;
-  background-color: #1a0f12; /* Fundo com um toque avermelhado sutil */
+  background-color: var(--c-surface);
+}
+
+:root[data-theme="light"] .promo-card.highlighted {
+  background-color: #fdf5f6;
 }
 
 .promo-badge {
@@ -72,10 +79,11 @@ importe
 .promo-content h3 {
   font-size: 22px;
   margin-bottom: 12px;
+  color: var(--c-text);
 }
 
 .promo-content p {
-  color: #a3a3a3;
+  color: var(--c-text-muted, #a3a3a3);
   font-size: 14px;
   line-height: 1.5;
   margin-bottom: 24px;
@@ -89,13 +97,13 @@ importe
 }
 
 .promo-old-price {
-  color: #737373;
+  color: var(--c-text-muted, #737373);
   font-size: 16px;
   text-decoration: line-through;
 }
 
 .promo-new-price {
-  color: #ffffff;
+  color: var(--c-text);
   font-size: 28px;
   font-weight: bold;
 }
@@ -111,7 +119,7 @@ importe
 .promo-btn {
   width: 100%;
   background-color: transparent;
-  color: #ffffff;
+  color: var(--c-text);
   border: 1px solid #c9184a;
   padding: 12px;
   border-radius: 4px;
@@ -121,9 +129,12 @@ importe
   transition: all 0.3s ease;
   text-transform: uppercase;
   letter-spacing: 1px;
+  text-align: center;
+  text-decoration: none;
 }
 
 .promo-card:hover .promo-btn, 
 .promo-card.highlighted .promo-btn {
   background-color: #c9184a;
+  color: #ffffff;
 }

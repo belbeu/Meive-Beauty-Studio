@@ -1,0 +1,162 @@
+/* Variáveis globais para o Modo Escuro (Padrão) */
+:root {
+--c-bg: #090909;
+--c-surface: #121212;
+--c-text: #ffffff;
+--c-text-muted: #777777;
+--c-text-4: #888888;
+--w-003: rgba(255, 255, 255, 0.03);
+--w-008: rgba(255, 255, 255, 0.08);
+--w-01: rgba(255, 255, 255, 0.1);
+--w-02: rgba(255, 255, 255, 0.2);
+--c-border: rgba(255, 255, 255, 0.08);
+--c-primary: #ad1838;
+}
+
+/* Variáveis para o Modo Claro, mantendo o bordô da marca */
+:root[data-theme="light"] {
+--c-bg: #fbf8f7;
+--c-surface: #ffffff;
+--c-text: #1f1519;
+--c-text-muted: #665b61;
+--c-text-4: #75666d;
+--w-003: rgba(74, 36, 48, 0.03);
+--w-008: rgba(74, 36, 48, 0.08);
+--w-01: rgba(74, 36, 48, 0.1);
+--w-02: rgba(74, 36, 48, 0.2);
+--c-border: rgba(74, 36, 48, 0.12);
+--c-primary: #ad1838;
+}
+
+/* Aplicação das variáveis base do tema no corpo da página */
+body {
+background-color: var(--c-bg);
+color: var(--c-text);
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+
+/* ==========================================
+   TEMA CLARO - TELAS DE LOGIN E CADASTRO
+   Cliente + Administrador
+========================================== */
+
+/* LOGIN CLIENTE E ADMIN */
+:root[data-theme="light"] .login-container {
+  background: var(--c-bg) !important;
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .login-form-side {
+  background: var(--c-bg) !important;
+  color: var(--c-text);
+}
+
+/* CADASTRO CLIENTE */
+:root[data-theme="light"] .cadastro-container {
+  background: var(--c-bg) !important;
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .cadastro-form-side {
+  background: var(--c-bg) !important;
+  color: var(--c-text);
+}
+
+/* TÍTULOS */
+:root[data-theme="light"] .login-header h2,
+:root[data-theme="light"] .cadastro-header h2 {
+  color: var(--c-text) !important;
+}
+
+/* DESCRIÇÕES */
+:root[data-theme="light"] .login-header p,
+:root[data-theme="light"] .cadastro-header p,
+:root[data-theme="light"] .login-footer-links p,
+:root[data-theme="light"] .cadastro-footer-links p {
+  color: var(--c-text-muted) !important;
+}
+
+/* LABELS */
+:root[data-theme="light"] .login-field label,
+:root[data-theme="light"] .cadastro-field label {
+  color: var(--c-text-muted) !important;
+}
+
+/* CAMPOS DE LOGIN */
+:root[data-theme="light"] .login-field input {
+  background: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border: 1px solid var(--c-border) !important;
+}
+
+:root[data-theme="light"] .login-field input::placeholder {
+  color: var(--c-text-muted);
+  opacity: 0.75;
+}
+
+/* CAMPOS DE CADASTRO */
+:root[data-theme="light"] .cadastro-field input {
+  background: var(--c-surface) !important;
+  color: var(--c-text) !important;
+  border: 1px solid var(--c-border) !important;
+}
+
+:root[data-theme="light"] .cadastro-field input::placeholder {
+  color: var(--c-text-muted);
+  opacity: 0.75;
+}
+
+/* DIVISÓRIAS */
+:root[data-theme="light"] .login-divider::before,
+:root[data-theme="light"] .cadastro-divider::before {
+  background: var(--c-border);
+}
+
+:root[data-theme="light"] .login-divider span,
+:root[data-theme="light"] .cadastro-divider span {
+  background: var(--c-bg) !important;
+  color: var(--c-text-muted);
+}
+
+/* LOGIN GOOGLE */
+:root[data-theme="light"] .google-login-btn,
+:root[data-theme="light"] .google-cadastro-btn {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+/* BOTÕES DE VISUALIZAÇÃO DA SENHA */
+:root[data-theme="light"] .login-eye-btn,
+:root[data-theme="light"] .cadastro-eye-btn {
+  color: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .login-eye-btn:hover {
+  color: var(--c-primary);
+}
+
+/* LINKS */
+:root[data-theme="light"] .admin-link {
+  color: var(--c-text-muted);
+}
+
+/* REQUISITOS DE SENHA */
+:root[data-theme="light"] .senha-requisitos {
+  color: var(--c-text-muted);
+}
+
+/* MENSAGENS DE ERRO */
+:root[data-theme="light"] .error-message {
+  background: rgba(173, 24, 56, 0.08);
+  color: #ad1838;
+}
+
+/* TRANSIÇÃO */
+.login-container,
+.cadastro-container,
+.login-form-side,
+.cadastro-form-side {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

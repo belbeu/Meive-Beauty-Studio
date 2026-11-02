@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./AdminDashboard.css";
+import ThemeToggle from "../ThemeToggle";
 
 const iconProps = {
   width: 18,
@@ -74,6 +75,7 @@ export default function AdminSidebar() {
         <div className="dash-brand">
           <span className="dash-brand-name">MEIVE</span>
           <span className="dash-brand-badge">ADMIN</span>
+          <ThemeToggle />
         </div>
 
         <nav className="dash-nav" aria-label="Navegação do painel">

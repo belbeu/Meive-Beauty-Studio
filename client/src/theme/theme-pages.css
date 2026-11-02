@@ -1,0 +1,226 @@
+
+/* =========================================
+   TEMA CLARO - LOGIN, CADASTRO E DASHBOARDS
+========================================= */
+
+/* LOGIN CLIENTE E ADMIN */
+.login-container,
+.login-form-side {
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.login-header h2 {
+  color: var(--c-text);
+}
+
+.login-header p,
+.login-field label,
+.login-footer-links p {
+  color: var(--c-text-muted);
+}
+
+.login-field input {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.login-divider::before {
+  background: var(--c-border);
+}
+
+.login-divider span {
+  background: var(--c-bg);
+  color: var(--c-text-muted);
+}
+
+.google-login-btn {
+  background: transparent;
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.admin-link,
+.login-eye-btn {
+  color: var(--c-text-muted);
+}
+
+/* CADASTRO */
+.cadastro-container,
+.cadastro-form-side {
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+.cadastro-header h2 {
+  color: var(--c-text);
+}
+
+.cadastro-header p,
+.cadastro-field label,
+.cadastro-footer-links p {
+  color: var(--c-text-muted);
+}
+
+.cadastro-field input {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.cadastro-divider::before {
+  background: var(--c-border);
+}
+
+.cadastro-divider span {
+  background: var(--c-bg);
+  color: var(--c-text-muted);
+}
+
+.google-cadastro-btn {
+  background: transparent;
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.cadastro-eye-btn {
+  color: var(--c-text-muted);
+}
+
+/* BANNERS DE LOGIN E CADASTRO */
+:root[data-theme="light"] .login-banner-overlay,
+:root[data-theme="light"] .cadastro-banner-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.18),
+    rgba(60, 25, 38, 0.12) 50%,
+    rgba(20, 10, 14, 0.58)
+  );
+}
+
+/* DASHBOARD CLIENTE */
+.client-page {
+  background: var(--c-bg);
+  color: var(--c-text);
+  --bg: var(--c-bg);
+  --surface: var(--c-surface);
+  --border: var(--c-border);
+  --muted: var(--c-text-muted);
+  --faint: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .client-title {
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .client-subtitle,
+:root[data-theme="light"] .client-tag {
+  color: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .client-panel,
+:root[data-theme="light"] .client-menu,
+:root[data-theme="light"] .client-club,
+:root[data-theme="light"] .client-modal-card {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .client-menu a,
+:root[data-theme="light"] .client-menu button {
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .client-outline-btn {
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+:root[data-theme="light"] .client-badge {
+  background: var(--w-008);
+  color: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .client-next {
+  background: linear-gradient(90deg, #f6e9ed, #fff);
+  border-color: var(--c-border);
+  color: var(--c-text);
+}
+
+.client-user {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* DASHBOARD ADMINISTRATIVO */
+:root[data-theme="light"] .dash-container {
+  --bg: var(--c-bg);
+  --surface: var(--c-surface);
+  --border: var(--c-border);
+  --text: var(--c-text);
+  --muted: var(--c-text-muted);
+  --faint: var(--c-text-muted);
+
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .dash-sidebar,
+:root[data-theme="light"] .dash-main,
+:root[data-theme="light"] .dash-panel,
+:root[data-theme="light"] .dash-stat,
+:root[data-theme="light"] .clients-panel,
+:root[data-theme="light"] .products-panel,
+:root[data-theme="light"] .agenda-panel,
+:root[data-theme="light"] .settings-panel {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+:root[data-theme="light"] .dash-title,
+:root[data-theme="light"] .dash-stat-value,
+:root[data-theme="light"] .dash-stat strong,
+:root[data-theme="light"] .dash-user-info strong,
+:root[data-theme="light"] .dash-brand-name {
+  color: var(--c-text);
+}
+
+:root[data-theme="light"] .dash-nav-item {
+  color: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .dash-nav-item.is-active {
+  color: var(--c-primary);
+  background: var(--w-008);
+}
+
+:root[data-theme="light"] .dash-icon-btn {
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+:root[data-theme="light"] .dash-date,
+:root[data-theme="light"] .dash-stat-label,
+:root[data-theme="light"] .dash-stat-note {
+  color: var(--c-text-muted);
+}
+
+:root[data-theme="light"] .dash-container input,
+:root[data-theme="light"] .dash-container select,
+:root[data-theme="light"] .dash-container textarea {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+:root[data-theme="light"] .dash-container [class*="-modal-card"],
+:root[data-theme="light"] .dash-container [class*="-panel"],
+:root[data-theme="light"] .dash-container [class*="-summary"] {
+  background-color: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
