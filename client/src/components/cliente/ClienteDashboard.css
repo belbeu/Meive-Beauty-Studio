@@ -80,6 +80,9 @@
 .client-user {
   position: relative;
   margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .client-avatar {

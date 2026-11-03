@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import { usuarioAtual, logout as fazerLogout } from "../../auth";
 import "./ClienteDashboard.css";
 import ThemeToggle from "../ThemeToggle";
+import FontSizeControls from "../FontSizeControls";
 
 /* ---------- Dados mockados (troque pela API/back depois) ---------- */
 const NEXT_APPOINTMENT = {
@@ -128,6 +129,7 @@ export default function ClientDashboard() {
 
             <div className="client-user">
               <ThemeToggle />
+              <FontSizeControls />
               <button
                 type="button"
                 className="client-avatar"

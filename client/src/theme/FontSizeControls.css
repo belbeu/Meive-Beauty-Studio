@@ -1,0 +1,42 @@
+
+.font-size-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.font-size-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 35px;
+  height: 35px;
+
+  background: var(--w-003, rgba(255, 255, 255, 0.03));
+  border: 1px solid var(--c-border);
+  color: var(--c-text-muted);
+
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.font-size-btn:hover:not(:disabled) {
+  border-color: #a91635;
+  color: var(--c-primary);
+  background: rgba(169, 22, 53, 0.08);
+}
+
+.font-size-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.font-size-btn:focus-visible {
+  outline: 2px solid var(--c-primary);
+  outline-offset: 3px;
+}

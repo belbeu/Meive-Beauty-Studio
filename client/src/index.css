@@ -6,6 +6,8 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: calc(16px * var(--font-scale, 1));
+  transition: font-size 0.2s ease;
 }
 
 html,
