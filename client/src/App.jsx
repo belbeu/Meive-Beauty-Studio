@@ -21,6 +21,8 @@ import FloatingSocials from "./components/IconeFlutuante";
 import Courses from "./components/Courses";
 import PromocoesSection from "./components/Promocao";
 import Produtos from "./components/Produtos";
+import MinhaCestinha from "./components/cliente/MinhaCestinha";
+import ClientProdutos from "./components/cliente/ClientProdutos";
 
 import Login from "./components/cliente/Login";
 import Cadastro from "./components/cliente/Cadastro";
@@ -80,6 +82,8 @@ export default function App() {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/minha-conta" element={<ClientDashboard />} />
           <Route path="/produtos" element={<Produtos />} />
+          <Route path="/cestinha" element={<MinhaCestinha />} />
+          <Route path="/minha-conta/produtos" element={<ClientProdutos />} />
 
           {/* Rotas de Agendamento Booksy */}
           <Route

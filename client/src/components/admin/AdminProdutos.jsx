@@ -34,7 +34,6 @@ const Icons = {
 };
 
 /* ---------- Regras do estoque ---------- */
-// O banco não tem "estoque mínimo": até 5 unidades conta como estoque baixo.
 const LIMITE_ESTOQUE_BAIXO = 5;
 
 const STATUS_LABEL = {
@@ -51,7 +50,6 @@ function formatToday() {
     .toUpperCase();
 }
 
-// O Django devolve DecimalField como texto ("89.00"), por isso o Number().
 function formatBRL(value, semCentavosSeInteiro = false) {
   const n = Number(value) || 0;
   return n.toLocaleString("pt-BR", {
@@ -64,7 +62,6 @@ function formatBRL(value, semCentavosSeInteiro = false) {
 
 const doisDigitos = (n) => String(n).padStart(2, "0");
 
-// ativo vem do banco (pode ser null; só false conta como inativo)
 function getStatus(p) {
   if (p.ativo === false) return "inactive";
   if (p.estoque_atual <= 0) return "out";
@@ -86,12 +83,8 @@ const ROTULOS_CAMPOS = {
   quantidade: "Quantidade",
 };
 
-/* ---------- Relatório em PDF ---------- */
-// O Intl usa espaços "especiais" no dinheiro; trocamos por espaço comum para o PDF.
 const textoPdf = (t) => String(t).replace(/[\u00a0\u202f]/g, " ");
 
-// Linhas da tabela + totais. Produtos inativos não entram no valor em estoque
-// (mesma regra do número do resumo da tela).
 function montarLinhasPdf(lista) {
   let unidades = 0;
   let valor = 0;
@@ -119,8 +112,6 @@ function montarLinhasPdf(lista) {
   return { linhas, unidades, valor };
 }
 
-/* ---------- Busca ---------- */
-// Tira acentos e maiúsculas: "Cílios" e "cilios" ficam iguais
 const normalizar = (texto) =>
   String(texto ?? "")
     .normalize("NFD")
@@ -128,9 +119,6 @@ const normalizar = (texto) =>
     .toLowerCase()
     .trim();
 
-// Cada palavra digitada precisa combinar (nome, categoria, código ou status).
-// "cilios baixo" acha os cílios com estoque baixo. O status casa pelo início da
-// palavra, para "ativo" não trazer também os "inativos".
 function combinaComBusca(p, termo) {
   const termos = normalizar(termo).split(/\s+/).filter(Boolean);
   if (termos.length === 0) return true;
@@ -140,7 +128,6 @@ function combinaComBusca(p, termo) {
   );
   const status = getStatus(p);
   const palavrasStatus = normalizar(STATUS_LABEL[status]).split(" ");
-  // Estoque baixo e sem estoque continuam sendo produtos ativos
   if (status !== "inactive") palavrasStatus.push("ativo");
 
   return termos.every(
@@ -160,16 +147,12 @@ function formatarErroApi(error) {
   return error?.message || "Erro inesperado. Tente novamente.";
 }
 
-/* ---------- Categorias e imagem ---------- */
-// Mesmas categorias usadas nos filtros da loja do site.
 const CATEGORIAS_PADRAO = ["CÍLIOS", "SKINCARE", "ACESSÓRIOS"];
-
 const FORMATOS_IMAGEM = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-const LIMITE_ARQUIVO = 10 * 1024 * 1024; // arquivo escolhido (antes de reduzir)
-const LIMITE_ENVIO = 2 * 1024 * 1024; // o servidor só aceita até 2 MB
-const LADO_MAXIMO = 1200; // px: a foto é reduzida antes de enviar
+const LIMITE_ARQUIVO = 10 * 1024 * 1024;
+const LIMITE_ENVIO = 2 * 1024 * 1024;
+const LADO_MAXIMO = 1200;
 
-// Reduz a foto no navegador (WEBP) para ocupar pouco espaço no banco.
 async function prepararImagem(file) {
   if (!FORMATOS_IMAGEM.includes(file.type)) {
     throw new Error("Escolha uma imagem JPG, PNG, WEBP ou GIF.");
@@ -180,7 +163,6 @@ async function prepararImagem(file) {
 
   let pronta = file;
   if (file.type !== "image/gif") {
-    // GIF segue como está, para não perder a animação
     let bitmap;
     try {
       bitmap = await createImageBitmap(file);
@@ -207,7 +189,6 @@ async function prepararImagem(file) {
   return pronta;
 }
 
-/* ---------- Formulário de novo produto ---------- */
 const FORM_VAZIO = {
   nome: "",
   categoria: "",
@@ -219,7 +200,6 @@ const FORM_VAZIO = {
   ativo: true,
 };
 
-// Produto vindo do banco -> campos do formulário (preço com vírgula, como no cadastro)
 const paraTexto = (v) => (v === null || v === undefined ? "" : String(v).replace(".", ","));
 
 function produtoParaForm(p) {
@@ -235,7 +215,6 @@ function produtoParaForm(p) {
   };
 }
 
-// Aceita "89,90" ou "89.90"; devolve null se não for um número válido
 function lerDecimal(texto) {
   const limpo = String(texto).trim().replace(",", ".");
   if (limpo === "" || !/^\d+(\.\d{1,2})?$/.test(limpo)) return null;
@@ -257,7 +236,6 @@ function validarProduto(f) {
   return null;
 }
 
-/* Foto do produto: usa imagem_url do banco e cai no placeholder se faltar/quebrar */
 function ProductImage({ src, alt }) {
   const [failed, setFailed] = useState(false);
 
@@ -274,9 +252,8 @@ function ProductImage({ src, alt }) {
   );
 }
 
-/* ---------- Componente ---------- */
 export default function AdminProdutos() {
-  const [filter, setFilter] = useState("all"); // "all" | "low"
+  const [filter, setFilter] = useState("all");
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
@@ -285,17 +262,21 @@ export default function AdminProdutos() {
 
   // Modal "Novo produto"
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [editingId, setEditingId] = useState(null); // null = cadastrando; número = editando esse produto
+  const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(FORM_VAZIO);
   const [saving, setSaving] = useState(false);
-  const [imagemModo, setImagemModo] = useState("link"); // "link" | "arquivo"
-  const [imagemEnviada, setImagemEnviada] = useState(""); // nome do arquivo já enviado
+  const [imagemModo, setImagemModo] = useState("link");
+  const [imagemEnviada, setImagemEnviada] = useState("");
   const [uploading, setUploading] = useState(false);
 
   // Modal "Registrar venda"
   const [sellProduct, setSellProduct] = useState(null);
   const [sellQty, setSellQty] = useState("1");
   const [selling, setSelling] = useState(false);
+
+  // Modal "Inativar produto"
+  const [deleteProduct, setDeleteProduct] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -329,7 +310,6 @@ export default function AdminProdutos() {
 
   const openEditModal = (produto) => {
     const dados = produtoParaForm(produto);
-    // Foto que veio de upload: abre na aba "Enviar arquivo", já com a imagem atual
     const veioDeUpload = dados.imagemUrl.includes("/produtos/imagem/");
     setEditingId(produto.id_produto);
     setForm(dados);
@@ -345,6 +325,44 @@ export default function AdminProdutos() {
 
   const closeSellModal = () => {
     if (!selling) setSellProduct(null);
+  };
+
+  const openDeleteModal = (produto) => {
+    setDeleteProduct(produto);
+  };
+
+  const closeDeleteModal = () => {
+    if (!deleting) setDeleteProduct(null);
+  };
+
+  const handleDelete = async () => {
+    if (!deleteProduct || deleting) return;
+
+    try {
+      setDeleting(true);
+      // Em vez de exclusão física, inativamos o produto via PATCH
+      const atualizado = await api(`/admin/produtos/${deleteProduct.id_produto}/`, {
+        method: "PATCH",
+        body: JSON.stringify({ ativo: false }),
+      });
+
+      setProducts((lista) =>
+        lista.map((p) => (p.id_produto === atualizado.id_produto ? atualizado : p))
+      );
+      setDeleteProduct(null);
+      setToastInfo({
+        title: "PRODUTO INATIVADO",
+        message: `O produto "${deleteProduct.nome}" foi desativado com sucesso.`,
+      });
+    } catch (error) {
+      console.error("Erro ao inativar produto:", error);
+      setToastInfo({
+        title: "ERRO AO INATIVAR",
+        message: `Não foi possível desativar o produto.\n${formatarErroApi(error)}`,
+      });
+    } finally {
+      setDeleting(false);
+    }
   };
 
   const handleSell = async (e) => {
@@ -396,7 +414,7 @@ export default function AdminProdutos() {
 
   const handleEscolherArquivo = async (e) => {
     const file = e.target.files?.[0];
-    e.target.value = ""; // permite escolher o mesmo arquivo de novo
+    e.target.value = "";
     if (!file) return;
 
     try {
@@ -453,7 +471,6 @@ export default function AdminProdutos() {
           method: "PATCH",
           body: corpo,
         });
-        // Troca só esse produto na lista (os números do resumo se recalculam sozinhos)
         setProducts((lista) =>
           lista.map((p) => (p.id_produto === atualizado.id_produto ? atualizado : p))
         );
@@ -480,7 +497,6 @@ export default function AdminProdutos() {
     }
   };
 
-  // Opções do select: as padrão + as que já existem no banco (sem repetir, ignorando maiúsculas)
   const categoriasMap = new Map(CATEGORIAS_PADRAO.map((c) => [c.toLocaleUpperCase("pt-BR"), c]));
   products.forEach((p) => {
     if (p.categoria) categoriasMap.set(p.categoria.trim().toLocaleUpperCase("pt-BR"), p.categoria.trim());
@@ -490,7 +506,6 @@ export default function AdminProdutos() {
     categoriasOpcoes.push(form.categoria);
   }
 
-  /* ---- Números do resumo (calculados a partir do banco) ---- */
   const ativos = products.filter((p) => getStatus(p) !== "inactive");
   const valorEstoque = ativos.reduce(
     (soma, p) => soma + Number(p.preco || 0) * Number(p.estoque_atual || 0),
@@ -508,15 +523,15 @@ export default function AdminProdutos() {
     { label: "PRODUTOS INATIVOS", value: show(doisDigitos(inativos)), alert: false },
   ];
 
-  /* ---- Listagem ---- */
   const porAba =
     filter === "low"
       ? products.filter((p) => getStatus(p) !== "inactive" && isEstoqueBaixo(getStatus(p)))
+      : filter === "inactive"
+      ? products.filter((p) => getStatus(p) === "inactive")
       : products;
   const visible = porAba.filter((p) => combinaComBusca(p, searchTerm));
   const temBusca = searchTerm.trim() !== "";
 
-  /* ---- PDF do estoque (exporta o que está na lista: aba + busca) ---- */
   const exportStockPdf = () => {
     if (visible.length === 0) {
       setToastInfo({
@@ -554,9 +569,9 @@ export default function AdminProdutos() {
     doc.text(`Emitido em: ${dataAtual} às ${horaAtual}`, 15, 52);
     doc.text(`Total de produtos: ${visible.length}`, 15, 59);
 
-    // Se a lista estava filtrada, o PDF diz qual filtro foi usado
     const filtros = [];
     if (filter === "low") filtros.push("Estoque baixo");
+    if (filter === "inactive") filtros.push("Inativos");
     if (temBusca) filtros.push(`Busca: "${searchTerm.trim()}"`);
     let inicioTabela = 66;
     if (filtros.length > 0) {
@@ -604,7 +619,6 @@ export default function AdminProdutos() {
         6: { cellWidth: 38 },
       },
       didParseCell: (data) => {
-        // Preço, estoque e valor alinhados à direita (cabeçalho, corpo e total)
         if ([3, 4, 6].includes(data.column.index)) data.cell.styles.halign = "right";
 
         if (data.section === "body" && data.column.index === 5) {
@@ -712,6 +726,15 @@ export default function AdminProdutos() {
               >
                 ESTOQUE BAIXO
               </button>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={filter === "inactive"}
+                className={filter === "inactive" ? "is-active" : ""}
+                onClick={() => setFilter("inactive")}
+              >
+                INATIVOS
+              </button>
             </div>
           </div>
         </div>
@@ -778,6 +801,16 @@ export default function AdminProdutos() {
                       >
                         EDITAR
                       </button>
+                      <button
+                      type="button"
+                      className="products-delete"
+                      aria-label={`Inativar ${p.nome}`}
+                      disabled={status === "inactive"}
+                      title={status === "inactive" ? "Produto já está inativo" : "Inativar produto"}
+                      onClick={() => openDeleteModal(p)}
+                    >
+                      {status === "inactive" ? "INATIVO" : "INATIVAR"}
+                    </button>
                     </div>
                   </div>
                 );
@@ -1056,6 +1089,50 @@ export default function AdminProdutos() {
           </div>
         );
       })()}
+
+      {/* ---- MODAL: CONFIRMAR INATIVAÇÃO ---- */}
+      {deleteProduct && (
+        <div className="products-modal-overlay" onClick={closeDeleteModal}>
+          <div
+            className="products-modal-card products-modal-card--sm"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="products-modal-header">
+              <h2>INATIVAR PRODUTO</h2>
+              <button
+                type="button"
+                className="products-modal-close"
+                aria-label="Fechar"
+                onClick={closeDeleteModal}
+              >
+                {Icons.close}
+              </button>
+            </div>
+
+            <div className="products-form">
+              <div className="products-sell-info">
+                <strong>{deleteProduct.nome}</strong>
+                <span>Deseja realmente desativar este produto? Ele sairá da loja do site, mas poderá ser reativado a qualquer momento.</span>
+              </div>
+
+              <div className="products-modal-actions">
+                <button type="button" className="products-btn-cancel" onClick={closeDeleteModal}>
+                  CANCELAR
+                </button>
+                <button
+                  type="button"
+                  className="dash-primary-btn"
+                  style={{ background: "#ad1238" }}
+                  disabled={deleting}
+                  onClick={handleDelete}
+                >
+                  {deleting ? "INATIVANDO..." : "SIM, INATIVAR"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ---- MODAL DE AVISO ---- */}
       {toastInfo && (

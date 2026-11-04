@@ -2,10 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import heroImg from "../../assets/Cilios1.jpeg";
-import { login } from "../../auth";
+import { login, loginComGoogle } from "../../auth";
 import { GoogleLogin } from '@react-oauth/google';
-import { loginComGoogle } from '../../auth';
-
 
 function IconeOlho({ aberto }) {
   return aberto ? (
@@ -42,6 +40,7 @@ export default function Login() {
     setSucesso(null);
     setEnviando(true);
     try {
+      // Aqui o login é executado e os itens da cestinha anônima migram sozinhos para o banco
       await login(email, senha);
       navigate("/minha-conta");
     } catch (err) {
@@ -72,7 +71,7 @@ export default function Login() {
       if (!response.ok) throw new Error(data.erro || "Erro ao alterar senha");
 
       setSucesso("Senha alterada com sucesso! Faça login com a nova senha.");
-      setModoEsqueci(false); // Volta para a tela de login
+      setModoEsqueci(false);
       setSenha("");
       setNovaSenha("");
     } catch (err) {
@@ -82,12 +81,12 @@ export default function Login() {
     }
   }
 
-  // Função disparada quando o login com o Google é bem-sucedido
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setErro(null);
       setSucesso(null);
       setEnviando(true);
+      // O login com Google também executa a migração automática configurada no auth.js
       await loginComGoogle(credentialResponse.credential);
       navigate("/minha-conta");
     } catch (err) {
@@ -148,7 +147,6 @@ export default function Login() {
           </div>
 
           {!modoEsqueci ? (
-            /* --- FORMULÁRIO DE LOGIN --- */
             <form className="login-form" onSubmit={entrar}>
               <div className="login-field">
                 <label>E-MAIL</label>
@@ -215,7 +213,6 @@ export default function Login() {
               </button>
             </form>
           ) : (
-            /* --- FORMULÁRIO DE RECUPERAÇÃO DE SENHA --- */
             <form className="login-form" onSubmit={trocarSenha}>
               <div className="login-field">
                 <label>E-MAIL CADASTRADO</label>
@@ -282,7 +279,6 @@ export default function Login() {
                 <span>OU</span>
               </div>
 
-              {/* Botão oficial do Google integrado */}
               <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
                 <GoogleLogin
                   onSuccess={handleGoogleSuccess}

@@ -18,10 +18,17 @@ const iconProps = {
 };
 
 const Icons = {
-  search: (
-    <svg {...iconProps} width="20" height="20">
-      <circle cx="11" cy="11" r="7" />
-      <path d="m20 20-3.5-3.5" />
+  calendar: (
+    <svg {...iconProps} width="18" height="18">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+      <line x1="16" y1="2" x2="16" y2="6" />
+      <line x1="8" y1="2" x2="8" y2="6" />
+      <line x1="3" y1="10" x2="21" y2="10" />
+    </svg>
+  ),
+  close: (
+    <svg {...iconProps} width="16" height="16">
+      <path d="M18 6 6 18M6 6l12 12" />
     </svg>
   ),
   plus: (
@@ -78,7 +85,7 @@ function formatRange(start, end) {
 const horarios = (n) => `${n} ${n === 1 ? "horário" : "horários"}`;
 
 /* ---------- Painel de um dia ---------- */
-function DayPanel({ date, appointments, onOpenNew }) {
+function DayPanel({ date, appointments, onOpenNew, isDataPassada }) {
   const total = appointments.length;
 
   return (
@@ -103,7 +110,7 @@ function DayPanel({ date, appointments, onOpenNew }) {
 
       <ul className="agenda-timeline">
         {appointments.map((a) => (
-          <li key={a.time + a.name} className="agenda-row">
+          <li key={a.time + a.name + a.dateStr} className="agenda-row">
             <span className="agenda-time">{a.time}</span>
             <span
               className={`agenda-marker ${a.status === "ongoing" ? "is-live" : ""}`}
@@ -126,13 +133,16 @@ function DayPanel({ date, appointments, onOpenNew }) {
           </li>
         ))}
 
-        <li className="agenda-free">
-          <span className="agenda-free-time">{NEXT_FREE_SLOT}</span>
-          <button type="button" className="agenda-free-btn" aria-label="Adicionar agendamento" onClick={onOpenNew}>
-            {Icons.plus}
-          </button>
-          <span className="agenda-free-label">HORÁRIO DISPONÍVEL</span>
-        </li>
+        {/* Só exibe o horário disponível/botão de novo agendamento se NÃO for data passada */}
+        {!isDataPassada && (
+          <li className="agenda-free">
+            <span className="agenda-free-time">{NEXT_FREE_SLOT}</span>
+            <button type="button" className="agenda-free-btn" aria-label="Adicionar agendamento" onClick={onOpenNew}>
+              {Icons.plus}
+            </button>
+            <span className="agenda-free-label">HORÁRIO DISPONÍVEL</span>
+          </li>
+        )}
       </ul>
     </div>
   );
@@ -146,6 +156,9 @@ export default function AdminAgenda() {
   
   const [agendamentosDoBanco, setAgendamentosDoBanco] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Estados para o seletor de data (calendário)
+  const [selectedDateFilter, setSelectedDateFilter] = useState("");
 
   // Buscar agendamentos reais da API
   const carregarAgenda = async () => {
@@ -162,107 +175,197 @@ export default function AdminAgenda() {
     carregarAgenda();
   }, []);
 
-  // Mapeia e filtra os agendamentos por dia da semana com base na data atual selecionada
-  const days = useMemo(
-    () =>
-      WEEK_LABELS.map((label, i) => {
-        const date = addDays(weekStart, i);
-        const dataStr = date.toISOString().split("T")[0]; // Formato YYYY-MM-DD
+  // Manipular a escolha da data no calendário
+  const handleDateChange = (e) => {
+    const val = e.target.value; // Formato YYYY-MM-DD
+    setSelectedDateFilter(val);
+    if (val) {
+      const [ano, mes, dia] = val.split("-");
+      const d = new Date(ano, mes - 1, dia);
+      setWeekStart(getMonday(d));
+      setSelected(Math.min((d.getDay() + 6) % 7, 5));
+    }
+  };
 
-        const appointmentsDoDia = agendamentosDoBanco
-          .filter((ag) => ag.data_agendamento && ag.data_agendamento.startsWith(dataStr))
-          .map((ag) => {
-            const horaStr = ag.data_agendamento.split("T")[1]?.substring(0, 5) || "00:00";
-            const nomeCliente = ag.cliente_nome || "Cliente";
-            const iniciais = nomeCliente
-              .split(" ")
-              .map((n) => n[0])
-              .slice(0, 2)
-              .join("")
-              .toUpperCase();
+  // Dias gerados com base na semana ou filtrados pela data exata
+  const days = useMemo(() => {
+    if (selectedDateFilter) {
+      const filtrados = agendamentosDoBanco.filter((ag) => {
+        return ag.data_agendamento && ag.data_agendamento.startsWith(selectedDateFilter);
+      });
 
-            return {
-              time: horaStr,
-              initials: iniciais || "CL",
-              name: nomeCliente,
-              service: ag.servico_nome || "Serviço",
-              duration: "2h",
-              price: `R$ ${ag.valor || 0}`,
-              status: ag.status || "confirmed",
-            };
-          })
-          .sort((a, b) => a.time.localeCompare(b.time));
+      const [ano, mes, dia] = selectedDateFilter.split("-");
+      const dateObj = new Date(ano, mes - 1, dia);
 
-        return { label, date, appointments: appointmentsDoDia };
-      }),
-    [weekStart, agendamentosDoBanco]
-  );
+      const appointmentsDoDia = filtrados
+        .map((ag) => {
+          const horaStr = ag.data_agendamento.split("T")[1]?.substring(0, 5) || "00:00";
+          const nomeCliente = ag.cliente_nome || "Cliente";
+          const iniciais = nomeCliente
+            .split(" ")
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join("")
+            .toUpperCase();
 
-  const current = days[selected];
+          return {
+            time: horaStr,
+            initials: iniciais || "CL",
+            name: nomeCliente,
+            service: ag.servico_nome || "Serviço",
+            duration: "2h",
+            price: `R$ ${ag.valor || 0}`,
+            status: ag.status || "confirmed",
+            dateStr: selectedDateFilter
+          };
+        })
+        .sort((a, b) => a.time.localeCompare(b.time));
+
+      return [
+        {
+          label: dateObj.toLocaleDateString("pt-BR", { weekday: "short" }).toUpperCase().replace(".", ""),
+          date: dateObj,
+          appointments: appointmentsDoDia,
+        },
+      ];
+    }
+
+    return WEEK_LABELS.map((label, i) => {
+      const date = addDays(weekStart, i);
+      const dataStr = date.toISOString().split("T")[0];
+
+      const appointmentsDoDia = agendamentosDoBanco
+        .filter((ag) => ag.data_agendamento && ag.data_agendamento.startsWith(dataStr))
+        .map((ag) => {
+          const horaStr = ag.data_agendamento.split("T")[1]?.substring(0, 5) || "00:00";
+          const nomeCliente = ag.cliente_nome || "Cliente";
+          const iniciais = nomeCliente
+            .split(" ")
+            .map((n) => n[0])
+            .slice(0, 2)
+            .join("")
+            .toUpperCase();
+
+          return {
+            time: horaStr,
+            initials: iniciais || "CL",
+            name: nomeCliente,
+            service: ag.servico_nome || "Serviço",
+            duration: "2h",
+            price: `R$ ${ag.valor || 0}`,
+            status: ag.status || "confirmed",
+            dateStr: dataStr
+          };
+        })
+        .sort((a, b) => a.time.localeCompare(b.time));
+
+      return { label, date, appointments: appointmentsDoDia };
+    });
+  }, [weekStart, agendamentosDoBanco, selectedDateFilter]);
+
+  const current = days[selected] || days[0];
+
+  // Identifica se a data visualizada atualmente é anterior ao dia de hoje
+  const hojeStr = new Date().toISOString().split("T")[0];
+  const dataAtualPainel = current?.date ? current.date.toISOString().split("T")[0] : hojeStr;
+  const isDataPassada = dataAtualPainel < hojeStr;
 
   return (
     <main className="dash-main">
       <header className="dash-header">
         <div>
-          <span className="dash-date">{formatLongDate(current.date)}</span>
+          <span className="dash-date">{current ? formatLongDate(current.date) : "AGENDA"}</span>
           <h1 className="dash-title">AGENDA</h1>
         </div>
 
         <div className="dash-header-actions">
-          <button type="button" className="dash-icon-btn" aria-label="Buscar">
-            {Icons.search}
-          </button>
-          <button type="button" className="dash-primary-btn" onClick={() => setIsModalOpen(true)}>
-            + NOVO AGENDAMENTO
-          </button>
+          <div className="agenda-calendar-picker">
+            <span className="agenda-calendar-icon" aria-hidden="true">
+              {Icons.calendar}
+            </span>
+            <input
+              type="date"
+              value={selectedDateFilter}
+              onChange={handleDateChange}
+              title="Filtrar por data específica"
+            />
+            {selectedDateFilter && (
+              <button
+                type="button"
+                className="agenda-calendar-clear"
+                onClick={() => setSelectedDateFilter("")}
+                aria-label="Limpar filtro de data"
+                title="Mostrar semana completa"
+              >
+                {Icons.close}
+              </button>
+            )}
+          </div>
+
+          {/* Oculta o botão de novo agendamento se for data passada */}
+          {!isDataPassada && (
+            <button type="button" className="dash-primary-btn" onClick={() => setIsModalOpen(true)}>
+              + NOVO AGENDAMENTO
+            </button>
+          )}
         </div>
       </header>
 
-      {/* ---- Barra de navegação da semana ---- */}
-      <div className="agenda-toolbar">
-        <div className="agenda-range">
-          <button
-            type="button"
-            aria-label="Semana anterior"
-            onClick={() => setWeekStart((w) => addDays(w, -7))}
-          >
-            ‹
-          </button>
-          <span>{formatRange(days[0].date, days[5].date)}</span>
-          <button
-            type="button"
-            aria-label="Próxima semana"
-            onClick={() => setWeekStart((w) => addDays(w, 7))}
-          >
-            ›
-          </button>
-        </div>
+      {!selectedDateFilter && (
+        <div className="agenda-toolbar">
+          <div className="agenda-range">
+            <button
+              type="button"
+              aria-label="Semana anterior"
+              onClick={() => setWeekStart((w) => addDays(w, -7))}
+            >
+              ‹
+            </button>
+            <span>{formatRange(days[0]?.date || new Date(), days[5]?.date || new Date())}</span>
+            <button
+              type="button"
+              aria-label="Próxima semana"
+              onClick={() => setWeekStart((w) => addDays(w, 7))}
+            >
+              ›
+            </button>
+          </div>
 
-        <div className="agenda-toggle" role="tablist" aria-label="Modo de visualização">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={view === "week"}
-            className={view === "week" ? "is-active" : ""}
-            onClick={() => setView("week")}
-          >
-            SEMANA
-          </button>
-          <button
-            type="button"
-            role="tab"
-            aria-selected={view === "list"}
-            className={view === "list" ? "is-active" : ""}
-            onClick={() => setView("list")}
-          >
-            LISTA
-          </button>
+          <div className="agenda-toggle" role="tablist" aria-label="Modo de visualização">
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === "week"}
+              className={view === "week" ? "is-active" : ""}
+              onClick={() => setView("week")}
+            >
+              SEMANA
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === "list"}
+              className={view === "list" ? "is-active" : ""}
+              onClick={() => setView("list")}
+            >
+              LISTA
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* ---- Painel principal ---- */}
-      <section className="agenda-panel" aria-label="Agenda da semana">
-        {view === "week" ? (
+      <section className="agenda-panel" aria-label="Agenda de atendimentos">
+        {selectedDateFilter ? (
+          days.map((d) => (
+            <DayPanel 
+              key={d.date.toISOString()} 
+              date={d.date} 
+              appointments={d.appointments} 
+              onOpenNew={() => setIsModalOpen(true)}
+              isDataPassada={isDataPassada}
+            />
+          ))
+        ) : view === "week" ? (
           <>
             <div className="agenda-week" role="tablist" aria-label="Dias da semana">
               {days.map((d, i) => (
@@ -281,25 +384,32 @@ export default function AdminAgenda() {
               ))}
             </div>
 
-            <DayPanel 
-              date={current.date} 
-              appointments={current.appointments} 
-              onOpenNew={() => setIsModalOpen(true)} 
-            />
+            {current && (
+              <DayPanel 
+                date={current.date} 
+                appointments={current.appointments} 
+                onOpenNew={() => setIsModalOpen(true)}
+                isDataPassada={isDataPassada}
+              />
+            )}
           </>
         ) : (
-          days.map((d) => (
-            <DayPanel 
-              key={d.label} 
-              date={d.date} 
-              appointments={d.appointments} 
-              onOpenNew={() => setIsModalOpen(true)} 
-            />
-          ))
+          days.map((d) => {
+            const dataDiaStr = d.date.toISOString().split("T")[0];
+            const passada = dataDiaStr < hojeStr;
+            return (
+              <DayPanel 
+                key={d.label} 
+                date={d.date} 
+                appointments={d.appointments} 
+                onOpenNew={() => setIsModalOpen(true)}
+                isDataPassada={passada}
+              />
+            );
+          })
         )}
       </section>
 
-      {/* ---- Modal de Cadastro de Novo Agendamento ---- */}
       <NovoAgendamentoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

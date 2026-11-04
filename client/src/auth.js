@@ -1,6 +1,7 @@
 // Salvar como: client/src/auth.js
 
 import { api } from "./api";
+import { cestinhaService } from "./services/cestinhaService";
 
 export function logout() {
   localStorage.removeItem("access");
@@ -27,6 +28,10 @@ export async function login(email, senha) {
   });
   localStorage.setItem("access", tokens.access);
   localStorage.setItem("refresh", tokens.refresh);
+
+  // MIGRAÇÃO DA CESTINHA: Transfere os itens temporários para o banco do usuário logado
+  await cestinhaService.migrarItensLocaisParaAPI();
+
   return usuarioAtual();
 }
 
@@ -51,5 +56,9 @@ export async function loginComGoogle(credential) {
   });
   localStorage.setItem("access", data.access);
   localStorage.setItem("refresh", data.refresh);
+
+  // MIGRAÇÃO DA CESTINHA PARA LOGIN VIA GOOGLE
+  await cestinhaService.migrarItensLocaisParaAPI();
+
   return usuarioAtual();
 }

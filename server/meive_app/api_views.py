@@ -12,6 +12,7 @@ from django.http import Http404
 from rest_framework import mixins, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import mixins, permissions, serializers, viewsets
 
 from .models import (
     Agendamento,
@@ -67,6 +68,7 @@ class CursoViewSet(viewsets.ReadOnlyModelViewSet):
 class ProdutoAdminViewSet(
     mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.ReadOnlyModelViewSet,
 ):
     """Todos os produtos (inclusive inativos) para o painel admin: lista, cadastra e edita.
@@ -135,9 +137,19 @@ class UsuarioViewSet(viewsets.ModelViewSet):
 # Até existir a versão "cada cliente vê só os seus", o acesso é só do administrador (tipo ADMIN).
 
 class AgendamentoViewSet(viewsets.ModelViewSet):
-    queryset = Agendamento.objects.all().order_by("id_agendamento")
     serializer_class = AgendamentoSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        usuario = self.request.user
+        queryset = Agendamento.objects.all().order_by("data_agendamento")
+
+        # Administrador mantém acesso total à agenda.
+        if getattr(usuario, 'tipo', None) == 'ADMIN':
+            return queryset
+
+        # Cliente visualiza apenas os seus próprios agendamentos.
+        return queryset.filter(id_usuario=usuario)
 
 
 class MaterialCursoViewSet(viewsets.ModelViewSet):
@@ -147,10 +159,58 @@ class MaterialCursoViewSet(viewsets.ModelViewSet):
 
 
 class CestinhaInteresseViewSet(viewsets.ModelViewSet):
-    queryset = CestinhaInteresse.objects.all().order_by("id_cestinha")
     serializer_class = CestinhaInteresseSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):
+        usuario = self.request.user
+
+        queryset = CestinhaInteresse.objects.filter(
+            id_produto__isnull=False
+        ).select_related(
+            'id_produto',
+            'id_usuario'
+        )
+
+        # Administrador mantém acesso geral.
+        if getattr(usuario, 'tipo', None) == 'ADMIN':
+            return queryset.order_by('-adicionado_em')
+
+        # Cliente só visualiza seus próprios produtos.
+        return queryset.filter(
+            id_usuario=usuario
+        ).order_by('-adicionado_em')
+
+    def perform_create(self, serializer):
+        usuario = self.request.user
+        produto = serializer.validated_data['id_produto']
+        quantidade = serializer.validated_data.get('quantidade', 1)
+
+        # Não permite adicionar cursos ou produtos inativos.
+        if not produto.ativo:
+            raise serializers.ValidationError(
+                {'id_produto': 'Produto indisponível.'}
+            )
+
+        item, criado = CestinhaInteresse.objects.get_or_create(
+            id_usuario=usuario,
+            id_produto=produto,
+            defaults={
+                'quantidade': quantidade,
+                'id_curso': None,
+            }
+        )
+
+        # Se o produto já estiver na cestinha, soma a quantidade.
+        if not criado:
+            item.quantidade += quantidade
+            item.save(update_fields=['quantidade'])
+
+        serializer.instance = item
+
+    def perform_update(self, serializer):
+        # Impede alterar o proprietário ou o produto do registro.
+        serializer.save()
 
 class TurmaViewSet(viewsets.ModelViewSet):
     queryset = Turma.objects.all().order_by("id_turma")

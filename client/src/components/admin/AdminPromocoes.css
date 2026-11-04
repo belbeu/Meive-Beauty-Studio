@@ -1,15 +1,21 @@
-.promos-summary{
-    display:grid;
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    gap:14px;
-    margin:-8px 0 28px;
+.promos-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 0 0 28px 0;
+    background: transparent !important;
+    border: none !important;
 }
-.promos-summary article{
-    padding:19px 22px;
-    background:var(--surface);border:1px solid var(--border);
-    display:flex;flex-direction:column;
-    gap:8px;
+
+.promos-summary article {
+    padding: 19px 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
+
 .promos-summary span{
     font-size:.62rem;
     letter-spacing:1.4px;

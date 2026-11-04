@@ -8,9 +8,10 @@
 .products-summary {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin-bottom: 18px;
-  border: 1px solid var(--border);
-  background: var(--surface);
+  gap: 14px;
+  margin-bottom: 22px;
+  background: transparent !important;
+  border: none !important;
 }
 
 .products-summary-item {
@@ -18,7 +19,8 @@
   flex-direction: column;
   gap: 14px;
   padding: 24px 24px 26px;
-  border-right: 1px solid var(--border);
+  background: var(--surface);
+  border: 1px solid var(--border);
   min-width: 0;
 }
 
@@ -624,6 +626,32 @@
 .products-modal-actions .dash-primary-btn:disabled {
   opacity: 0.6;
   cursor: wait;
+}
+
+/* Ajustar o grid da linha para acomodar o botão extra de excluir */
+.products-row {
+  display: grid;
+  grid-template-columns: 2.2fr 1.1fr 0.9fr 0.8fr 1.1fr 165px;
+  align-items: center;
+  column-gap: 12px;
+  min-width: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Estilo do botão de excluir alinhado com as ações existentes */
+.products-delete {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #ad1238;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.products-delete:hover {
+  color: #ff7a93;
 }
 
 @keyframes productsFadeIn {

@@ -30,14 +30,52 @@ class Avaliacao(models.Model):
 
 class CestinhaInteresse(models.Model):
     id_cestinha = models.AutoField(primary_key=True)
-    id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_usuario')
-    id_produto = models.ForeignKey('Produto', models.DO_NOTHING, db_column='id_produto', blank=True, null=True)
-    id_curso = models.ForeignKey('Curso', models.DO_NOTHING, db_column='id_curso', blank=True, null=True)
-    adicionado_em = models.DateTimeField(blank=True, null=True)
+
+    id_usuario = models.ForeignKey(
+        'Usuario',
+        models.DO_NOTHING,
+        db_column='id_usuario'
+    )
+
+    id_produto = models.ForeignKey(
+        'Produto',
+        models.DO_NOTHING,
+        db_column='id_produto',
+        blank=True,
+        null=True
+    )
+
+    # Mantido para compatibilidade com registros antigos.
+    # A nova Cestinha aceitará somente produtos.
+    id_curso = models.ForeignKey(
+        'Curso',
+        models.DO_NOTHING,
+        db_column='id_curso',
+        blank=True,
+        null=True
+    )
+
+    quantidade = models.PositiveIntegerField(default=1)
+
+    adicionado_em = models.DateTimeField(
+        auto_now_add=True,
+        blank=True,
+        null=True
+    )
 
     class Meta:
         db_table = 'cestinha_interesse'
+        ordering = ['-adicionado_em']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['id_usuario', 'id_produto'],
+                condition=models.Q(id_produto__isnull=False),
+                name='unique_usuario_produto_cestinha'
+            )
+        ]
 
+    def __str__(self):
+        return f"{self.id_usuario} - {self.id_produto}"
 
 class Curso(models.Model):
     id_curso = models.AutoField(primary_key=True)

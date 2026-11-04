@@ -1,0 +1,132 @@
+/* Salvar como: src/components/cliente/MinhaCestinha.css */
+.dashboard-cestinha-container {
+  padding: 20px;
+  color: #fff;
+  background-color: #0b0b0b;
+  min-height: 60vh;
+}
+
+.dashboard-cestinha-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 5px;
+}
+
+.cestinha-subtitle {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+}
+
+.cestinha-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 25px;
+}
+
+.cestinha-vazia {
+  padding: 40px;
+  text-align: center;
+  color: #888;
+}
+
+.cestinha-item-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #141414;
+  border: 1px solid #222;
+  padding: 14px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+
+.cestinha-item-img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: #000;
+  border-radius: 4px;
+}
+
+.cestinha-item-info {
+  flex-grow: 1;
+}
+
+.cestinha-item-info h4 {
+  margin: 0 0 4px 0;
+  font-size: 0.95rem;
+}
+
+.cestinha-item-cat {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.cestinha-item-preco {
+  color: #ad1838;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.cestinha-resumo {
+  background: #141414;
+  border: 1px solid #222;
+  padding: 20px;
+  border-radius: 6px;
+  height: fit-content;
+}
+
+.cestinha-resumo h3 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
+.resumo-linha {
+  display: flex;
+  justify-content: space-between;
+  margin: 15px 0;
+  font-size: 1rem;
+}
+
+.btn-finalizar-interesse {
+  width: 100%;
+  background: #ad1838;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.btn-finalizar-interesse:hover {
+  background: #c31c40;
+}
+
+.btn-remover-item {
+  background: transparent;
+  border: 1px solid #ad1838;
+  color: #ad1838;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: all 0.3s;
+}
+
+.btn-remover-item:hover {
+  background: #ad1838;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .cestinha-content {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,164 @@
+/* Salvar como: src/components/Cestinha.css */
+.cestinha-page-container {
+  padding: 40px 5%;
+  background-color: var(--c-bg, #0b0b0b);
+  color: var(--c-text, #fff);
+  min-height: 80vh;
+}
+
+.cestinha-header {
+  margin-bottom: 25px;
+}
+
+.cestinha-header h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  margin-bottom: 5px;
+}
+
+.cestinha-header p {
+  color: var(--c-text-muted, #888);
+  font-size: 0.9rem;
+}
+
+.cestinha-aviso-login {
+  background: rgba(173, 24, 56, 0.15);
+  border: 1px solid #ad1838;
+  padding: 15px 20px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.cestinha-aviso-login p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.btn-ir-login {
+  background: #ad1838;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.cestinha-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+}
+
+.cestinha-item-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--c-surface, #141414);
+  border: 1px solid var(--c-border, #222);
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.cestinha-item-img {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  background: #000;
+  border-radius: 4px;
+}
+
+.cestinha-item-info {
+  flex-grow: 1;
+}
+
+.cestinha-item-info h4 {
+  margin: 0 0 5px 0;
+}
+
+.cestinha-item-cat {
+  font-size: 0.75rem;
+  color: #888;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.cestinha-item-preco {
+  color: #ad1838;
+  font-weight: 600;
+}
+
+.cestinha-resumo {
+  background: var(--c-surface, #141414);
+  border: 1px solid var(--c-border, #222);
+  padding: 24px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.cestinha-resumo h3 {
+  margin-top: 0;
+  border-bottom: 1px solid #333;
+  padding-bottom: 12px;
+}
+
+.resumo-linha {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+  font-size: 1.1rem;
+}
+
+.btn-finalizar-interesse {
+  width: 100%;
+  background: #ad1838;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.btn-remover-item {
+  background: transparent;
+  border: 1px solid #ad1838;
+  color: #ad1838;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.cestinha-vazia {
+  text-align: center;
+  padding: 60px 0;
+  color: #888;
+}
+
+.btn-voltar-loja {
+  display: inline-block;
+  margin-top: 15px;
+  background: #ad1838;
+  color: #fff;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .cestinha-content {
+    grid-template-columns: 1fr;
+  }
+  .cestinha-aviso-login {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+}

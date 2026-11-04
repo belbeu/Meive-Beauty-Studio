@@ -3,6 +3,8 @@ import "./Produtos.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import FotoProduto from "./FotoProduto";
+import CestinhaToast from "./CestinhaToast";
+import { cestinhaService } from "../services/cestinhaService";
 import {
   useProdutosLoja,
   ordenarParaLoja,
@@ -18,6 +20,7 @@ export default function Produtos() {
 
   const [activeFilter, setActiveFilter] = useState("todos");
   const [searchQuery, setSearchQuery] = useState("");
+  const [produtoAdicionado, setProdutoAdicionado] = useState(null);
 
   const filters = [{ chave: "todos", rotulo: "TODOS" }, ...categoriasDaLoja(produtos)];
 
@@ -27,12 +30,33 @@ export default function Produtos() {
     return matchesCategory && buscaCombina(product, searchQuery);
   });
 
+  const handleAdicionarCestinha = async (product) => {
+    if (!product.em_estoque) return;
+
+    const token = localStorage.getItem("access");
+
+    if (!token) {
+      // Adição anônima no localStorage
+      cestinhaService.adicionarItemLocal(product, 1);
+    } else {
+      // Salva direto no backend se logado
+      try {
+        await cestinhaService.adicionarItemAPI(product.id_produto, 1);
+      } catch (err) {
+        console.error(err);
+        return;
+      }
+    }
+
+    // Exibe o toast padronizado com o botão "Ver Itens"
+    setProdutoAdicionado(product.nome);
+  };
+
   return (
     <>
       <Navbar />
 
       <main className="produto-container">
-        {/* Hero Section */}
         <section className="hero-section">
           <div className="hero-content">
             <p className="hero-subtitle">
@@ -47,7 +71,6 @@ export default function Produtos() {
           </div>
         </section>
 
-        {/* Banner Informativo da Tierlist Atualizado */}
         <div className="products-tierlist-banner">
           <div className="banner-icon">✨</div>
           <div className="banner-text">
@@ -59,7 +82,6 @@ export default function Produtos() {
           </div>
         </div>
 
-        {/* Filter and Redesigned Search Section */}
         <section className="filter-section">
           <div className="filters">
             {filters.map((filter) => (
@@ -73,7 +95,6 @@ export default function Produtos() {
             ))}
           </div>
 
-          {/* Barra de pesquisa redesenhada */}
           <div className="search-box-wrapper">
             <svg className="search-icon-svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
@@ -92,7 +113,6 @@ export default function Produtos() {
           </div>
         </section>
 
-        {/* Contador de produtos */}
         {!carregando && !erro && (
           <div className="product-count">
             <p>
@@ -125,7 +145,6 @@ export default function Produtos() {
           </section>
         )}
 
-        {/* Product Grid */}
         {!carregando && !erro && (
           <section className="product-grid">
             {filteredProducts.length > 0 ? (
@@ -151,7 +170,12 @@ export default function Produtos() {
                         <span className="product-price">
                           {formatarPreco(product.preco, { sempreCentavos: true })}
                         </span>
-                        <button className="cart-btn" aria-label="Adicionar à cestinha" disabled={!product.em_estoque}>
+                        <button 
+                          className="cart-btn" 
+                          aria-label="Adicionar à cestinha" 
+                          disabled={!product.em_estoque}
+                          onClick={() => handleAdicionarCestinha(product)}
+                        >
                           <svg
                             width="20"
                             height="20"
@@ -167,7 +191,11 @@ export default function Produtos() {
                             <path d="M16 10a4 4 0 0 1-8 0"></path>
                           </svg>
                         </button>
-                        <button className="product-buy-btn" disabled={!product.em_estoque}>
+                        <button 
+                          className="product-buy-btn" 
+                          disabled={!product.em_estoque}
+                          onClick={() => handleAdicionarCestinha(product)}
+                        >
                           {product.em_estoque ? "ADICIONAR NA CESTINHA" : "ESGOTADO"}
                         </button>
                       </div>
@@ -185,6 +213,14 @@ export default function Produtos() {
           </section>
         )}
       </main>
+
+      {/* Toast flutuante com o botão VER ITENS */}
+      {produtoAdicionado && (
+        <CestinhaToast 
+          produtoNome={produtoAdicionado} 
+          onClose={() => setProdutoAdicionado(null)} 
+        />
+      )}
 
       <Footer />
     </>

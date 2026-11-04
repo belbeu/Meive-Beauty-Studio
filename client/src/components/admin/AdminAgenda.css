@@ -317,6 +317,63 @@
   margin-left: 6px;
 }
 
+/* ---- Seletor de Data Estilizado (Calendário) ---- */
+.agenda-calendar-picker {
+  display: flex;
+  align-items: center;
+  background: var(--surface, #141414);
+  border: 1px solid var(--border, #333);
+  height: 42px;
+  padding: 0 12px;
+  gap: 8px;
+  position: relative;
+  transition: border-color 0.2s ease;
+}
+
+.agenda-calendar-picker:hover {
+  border-color: #555;
+}
+
+.agenda-calendar-icon {
+  display: flex;
+  align-items: center;
+  color: #8a8a8a;
+  pointer-events: none;
+}
+
+.agenda-calendar-picker input[type="date"] {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 11px;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  color-scheme: dark; /* Força o calendário nativo do navegador a ficar com tema escuro */
+}
+
+.agenda-calendar-clear {
+  background: none;
+  border: none;
+  color: #8a8a8a;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  transition: color 0.2s ease;
+}
+
+.agenda-calendar-clear:hover {
+  color: #fff;
+}
+
+@media (max-width: 800px) {
+  .agenda-calendar-picker {
+    height: 38px;
+    padding: 0 8px;
+  }
+}
+
 /* ============ RESPONSIVO ============ */
 @media (max-width: 800px) {
   .agenda-toolbar {
