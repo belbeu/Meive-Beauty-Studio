@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ThemeToggle from "../ThemeToggle";
-import FontSizeControls from "../../theme/FontSizeControls";
 import "./AdminDashboard.css";
 
 const iconProps = {
@@ -111,9 +109,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className="dash-header-actions">
-
-          <ThemeToggle />
-          <FontSizeControls />
 
           <button type="button" className="dash-icon-btn" aria-label="Buscar">
             {Icons.search}

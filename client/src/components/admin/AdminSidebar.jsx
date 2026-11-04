@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./AdminDashboard.css";
 import ThemeToggle from "../ThemeToggle";
+import FontSizeControls from "../../theme/FontSizeControls";
 
 const iconProps = {
   width: 18,
@@ -75,7 +76,10 @@ export default function AdminSidebar() {
         <div className="dash-brand">
           <span className="dash-brand-name">MEIVE</span>
           <span className="dash-brand-badge">ADMIN</span>
-          <ThemeToggle />
+          <div className="dash-accessibility-controls">
+            <ThemeToggle />
+            <FontSizeControls />
+          </div>
         </div>
 
         <nav className="dash-nav" aria-label="Navegação do painel">
@@ -112,7 +116,7 @@ export default function AdminSidebar() {
                 ✕
               </button>
             </div>
-            <p style={{ fontSize: "12px", color: "#aaa", margin: 0 }}>
+            <p style={{ fontSize: "0.75rem", color: "var(--c-text-muted)", margin: 0 }}>
               Tem certeza de que deseja sair do painel administrativo?
             </p>
             <div className="clients-modal-actions">

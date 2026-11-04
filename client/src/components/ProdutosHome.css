@@ -19,7 +19,7 @@
 .products-subtitle {
   display: block;
   font-family: Arial, sans-serif;
-  font-size: 11px; 
+  font-size: 0.6875rem; 
   font-weight: 700; 
   letter-spacing: 3px;
   color: #a71932;
@@ -29,7 +29,7 @@
 .products-title {
   margin: 0;
   font-family: "Arial Narrow", "Roboto Condensed", Arial, sans-serif;
-  font-size: clamp(36px, 4vw, 48px);
+  font-size: clamp(2.25rem, 4vw, 3rem);
   font-weight: 900;
   letter-spacing: -1px;
   text-transform: uppercase;
@@ -38,7 +38,7 @@
 .products-top-note {
   max-width: 320px;
   font-family: Arial, sans-serif;
-  font-size: 14px; 
+  font-size: 0.875rem; 
   color: #cccccc;
   line-height: 1.5;
   text-align: right;
@@ -81,7 +81,7 @@
 }
 
 .product-info h3 {
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-family: Arial, sans-serif;
   font-weight: 700;
   margin: 0 0 15px 0;
@@ -98,7 +98,7 @@
 }
 
 .product-price {
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   color: #a71932;
   font-family: Arial, sans-serif;
@@ -109,7 +109,7 @@
   color: #ffffff;
   border: none;
   padding: 8px 16px;
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
@@ -132,7 +132,7 @@
   align-items: center;
   gap: 12px;
   font-family: Arial, sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -213,7 +213,7 @@
   }
 
   .hero-title {
-    font-size: clamp(70px, 17vw, 105px);
+    font-size: clamp(4.375rem, 17vw, 6.5625rem);
   }
 
   .stats {
@@ -250,7 +250,7 @@
   }
 
   .hero-title {
-    font-size: 76px;
+    font-size: 4.75rem;
   }
 
   .hero-description {
@@ -270,7 +270,7 @@
   }
 
   .stat strong {
-    font-size: 23px;
+    font-size: 1.4375rem;
   }
 
   .featured-card {
@@ -283,7 +283,7 @@
 }
 .product-description {
   color: #A3A3A3;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 400;
   margin-top: 8px;
   margin-bottom: 24px;
@@ -326,7 +326,7 @@
   align-items: center;
   justify-content: center;
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 700;
   letter-spacing: 6px;
   color: #2a2a2a;
@@ -344,7 +344,7 @@
   cursor: default;
   text-transform: uppercase;
   letter-spacing: 1px;
-  font-size: 11px;
+  font-size: 0.6875rem;
 }
 
 .product-buy-btn:disabled,
@@ -361,7 +361,7 @@
   gap: 18px;
   padding: 50px 0;
   font-family: Arial, sans-serif;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: #cccccc;
   text-align: center;
 }

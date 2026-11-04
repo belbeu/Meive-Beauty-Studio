@@ -31,7 +31,7 @@
   align-items: center;
   white-space: nowrap;
   font-family: "Bebas Neue", sans-serif;
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 400;
   letter-spacing: 2.5px;
   color: #f4dfe3;
@@ -43,7 +43,7 @@
   justify-content: center;
   margin: 0 28px;
   font-family: "Inter", sans-serif;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: #f4dfe3;
 }
 
@@ -70,7 +70,7 @@
   }
 
   .marquee-item {
-    font-size: 13px;
+    font-size: 0.8125rem;
 
     letter-spacing: 1.8px;
   }
@@ -78,7 +78,7 @@
   .marquee-separator {
     margin: 0 22px;
 
-    font-size: 9px;
+    font-size: 0.5625rem;
   }
 
   .marquee-track {
@@ -94,13 +94,13 @@
   }
 
   .marquee-item {
-    font-size: 12px;
+    font-size: 0.75rem;
     letter-spacing: 1.5px;
   }
 
   .marquee-separator {
     margin: 0 18px;
-    font-size: 8px;
+    font-size: 0.5rem;
   }
 
   .marquee-track {

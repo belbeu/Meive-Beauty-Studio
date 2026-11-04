@@ -52,7 +52,7 @@
 
 .dash-brand-name {
   font-family: "Anton", "Bebas Neue", sans-serif;
-  font-size: 30px;
+  font-size: 1.875rem;
   letter-spacing: 1.5px;
   line-height: 1;
 }
@@ -60,7 +60,7 @@
 .dash-brand-badge {
   background: var(--red);
   color: #fff;
-  font-size: 7px;
+  font-size: 0.4375rem;
   font-weight: 700;
   letter-spacing: 1.2px;
   padding: 3px 6px;
@@ -84,7 +84,7 @@
   border: none;
   border-left: 2px solid transparent;
   color: #6f6f6f;
-  font-size: 13px;
+  font-size: 0.8125rem;
   text-align: left;
   cursor: pointer;
   transition: color 0.2s ease, background 0.2s ease;
@@ -117,7 +117,7 @@
 }
 
 .dash-user-info strong {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
@@ -126,7 +126,7 @@
   border: none;
   padding: 0;
   color: var(--faint);
-  font-size: 10px;
+  font-size: 0.625rem;
   text-align: left;
   cursor: pointer;
 }
@@ -142,7 +142,7 @@
   border-radius: 50%;
   background: var(--purple-avatar);
   color: #fff;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   display: flex;
   align-items: center;
@@ -170,7 +170,7 @@
 
 .dash-date {
   display: block;
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 1.6px;
   color: var(--faint);
   margin-bottom: 10px;
@@ -179,7 +179,7 @@
 .dash-title {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-weight: 400;
-  font-size: 40px;
+  font-size: 2.5rem;
   letter-spacing: 1px;
   line-height: 1;
   margin: 0;
@@ -215,7 +215,7 @@
   background: var(--red);
   border: none;
   color: #fff;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 2px;
   cursor: pointer;
@@ -253,7 +253,7 @@
 }
 
 .dash-stat-label {
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 1.8px;
   color: var(--muted);
 }
@@ -266,14 +266,14 @@
 .dash-stat-value {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-weight: 400;
-  font-size: 34px;
+  font-size: 2.125rem;
   letter-spacing: 0.5px;
   line-height: 1;
   margin: 22px 0 14px;
 }
 
 .dash-stat-note {
-  font-size: 9px;
+  font-size: 0.5625rem;
   color: var(--faint);
 }
 
@@ -307,20 +307,20 @@
 }
 
 .dash-panel-title {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 2.4px;
   margin: 0 0 6px;
 }
 
 .dash-panel-sub {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
   margin: 0;
 }
 
 .dash-link {
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 1.4px;
   color: var(--red);
   text-decoration: none;
@@ -352,7 +352,7 @@
 }
 
 .dash-appointment-time {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   color: #8a8a8a;
 }
@@ -367,18 +367,18 @@
 
 .dash-appointment-info strong,
 .dash-product-info strong {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
 .dash-appointment-info span,
 .dash-product-info span {
-  font-size: 10px;
+  font-size: 0.625rem;
   color: var(--faint);
 }
 
 .dash-appointment-price {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 600;
   justify-self: end;
   margin-right: 24px;
@@ -388,7 +388,7 @@
   display: block;
   padding: 9px 0;
   text-align: center;
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 0.6px;
   background: #1f1f21;
   color: #9a9a9a;
@@ -404,7 +404,7 @@
   border: none;
   padding: 0;
   color: #777;
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 1px;
   cursor: pointer;
 }
@@ -429,7 +429,7 @@
 
 .dash-product-rank {
   font-family: "Anton", "Bebas Neue", sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #3d4249;
 }
 
@@ -445,7 +445,7 @@
 }
 
 .dash-product-total {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   color: var(--red-bright);
 }
@@ -464,13 +464,13 @@
 .dash-week-total strong {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-weight: 400;
-  font-size: 30px;
+  font-size: 1.875rem;
   color: var(--red-bright);
   line-height: 1;
 }
 
 .dash-week-total span {
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 1.2px;
   color: var(--faint);
 }
@@ -511,7 +511,7 @@
 }
 
 .dash-bar-label {
-  font-size: 8px;
+  font-size: 0.5rem;
   letter-spacing: 1px;
   color: var(--faint);
 }
@@ -652,7 +652,7 @@
   .dash-nav-item {
     flex-shrink: 0;
     padding: 8px 12px;
-    font-size: 11px;
+    font-size: 0.6875rem;
     white-space: nowrap;
   }
 
@@ -663,4 +663,13 @@
     margin-bottom: 6px;
   }
 
+}
+
+/* Controles de acessibilidade compartilhados por todas as telas administrativas */
+.dash-accessibility-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
 }

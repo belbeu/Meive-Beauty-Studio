@@ -224,3 +224,323 @@
   color: var(--c-text);
   border-color: var(--c-border);
 }
+
+
+/* =========================================
+   TEMA CLARO COMPLETO - PAINEL ADMINISTRATIVO
+   Aplicado também às telas Agenda, Clientes, Produtos e Configurações.
+========================================= */
+:root[data-theme="light"] .dash-container {
+  --bg: var(--c-bg);
+  --surface: var(--c-surface);
+  --border: var(--c-border);
+  --text: var(--c-text);
+  --muted: var(--c-text-muted);
+  --faint: var(--c-text-4);
+  background: var(--c-bg);
+  color: var(--c-text);
+}
+:root[data-theme="light"] .dash-container .dash-sidebar,
+:root[data-theme="light"] .dash-container .dash-main {
+  background: var(--c-bg);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container .dash-panel,
+:root[data-theme="light"] .dash-container .clients-panel,
+:root[data-theme="light"] .dash-container .products-panel,
+:root[data-theme="light"] .dash-container .agenda-panel,
+:root[data-theme="light"] .dash-container .settings-panel,
+:root[data-theme="light"] .dash-container .settings-content,
+:root[data-theme="light"] .dash-container .clients-modal-card,
+:root[data-theme="light"] .dash-container .products-modal-card,
+:root[data-theme="light"] .dash-container .clients-toast-card {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container .dash-title,
+:root[data-theme="light"] .dash-container .dash-brand-name,
+:root[data-theme="light"] .dash-container .dash-user-info strong,
+:root[data-theme="light"] .dash-container .dash-panel-title,
+:root[data-theme="light"] .dash-container .clients-name strong,
+:root[data-theme="light"] .dash-container .products-name-info strong,
+:root[data-theme="light"] .dash-container .settings-toggle-info strong,
+:root[data-theme="light"] .dash-container .agenda-time,
+:root[data-theme="light"] .dash-container .agenda-price {
+  color: var(--c-text);
+}
+:root[data-theme="light"] .dash-container .dash-date,
+:root[data-theme="light"] .dash-container .dash-panel-sub,
+:root[data-theme="light"] .dash-container .dash-stat-label,
+:root[data-theme="light"] .dash-container .dash-stat-note,
+:root[data-theme="light"] .dash-container .dash-appointment-time,
+:root[data-theme="light"] .dash-container .dash-appointment-info span,
+:root[data-theme="light"] .dash-container .clients-stat-label,
+:root[data-theme="light"] .dash-container .clients-stat-note,
+:root[data-theme="light"] .dash-container .clients-phone,
+:root[data-theme="light"] .dash-container .clients-last,
+:root[data-theme="light"] .dash-container .products-name-info span,
+:root[data-theme="light"] .dash-container .products-summary-label,
+:root[data-theme="light"] .dash-container .settings-toggle-info span,
+:root[data-theme="light"] .dash-container .settings-field span {
+  color: var(--c-text-muted);
+}
+:root[data-theme="light"] .dash-container .dash-nav-item {
+  color: var(--c-text-muted);
+}
+:root[data-theme="light"] .dash-container .dash-nav-item:hover,
+:root[data-theme="light"] .dash-container .dash-nav-item.is-active {
+  color: var(--c-primary);
+  background: var(--w-008);
+}
+:root[data-theme="light"] .dash-container input,
+:root[data-theme="light"] .dash-container select,
+:root[data-theme="light"] .dash-container textarea,
+:root[data-theme="light"] .dash-container .dash-search-input {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container input::placeholder,
+:root[data-theme="light"] .dash-container textarea::placeholder {
+  color: var(--c-text-muted);
+}
+:root[data-theme="light"] .dash-container .clients-row,
+:root[data-theme="light"] .dash-container .products-row,
+:root[data-theme="light"] .dash-container .agenda-row,
+:root[data-theme="light"] .dash-container .settings-toggle-row,
+:root[data-theme="light"] .dash-container .dash-appointment {
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container .dash-icon-btn,
+:root[data-theme="light"] .dash-container .clients-modal-close,
+:root[data-theme="light"] .dash-container .products-modal-close {
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container .clients-modal-overlay,
+:root[data-theme="light"] .dash-container .products-modal-overlay,
+:root[data-theme="light"] .dash-container .clients-toast-overlay {
+  background: rgba(35, 20, 26, 0.48);
+}
+:root[data-theme="light"] .dash-container .dash-accessibility-controls .font-size-btn {
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+
+/* Complementos de contraste para formulários, tabelas e modais do admin */
+:root[data-theme="light"] .dash-container .clients-row--head,
+:root[data-theme="light"] .dash-container .products-row--head,
+:root[data-theme="light"] .dash-container .agenda-weekday,
+:root[data-theme="light"] .dash-container .agenda-toolbar,
+:root[data-theme="light"] .dash-container .agenda-range,
+:root[data-theme="light"] .dash-container .agenda-toggle,
+:root[data-theme="light"] .dash-container .settings-nav {
+  background: #f5eff1;
+  color: var(--c-text);
+}
+:root[data-theme="light"] .dash-container .clients-row--item,
+:root[data-theme="light"] .dash-container .products-row--item,
+:root[data-theme="light"] .dash-container .agenda-day,
+:root[data-theme="light"] .dash-container .agenda-row,
+:root[data-theme="light"] .dash-container .settings-field,
+:root[data-theme="light"] .dash-container .clients-form,
+:root[data-theme="light"] .dash-container .products-form {
+  background: var(--c-surface);
+  color: var(--c-text);
+  border-color: var(--c-border);
+}
+:root[data-theme="light"] .dash-container .clients-modal-header h2,
+:root[data-theme="light"] .dash-container .products-modal-header h2,
+:root[data-theme="light"] .dash-container .clients-modal-info-row strong,
+:root[data-theme="light"] .dash-container .clients-name,
+:root[data-theme="light"] .dash-container .products-name,
+:root[data-theme="light"] .dash-container .products-price,
+:root[data-theme="light"] .dash-container .products-stock,
+:root[data-theme="light"] .dash-container .agenda-day-date,
+:root[data-theme="light"] .dash-container .agenda-weekday-number,
+:root[data-theme="light"] .dash-container .agenda-weekday-label,
+:root[data-theme="light"] .dash-container .settings-nav-item {
+  color: var(--c-text);
+}
+:root[data-theme="light"] .dash-container .clients-form-group label,
+:root[data-theme="light"] .dash-container .products-form-group label,
+:root[data-theme="light"] .dash-container .products-form-hint,
+:root[data-theme="light"] .dash-container .clients-modal-info-row,
+:root[data-theme="light"] .dash-container .agenda-legend,
+:root[data-theme="light"] .dash-container .agenda-free-label,
+:root[data-theme="light"] .dash-container .agenda-day-count {
+  color: var(--c-text-muted);
+}
+:root[data-theme="light"] .dash-container .dash-stat--red .dash-stat-label,
+:root[data-theme="light"] .dash-container .dash-stat--red .dash-stat-note,
+:root[data-theme="light"] .dash-container .dash-stat--purple .dash-stat-label,
+:root[data-theme="light"] .dash-container .dash-stat--purple .dash-stat-note {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* =========================================
+   AJUSTES FINOS DE CONTRASTE - ADMIN NO TEMA CLARO
+========================================= */
+
+/* Visão geral: textos dos dois primeiros cards */
+:root[data-theme="light"] .dash-container .dash-stat--red,
+:root[data-theme="light"] .dash-container .dash-stat--purple {
+  background: #f2e5e9;
+  border-color: #dfc5ce;
+}
+
+:root[data-theme="light"] .dash-container .dash-stat--red .dash-stat-label,
+:root[data-theme="light"] .dash-container .dash-stat--red .dash-stat-note,
+:root[data-theme="light"] .dash-container .dash-stat--purple .dash-stat-label,
+:root[data-theme="light"] .dash-container .dash-stat--purple .dash-stat-note {
+  color: #62414d;
+}
+
+:root[data-theme="light"] .dash-container .dash-stat--red .dash-stat-value,
+:root[data-theme="light"] .dash-container .dash-stat--purple .dash-stat-value {
+  color: #7f1935;
+}
+
+/* Agenda: remove a faixa cinza e destaca os controles de visualização */
+:root[data-theme="light"] .dash-container .agenda-toolbar {
+  background: transparent;
+}
+
+:root[data-theme="light"] .dash-container .agenda-range,
+:root[data-theme="light"] .dash-container .agenda-toggle {
+  background: #fff;
+  border-color: #d9c5cc;
+}
+
+:root[data-theme="light"] .dash-container .agenda-range span,
+:root[data-theme="light"] .dash-container .agenda-range button,
+:root[data-theme="light"] .dash-container .agenda-toggle button {
+  color: #4b3039;
+}
+
+:root[data-theme="light"] .dash-container .agenda-range button:hover,
+:root[data-theme="light"] .dash-container .agenda-toggle button:hover {
+  background: #f0e1e6;
+  color: #8f1838;
+}
+
+:root[data-theme="light"] .dash-container .agenda-toggle button.is-active {
+  background: #8f1838;
+  color: #fff;
+}
+
+:root[data-theme="light"] .dash-container .agenda-weekday {
+  background: #fff;
+  color: #39242c;
+}
+
+:root[data-theme="light"] .dash-container .agenda-weekday:hover {
+  background: #f5e9ed;
+}
+
+:root[data-theme="light"] .dash-container .agenda-weekday.is-active {
+  background: #8f1838;
+}
+
+:root[data-theme="light"] .dash-container .agenda-weekday.is-active .agenda-weekday-label,
+:root[data-theme="light"] .dash-container .agenda-weekday.is-active .agenda-weekday-number,
+:root[data-theme="light"] .dash-container .agenda-weekday.is-active .agenda-weekday-count {
+  color: #fff;
+}
+
+/* Modal de novo agendamento: corrige os campos que usam estilo inline */
+:root[data-theme="light"] .dash-container .modal-overlay .modal-content select,
+:root[data-theme="light"] .dash-container .modal-overlay .modal-content input {
+  background: #fff !important;
+  color: #281b20 !important;
+  border: 1px solid #d9c5cc !important;
+}
+
+:root[data-theme="light"] .dash-container .modal-overlay .modal-content select option {
+  background: #fff;
+  color: #281b20;
+}
+
+:root[data-theme="light"] .dash-container .modal-overlay .modal-content label {
+  color: #66515a !important;
+}
+
+:root[data-theme="light"] .dash-container .modal-overlay .modal-content .dash-link {
+  color: #8f1838;
+}
+
+/* Clientes: botões, título dos avisos e informação de cadastro */
+:root[data-theme="light"] .dash-container .clients-btn-cancel:hover {
+  background: #f2e5e9;
+  border-color: #b77b8d;
+  color: #5b2032;
+}
+
+:root[data-theme="light"] .dash-container .clients-modal-header h2,
+:root[data-theme="light"] .dash-container .clients-toast-title {
+  color: #281b20 !important;
+}
+
+:root[data-theme="light"] .dash-container .clients-toast-message {
+  color: #665b61;
+}
+
+:root[data-theme="light"] .dash-container .clients-modal-info-row {
+  background: #f5eff1;
+  color: #665b61;
+  border-color: #dfd0d5;
+}
+
+:root[data-theme="light"] .dash-container .clients-modal-info-row strong {
+  color: #281b20;
+}
+
+/* Produtos: evita texto branco nos hovers dos botões */
+:root[data-theme="light"] .dash-container .products-filter button:hover,
+:root[data-theme="light"] .dash-container .products-btn-cancel:hover,
+:root[data-theme="light"] .dash-container .products-file-btn:hover,
+:root[data-theme="light"] .dash-container .products-file-btn:focus-within,
+:root[data-theme="light"] .dash-container .products-img-tabs button:hover {
+  background: #f2e5e9;
+  color: #76243b;
+  border-color: #c99eac;
+}
+
+:root[data-theme="light"] .dash-container .products-filter button.is-active,
+:root[data-theme="light"] .dash-container .products-img-tabs button.is-active {
+  background: #8f1838;
+  color: #fff;
+}
+
+:root[data-theme="light"] .dash-container .products-sell:hover:not(:disabled),
+:root[data-theme="light"] .dash-container .products-edit:hover {
+  color: #76243b;
+  background: #f2e5e9;
+}
+
+/* Configurações: hover do menu lateral */
+:root[data-theme="light"] .dash-container .settings-nav-item:hover {
+  background: #f2e5e9;
+  color: #76243b;
+}
+
+:root[data-theme="light"] .dash-container .settings-nav-item.is-active {
+  background: #8f1838;
+  color: #fff;
+  border-left-color: #ad1838;
+}
+
+:root[data-theme="light"] .dash-container .settings-field input {
+  color: #281b20;
+}
+
+:root[data-theme="light"] .dash-container .settings-field input:hover {
+  border-color: #c99eac;
+}
+
+:root[data-theme="light"] .dash-container .products-modal-close:hover,
+:root[data-theme="light"] .dash-container .clients-modal-close:hover {
+  color: #8f1838;
+}

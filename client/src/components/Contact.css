@@ -24,7 +24,7 @@
 
 .contact-subtitle {
   display: block;
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: 5px;
   color: #ad1838;
   margin-bottom: 8px;
@@ -34,7 +34,7 @@
 .contact-title {
   margin: 0;
   font-family: "Bebas Neue", sans-serif;
-  font-size: clamp(50px, 7vw, 90px);
+  font-size: clamp(3.125rem, 7vw, 5.625rem);
   line-height: 0.9;
   letter-spacing: 1px;
   display: flex;
@@ -44,7 +44,7 @@
 
 .contact-title span:nth-child(1) {
   color: var(--c-text);
-  font-size: 80px;
+  font-size: 5rem;
 }
 
 .contact-title span:nth-child(2) {
@@ -54,7 +54,7 @@
 .contact-description {
   margin-top: 18px;
   color: var(--c-text-muted, #ada9b1);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-family: "DM Sans", sans-serif;
   font-weight: 400;
   line-height: 1.4;
@@ -99,7 +99,7 @@
 }
 
 .form-group label {
-  font-size: 9px;
+  font-size: 0.5625rem;
   letter-spacing: 2px;
   color: var(--c-text-muted, #888);
   font-weight: 600;
@@ -112,7 +112,7 @@
   padding: 12px 16px;
   color: var(--c-text);
   font-family: "DM Sans", sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   outline: none;
   transition: border-color 0.2s ease, background 0.2s ease;
   box-sizing: border-box;
@@ -148,7 +148,7 @@
   padding: 12px 16px;
   color: var(--c-text-muted, #888);
   font-family: "DM Sans", sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   outline: none;
   cursor: pointer;
   display: flex;
@@ -197,7 +197,7 @@
   padding: 13px 16px;
   color: #ad1838;
   font-family: "Inter", sans-serif;
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 700;
   letter-spacing: 2px;
   border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.07));
@@ -220,7 +220,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 13px;
+  font-size: 0.8125rem;
 }
 
 .category-option:hover {
@@ -230,7 +230,7 @@
 
 .option-arrow {
   color: var(--c-text-muted, #888);
-  font-size: 16px;
+  font-size: 1rem;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -247,7 +247,7 @@
   background: var(--w-003, rgba(255, 255, 255, 0.025));
   color: var(--c-text-muted, #888);
   font-family: "Inter", sans-serif;
-  font-size: 9px;
+  font-size: 0.5625rem;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-align: left;
@@ -267,7 +267,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 15px;
-  font-size: 12px;
+  font-size: 0.75rem;
   border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.04));
 }
 
@@ -287,7 +287,7 @@
 .service-price {
   flex-shrink: 0;
   color: var(--c-text-muted, #aaa);
-  font-size: 11px;
+  font-size: 0.6875rem;
   white-space: nowrap;
 }
 
@@ -315,7 +315,7 @@
   margin: 0;
   color: #ad1838;
   font-family: "DM Sans", sans-serif;
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.4;
 }
 
@@ -366,7 +366,7 @@
   background: #8a2be2;
   color: #ffffff;
   font-family: Arial, sans-serif;
-  font-size: 30px;
+  font-size: 1.875rem;
   font-weight: 600;
   box-shadow: 0 0 30px rgba(138, 43, 226, 0.35);
 }
@@ -375,7 +375,7 @@
   margin-bottom: 12px;
   color: #ad1838;
   font-family: "Inter", sans-serif;
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 4px;
 }
@@ -384,7 +384,7 @@
   margin: 0 0 15px;
   color: var(--c-text);
   font-family: "Bebas Neue", sans-serif;
-  font-size: 64px;
+  font-size: 4rem;
   line-height: 0.9;
   font-weight: 400;
 }
@@ -394,7 +394,7 @@
   margin: 0 0 30px;
   color: var(--c-text-muted, #ada9b1);
   font-family: "DM Sans", sans-serif;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.6;
 }
 
@@ -416,7 +416,7 @@
   }
   .contact-title span:nth-child(1),
   .contact-title span:nth-child(2) {
-    font-size: 65px;
+    font-size: 4.0625rem;
   }
   .contact-form {
     max-width: calc(100% - 30px);
@@ -431,11 +431,11 @@
   }
   .contact-title span:nth-child(1),
   .contact-title span:nth-child(2) {
-    font-size: 55px;
+    font-size: 3.4375rem;
   }
   .contact-description {
     max-width: 280px;
-    font-size: 13px;
+    font-size: 0.8125rem;
   }
   .contact-form {
     padding: 25px 20px;
@@ -449,13 +449,13 @@
     gap: 4px;
   }
   .service-price {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
   .confirmation-card {
     min-height: 350px;
     padding: 45px 25px;
   }
   .confirmation-card h3 {
-    font-size: 52px;
+    font-size: 3.25rem;
   }
 }

@@ -133,6 +133,7 @@
 
 .products-row--item {
   height: 74px;
+  margin-left: 10px;
 }
 
 .products-name {
