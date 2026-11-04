@@ -43,3 +43,13 @@ export async function registrar({ nome, email, telefone, senha }) {
   });
   return login(email, senha);
 }
+
+export async function loginComGoogle(credential) {
+  const data = await api("/auth/google/", {
+    method: "POST",
+    body: JSON.stringify({ credential }),
+  });
+  localStorage.setItem("access", data.access);
+  localStorage.setItem("refresh", data.refresh);
+  return usuarioAtual();
+}

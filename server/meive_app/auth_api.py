@@ -3,10 +3,13 @@
 # Cadastro de usuário e "quem sou eu" (dados do usuário logado).
 # O login usa o simplejwt, com limite de tentativas (LoginView).
 
+import os
+
 from django.contrib.auth import password_validation
 from rest_framework import generics, permissions, serializers
 from rest_framework.throttling import ScopedRateThrottle
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Usuario
 from .serializers import UsuarioSerializer
@@ -14,6 +17,9 @@ from .serializers import UsuarioSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token
 
 class RegistroSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=150)
@@ -89,3 +95,42 @@ class RecuperarSenhaDiretaView(APIView):
         except Usuario.DoesNotExist:
             # Por segurança ou praticidade, avisamos que o e-mail não existe
             return Response({"erro": "E-mail não cadastrado."}, status=status.HTTP_404_NOT_FOUND)
+        
+class GoogleLoginView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+        token_google = request.data.get("credential")
+        
+        if not token_google:
+            return Response({"erro": "Token do Google não fornecido."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            # Puxa o ID do cliente diretamente do ficheiro .env
+            CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID")
+            
+            idinfo = id_token.verify_oauth2_token(token_google, google_requests.Request(), CLIENT_ID)
+
+            email = idinfo.get("email")
+            nome = idinfo.get("name", "Meive Girl")
+
+            if not email:
+                return Response({"erro": "E-mail não retornado pelo Google."}, status=status.HTTP_400_BAD_REQUEST)
+
+            usuario, criado = Usuario.objects.get_or_create(
+                email=email,
+                defaults={
+                    "nome": nome,
+                    "tipo": "CLIENTE",
+                }
+            )
+
+            refresh = RefreshToken.for_user(usuario)
+
+            return Response({
+                "access": str(refresh.access_token),
+                "refresh": str(refresh),
+            }, status=status.HTTP_200_OK)
+
+        except ValueError:
+            return Response({"erro": "Token do Google inválido."}, status=status.HTTP_400_BAD_REQUEST)

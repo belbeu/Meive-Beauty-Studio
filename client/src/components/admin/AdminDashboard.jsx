@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ThemeToggle from "../ThemeToggle";
-import FontSizeControls from "../FontSizeControls";
+import FontSizeControls from "../../theme/FontSizeControls";
 import "./AdminDashboard.css";
 
 const iconProps = {

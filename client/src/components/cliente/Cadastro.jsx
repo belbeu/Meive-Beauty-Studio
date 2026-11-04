@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Cadastro.css";
 import heroImg from "../../assets/Cilios1.jpeg";
-import { registrar } from "../../auth"; // src/auth.js (ajuste o caminho se o arquivo estiver em outra pasta)
+import { registrar, loginComGoogle } from "../../auth";
+import { GoogleLogin } from '@react-oauth/google';
 
 const requisitos = [
   { id: "tamanho", texto: "Mínimo de 8 caracteres", teste: (s) => s.length >= 8 },
@@ -96,6 +97,20 @@ export default function Cadastro() {
           ? primeira
           : "Não foi possível criar a conta agora. Tente novamente em instantes."
       );
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  // Função disparada quando o login/cadastro com o Google é bem-sucedido
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setErro(null);
+      setEnviando(true);
+      await loginComGoogle(credentialResponse.credential);
+      navigate("/minha-conta");
+    } catch (err) {
+      setErro("Não foi possível cadastrar com o Google. Tente novamente.");
     } finally {
       setEnviando(false);
     }
@@ -273,9 +288,18 @@ export default function Cadastro() {
             <span>ou</span>
           </div>
 
-          <button type="button" className="google-cadastro-btn">
-            CONTINUAR COM GOOGLE
-          </button>
+          {/* Botão oficial do Google integrado */}
+          <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setErro("Erro ao cadastrar com o Google.")}
+              theme="filled_black"
+              size="large"
+              text="continue_with"
+              shape="rectangular"
+              width="100%"
+            />
+          </div>
 
           <div className="cadastro-footer-links">
             <p>

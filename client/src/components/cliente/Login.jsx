@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import heroImg from "../../assets/Cilios1.jpeg";
 import { login } from "../../auth";
+import { GoogleLogin } from '@react-oauth/google';
+import { loginComGoogle } from '../../auth';
 
 
 function IconeOlho({ aberto }) {
@@ -79,6 +81,21 @@ export default function Login() {
       setEnviando(false);
     }
   }
+
+  // Função disparada quando o login com o Google é bem-sucedido
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setErro(null);
+      setSucesso(null);
+      setEnviando(true);
+      await loginComGoogle(credentialResponse.credential);
+      navigate("/minha-conta");
+    } catch (err) {
+      setErro("Não foi possível entrar com o Google. Tente novamente.");
+    } finally {
+      setEnviando(false);
+    }
+  };
 
   return (
     <div className="login-container">
@@ -265,9 +282,18 @@ export default function Login() {
                 <span>OU</span>
               </div>
 
-              <button type="button" className="google-login-btn">
-                CONTINUAR COM GOOGLE
-              </button>
+              {/* Botão oficial do Google integrado */}
+              <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => setErro("Erro ao autenticar com o Google.")}
+                  theme="filled_black"
+                  size="large"
+                  text="continue_with"
+                  shape="rectangular"
+                  width="100%"
+                />
+              </div>
             </>
           )}
 
