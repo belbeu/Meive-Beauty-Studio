@@ -9,4 +9,9 @@ from .servico import ServicoSerializer
 from .usuario import UsuarioSerializer
 from .cestinha_interesse import CestinhaInteresseSerializer
 from .cliente_serializer import ClienteSerializer
-__all__ = ['ClienteSerializer']
+from .promocao import PromocaoSerializer
+
+__all__ = [
+    'ClienteSerializer',
+    'PromocaoSerializer',
+]

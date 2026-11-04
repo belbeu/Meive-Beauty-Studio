@@ -1,0 +1,105 @@
+.promos-summary{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+    margin:-8px 0 28px;
+}
+.promos-summary article{
+    padding:19px 22px;
+    background:var(--surface);border:1px solid var(--border);
+    display:flex;flex-direction:column;
+    gap:8px;
+}
+.promos-summary span{
+    font-size:.62rem;
+    letter-spacing:1.4px;
+    color:var(--muted)
+}
+.promos-summary strong{
+    font-family:Anton,sans-serif;
+    font-size:1.8rem;
+    font-weight:400;
+    color:var(--text)
+}
+.promos-panel{
+    min-width:0;
+}
+.promos-panel-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:18px;
+    padding:24px 26px;
+    border-bottom:1px solid var(--border);
+}
+.promos-search{
+    width:min(280px,100%);
+    padding:11px 13px;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--text);
+    font:inherit;
+    font-size:.8rem;
+    outline:none;
+}
+.promos-search:focus,.promos-form input:focus,.promos-form textarea:focus{
+    border-color:var(--red-bright);
+}
+.promos-list{
+    padding:4px 26px;
+}
+.admin-promo-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 150px auto;
+    align-items:center;
+    gap:24px;
+    padding:22px 0;
+    border-bottom:1px solid var(--border);
+}
+.admin-promo-card:last-child{
+    border-bottom:0;
+}
+.admin-promo-card.is-inactive{
+    opacity:.65;
+}
+.admin-promo-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:8px}
+.admin-promo-status,.admin-promo-featured{font-size:.55rem;font-weight:700;letter-spacing:1px;padding:5px 7px}
+.admin-promo-status.on{background:rgba(35,145,95,.13);color:#269568}.admin-promo-status.off{background:rgba(130,130,130,.15);color:var(--muted)}
+.admin-promo-featured{background:rgba(173,24,56,.12);color:var(--red-bright)}
+.admin-promo-main h3{font-size:1rem;margin:0 0 5px;color:var(--text)}
+.admin-promo-main p{font-size:.8rem;line-height:1.5;color:var(--muted);margin:0 0 6px}
+.admin-promo-main small{font-size:.68rem;color:var(--faint)}
+.admin-promo-prices{display:flex;flex-direction:column;gap:4px;text-align:right;white-space:nowrap}
+.admin-promo-prices del{font-size:.75rem;color:var(--muted)}
+.admin-promo-prices strong{font-family:Anton,sans-serif;font-size:1.45rem;font-weight:400;color:var(--red-bright)}
+.admin-promo-actions{display:flex;gap:7px}
+.admin-promo-actions button{padding:9px 11px;background:transparent;border:1px solid var(--border);color:var(--text);font-size:.6rem;font-weight:700;letter-spacing:.7px;cursor:pointer}
+.admin-promo-actions button:hover{background:rgba(173,24,56,.1);border-color:var(--red);color:var(--red-bright)}
+.admin-promo-actions button.delete{color:#c65a68}.admin-promo-actions button:disabled{opacity:.5;cursor:wait}
+.promos-empty{padding:28px;color:var(--muted);font-size:.82rem;text-align:center}
+.promos-error{white-space:pre-line;color:#c94d60;background:rgba(201,77,96,.1);padding:11px 13px;font-size:.78rem;margin:12px 0}
+.promos-modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.68);display:grid;place-items:center;padding:20px;overflow-y:auto}
+.promos-modal{width:min(620px,100%);max-height:calc(100vh - 40px);overflow:auto;background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:0 22px 70px rgba(0,0,0,.3)}
+.promos-modal-header{display:flex;justify-content:space-between;align-items:center;padding:22px 26px;border-bottom:1px solid var(--border)}
+.promos-modal-header span{font-size:.55rem;letter-spacing:1.7px;color:var(--muted)}
+.promos-modal-header h2{font-family:Anton,sans-serif;font-weight:400;font-size:1.55rem;margin:5px 0 0}
+.promos-modal-header>button{background:transparent;border:0;color:var(--text);font-size:1.7rem;cursor:pointer}
+.promos-form{display:grid;gap:15px;padding:24px 26px}
+.promos-form>label,.promos-form-row>label{display:grid;gap:7px;font-size:.7rem;font-weight:600;color:var(--muted);letter-spacing:.3px}
+.promos-form input:not([type=checkbox]),.promos-form textarea{width:100%;box-sizing:border-box;padding:11px 12px;background:var(--bg);border:1px solid var(--border);color:var(--text);font:inherit;font-size:.82rem;outline:none;border-radius:0}
+.promos-form textarea{resize:vertical;min-height:85px}
+.promos-form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.promos-checks{display:flex;flex-wrap:wrap;gap:18px}
+.promos-checks label{display:flex;align-items:center;gap:8px;font-size:.75rem;color:var(--text)}
+.promos-checks input{accent-color:var(--red)}
+.promos-modal-actions{display:flex;justify-content:flex-end;gap:9px;padding-top:8px}
+.promos-modal-actions button{min-height:40px;padding:0 17px;border:1px solid var(--border);font-size:.62rem;font-weight:700;letter-spacing:1px;cursor:pointer}
+.promos-modal-actions .cancel{background:transparent;color:var(--text)}
+.promos-modal-actions .save{background:var(--red);border-color:var(--red);color:#fff}
+.promos-modal-actions button:disabled{opacity:.6;cursor:wait}
+:root[data-theme="light"] .promos-summary article,:root[data-theme="light"] .promos-modal{background:var(--c-surface);color:var(--c-text);border-color:var(--c-border)}
+:root[data-theme="light"] .promos-search,:root[data-theme="light"] .promos-form input:not([type=checkbox]),:root[data-theme="light"] .promos-form textarea{background:var(--c-bg);color:var(--c-text);border-color:var(--c-border)}
+:root[data-theme="light"] .admin-promo-main h3,:root[data-theme="light"] .promos-summary strong,:root[data-theme="light"] .promos-modal-header h2,:root[data-theme="light"] .promos-checks label{color:var(--c-text)}
+:root[data-theme="light"] .admin-promo-actions button{color:var(--c-text);border-color:var(--c-border)}
+@media(max-width:900px){.admin-promo-card{grid-template-columns:minmax(0,1fr) 120px}.admin-promo-actions{grid-column:1/-1;justify-content:flex-end}.promos-panel-head{align-items:flex-start;flex-direction:column}.promos-search{width:100%}}
+@media(max-width:600px){.promos-summary{grid-template-columns:1fr}.promos-list{padding:4px 16px}.admin-promo-card{grid-template-columns:1fr;gap:12px}.admin-promo-prices{text-align:left}.admin-promo-actions{justify-content:flex-start}.promos-form-row{grid-template-columns:1fr}.promos-modal-header,.promos-form{padding-left:18px;padding-right:18px}.promos-modal-actions{flex-direction:column-reverse}.promos-modal-actions button{width:100%}}

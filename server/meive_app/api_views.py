@@ -21,6 +21,7 @@ from .models import (
     MaterialCurso,
     Matricula,
     Produto,
+    Promocao,
     Servico,
     Turma,
     Usuario,
@@ -34,6 +35,7 @@ from .serializers import (
     MatriculaSerializer,
     ProdutoPublicoSerializer,
     ProdutoSerializer,
+    PromocaoSerializer,
     ServicoSerializer,
     TurmaSerializer,
     UsuarioSerializer,
@@ -106,6 +108,20 @@ class ProdutoAdminViewSet(
             produto.save(update_fields=["estoque_atual"])
 
         return Response(self.get_serializer(produto).data)
+
+
+class PromocaoPublicaViewSet(viewsets.ReadOnlyModelViewSet):
+    """Lista somente promoções ativas para a página pública."""
+    queryset = Promocao.objects.filter(ativo=True).order_by("-destaque", "-criado_em")
+    serializer_class = PromocaoSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+class PromocaoAdminViewSet(viewsets.ModelViewSet):
+    """CRUD completo de promoções, restrito a administradores."""
+    queryset = Promocao.objects.all().order_by("-destaque", "-criado_em")
+    serializer_class = PromocaoSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):

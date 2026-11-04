@@ -34,6 +34,7 @@ import AdminAgenda from "./components/admin/AdminAgenda";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminClientes from "./components/admin/AdminClientes";
 import AdminProdutos from "./components/admin/AdminProdutos";
+import AdminPromocoes from "./components/admin/AdminPromocoes";
 import AdminConfiguracoes from "./components/admin/AdminConfiguracoes";
 
 // URL constante do Booksy
@@ -104,6 +105,7 @@ export default function App() {
             <Route path="/admin/agenda" element={<AdminAgenda />} />
             <Route path="/admin/clientes" element={<AdminClientes />} />
             <Route path="/admin/produtos" element={<AdminProdutos />} />
+            <Route path="/admin/promocoes" element={<AdminPromocoes />} />
             <Route
               path="/admin/configuracoes"
               element={<AdminConfiguracoes />}

@@ -176,3 +176,21 @@ class Usuario(AbstractBaseUser):
 
     class Meta:
         db_table = "usuario"
+
+class Promocao(models.Model):
+    id_promocao = models.AutoField(primary_key=True)
+    titulo = models.CharField(max_length=150)
+    descricao = models.TextField(blank=True, null=True)
+    preco_original = models.DecimalField(max_digits=10, decimal_places=2)
+    preco_promocional = models.DecimalField(max_digits=10, decimal_places=2)
+    validade = models.CharField(max_length=150, blank=True, null=True)
+    destaque = models.BooleanField(default=False)
+    ativo = models.BooleanField(default=True)
+    criado_em = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'promocao'
+        ordering = ['-destaque', '-criado_em']
+
+    def __str__(self):
+        return self.titulo
