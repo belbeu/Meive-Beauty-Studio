@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { usuarioAtual, logout as fazerLogout } from "../../auth";
 import ThemeToggle from "../ThemeToggle";
 import FontSizeControls from "../../theme/FontSizeControls";
-import "./ClienteDashboard.css"; // Reaproveita os estilos limpos da dashboard
+import "./ClienteDashboard.css";
 
 function getInitials(fullName) {
   if (!fullName) return "MG";
@@ -24,7 +24,7 @@ export default function ClientNavbar() {
         const dados = await usuarioAtual();
         setUsuario(dados);
       } catch (err) {
-        // Se houver falha na sessão, mantém silencioso ou deixa o avatar padrão
+        // Mantém silencioso se falhar
       }
     }
     carregarUsuario();
@@ -38,47 +38,65 @@ export default function ClientNavbar() {
   const initials = getInitials(usuario?.nome);
 
   return (
-    <header className="client-wrapper" style={{ padding: "24px 24px 10px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-      <div>
-        <Link to="/minha-conta" className="client-tag" style={{ textDecoration: "none" }}>
-          <i className="client-tag-line" /> VOLTAR AO PAINEL
-        </Link>
-      </div>
+    <header 
+      style={{ 
+        width: "100%",
+        backgroundColor: "var(--c-bg)",
+        transition: "background-color 0.3s ease",
+        borderBottom: "1px solid var(--c-border)"
+      }}
+    >
+      <div 
+        style={{ 
+          maxWidth: "1190px", 
+          margin: "0 auto", 
+          padding: "20px 24px", 
+          display: "flex", 
+          justifyContent: "space-between", 
+          alignItems: "center" 
+        }}
+      >
+        <div>
+          <Link to="/minha-conta" className="client-tag" style={{ textDecoration: "none", margin: 0 }}>
+            <i className="client-tag-line" /> VOLTAR AO PAINEL
+          </Link>
+        </div>
 
-      <div className="client-user" style={{ marginTop: 0 }}>
-        <ThemeToggle />
-        <FontSizeControls />
-        <button
-          type="button"
-          className="client-avatar"
-          onClick={() => setMenuOpen((o) => !o)}
-          aria-haspopup="menu"
-          aria-expanded={menuOpen}
-          aria-label="Menu da conta"
-        >
-          {initials}
-        </button>
+        <div className="client-user" style={{ marginTop: 0 }}>
+          <ThemeToggle />
+          <FontSizeControls />
+          <button
+            type="button"
+            className="client-avatar"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-haspopup="menu"
+            aria-expanded={menuOpen}
+            aria-label="Menu da conta"
+          >
+            {initials}
+          </button>
 
-        {menuOpen && (
-          <div className="client-menu" role="menu">
-            <Link to="/cestinha" role="menuitem" onClick={() => setMenuOpen(false)}>
-              Minha Cestinha
-            </Link>
-            <Link to="/minha-conta" role="menuitem" onClick={() => setMenuOpen(false)}>
-              Meu Painel
-            </Link>
-            <button 
-              type="button" 
-              role="menuitem" 
-              onClick={() => {
-                setMenuOpen(false);
-                confirmarLogout();
-              }}
-            >
-              Sair
-            </button>
-          </div>
-        )}
+          {menuOpen && (
+            <div className="client-menu" role="menu">
+              <Link to="/cestinha" role="menuitem" onClick={() => setMenuOpen(false)}>
+                Minha Cestinha
+              </Link>
+              <Link to="/minha-conta" role="menuitem" onClick={() => setMenuOpen(false)}>
+                Meu Painel
+              </Link>
+              <button 
+                type="button" 
+                role="menuitem" 
+                onClick={() => {
+                  setMenuOpen(false);
+                  confirmarLogout();
+                }}
+              >
+                Sair
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </header>
   );

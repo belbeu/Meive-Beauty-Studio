@@ -45,10 +45,26 @@ function getInitials(fullName) {
   return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
 }
 
+// Helper para formatar a data/hora sem alterar o fuso horário
+function formatarDataHora(dataIso) {
+  if (!dataIso) return "";
+  const [dataPart, horaPart] = dataIso.split("T");
+  const [ano, mes, dia] = dataPart.split("-");
+  const hora = horaPart ? horaPart.substring(0, 5) : "00:00";
+  return {
+    dataStr: `${dia}/${mes}/${ano}`,
+    horaStr: hora,
+    dataCompleta: `${dia}/${mes}/${ano} às ${hora}`
+  };
+}
+
 export default function ClientDashboard() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [modalSairAberto, setModalSairAberto] = useState(false);
+  const [modalDetalhesAberto, setModalDetalhesAberto] = useState(false);
+  const [modalHistoricoAberto, setModalHistoricoAberto] = useState(false);
+  
   const [usuario, setUsuario] = useState(null);
   const [cestinhaItens, setCestinhaItens] = useState([]);
   const [agendamentos, setAgendamentos] = useState([]);
@@ -60,7 +76,6 @@ export default function ClientDashboard() {
         const dados = await usuarioAtual();
         setUsuario(dados);
 
-        // Carrega a cestinha e os agendamentos em paralelo
         const [itensAPI, agendamentosAPI] = await Promise.all([
           cestinhaService.getItensAPI().catch(() => cestinhaService.getItensLocais()),
           api("/agendamentos/").catch(() => [])
@@ -85,8 +100,8 @@ export default function ClientDashboard() {
 
   if (carregando) {
     return (
-      <div className="client-page" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100%" }}>
-        <p>Carregando sua conta...</p>
+      <div className="client-page" style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", backgroundColor: "var(--c-bg)", color: "var(--c-text-muted)" }}>
+        <p style={{ fontSize: "1.1rem", letterSpacing: "1px" }}>Carregando sua conta...</p>
       </div>
     );
   }
@@ -100,7 +115,6 @@ export default function ClientDashboard() {
 
   const agora = new Date();
 
-  // Separa agendamentos futuros (próximo) e históricos
   const agendamentosFuturos = agendamentos
     .filter(a => new Date(a.data_agendamento) >= agora)
     .sort((a, b) => new Date(a.data_agendamento) - new Date(b.data_agendamento));
@@ -108,22 +122,25 @@ export default function ClientDashboard() {
   const proximoAgendamento = agendamentosFuturos.length > 0 ? agendamentosFuturos[0] : null;
   const historicoAgendamentos = agendamentos.filter(a => a.id_agendamento !== proximoAgendamento?.id_agendamento);
 
-  // Formata os dados do próximo agendamento para exibição
   let proximoFormatado = null;
   if (proximoAgendamento) {
-    const dataObj = new Date(proximoAgendamento.data_agendamento);
-    const dia = String(dataObj.getDate()).padStart(2, "0");
+    const { dataStr, horaStr, dataCompleta } = formatarDataHora(proximoAgendamento.data_agendamento);
+    const [ano, mesNum, diaStr] = proximoAgendamento.data_agendamento.split("T")[0].split("-");
+    
+    const dataObj = new Date(ano, mesNum - 1, diaStr);
     const mes = dataObj.toLocaleDateString("pt-BR", { month: "short" }).toUpperCase().replace(".", "");
     const semana = dataObj.toLocaleDateString("pt-BR", { weekday: "long" });
     const semanaCapitalizada = semana.charAt(0).toUpperCase() + semana.slice(1);
-    const hora = dataObj.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 
     proximoFormatado = {
-      day: dia,
+      day: diaStr,
       month: mes,
-      service: proximoAgendamento.servico_nome || "Serviço",
-      when: `${semanaCapitalizada}, ${hora}`,
-      professional: "Meive", // ou proximoAgendamento.funcionario_nome se disponível
+      service: proximoAgendamento.servico_nome || proximoAgendamento.servico?.nome || "Serviço",
+      when: `${semanaCapitalizada}, ${horaStr}`,
+      dataCompleta,
+      professional: "Meive",
+      valor: proximoAgendamento.valor || "0,00",
+      sinal: proximoAgendamento.sinal_pago || "0,00",
       status: proximoAgendamento.status || "confirmed"
     };
   }
@@ -199,7 +216,11 @@ export default function ClientDashboard() {
                 {STATUS_LABEL[proximoFormatado.status] || "CONFIRMADO"}
               </span>
 
-              <button type="button" className="client-outline-btn" onClick={() => alert(`Valor: R$ ${proximoAgendamento.valor || "0,00"}`)}>
+              <button 
+                type="button" 
+                className="client-outline-btn" 
+                onClick={() => setModalDetalhesAberto(true)}
+              >
                 VER DETALHES
               </button>
             </section>
@@ -208,7 +229,7 @@ export default function ClientDashboard() {
               <div className="client-next-info">
                 <span className="client-next-label">PRÓXIMO AGENDAMENTO</span>
                 <h2>NENHUM AGENDAMENTO FUTURO</h2>
-                <p>Que tal agendar seu próximo horário no estúdio?</p>
+                <p>Que tal agendar seu próximo horário no studio?</p>
               </div>
               <button type="button" className="client-primary-btn" onClick={() => navigate("/agendar")}>
                 AGENDAR AGORA
@@ -221,47 +242,51 @@ export default function ClientDashboard() {
             <article className="client-panel">
               <div className="client-panel-head">
                 <h3>MEUS AGENDAMENTOS</h3>
-                <a href="#historico" className="client-link">
+                <button 
+                  type="button" 
+                  className="client-link" 
+                  onClick={() => setModalHistoricoAberto(true)}
+                  style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                >
                   VER HISTÓRICO
-                </a>
+                </button>
               </div>
 
               {agendamentos.length === 0 ? (
-                <div className="client-empty">
-                  <span className="client-empty-icon">
-                    <CalendarIcon />
-                  </span>
-                  <div className="client-empty-text">
-                    <strong>Pronta para o próximo?</strong>
-                    <span>Escolha seu serviço e reserve seu horário.</span>
+                  <div className="client-empty">
+                    <span className="client-empty-icon">
+                      <CalendarIcon />
+                    </span>
+                    <div className="client-empty-text">
+                      <strong>Pronta para o próximo?</strong>
+                      <span>Escolha seu serviço e reserve seu horário.</span>
+                    </div>
+                    <button
+                      type="button"
+                      className="client-primary-btn"
+                      onClick={() => navigate("/agendar")}
+                    >
+                      AGENDAR
+                    </button>
                   </div>
-                  <button
-                    type="button"
-                    className="client-primary-btn"
-                    onClick={() => navigate("/agendar")}
-                  >
-                    AGENDAR
-                  </button>
-                </div>
-              ) : (
-                <ul className="client-list">
-                  {historicoAgendamentos.slice(0, 3).map((a) => {
-                    const dataObj = new Date(a.data_agendamento);
-                    const dataFormatada = dataObj.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
-                    return (
-                      <li key={a.id_agendamento} className="client-row">
-                        <div className="client-row-info">
-                          <strong>{a.servico_nome || "Atendimento"}</strong>
-                          <span>{dataFormatada}</span>
-                        </div>
-                        <span className={`client-badge client-badge--${a.status}`}>
-                          {STATUS_LABEL[a.status] || "CONFIRMADO"}
-                        </span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              )}
+                ) : (
+                  <ul className="client-list">
+                    {(historicoAgendamentos.length > 0 ? historicoAgendamentos : agendamentos).slice(0, 3).map((a) => {
+                      const { dataCompleta } = formatarDataHora(a.data_agendamento);
+                      return (
+                        <li key={a.id_agendamento} className="client-row">
+                          <div className="client-row-info">
+                            <strong>{a.servico_nome || a.servico?.nome || "Atendimento"}</strong>
+                            <span>{dataCompleta}</span>
+                          </div>
+                          <span className={`client-badge client-badge--${a.status}`}>
+                            {STATUS_LABEL[a.status] || "CONFIRMADO"}
+                          </span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
             </article>
 
             {/* Minha Cestinha */}
@@ -341,9 +366,76 @@ export default function ClientDashboard() {
         </div>
       </main>
 
+      {/* MODAL: DETALHES DO PRÓXIMO AGENDAMENTO */}
+      {modalDetalhesAberto && proximoFormatado && (
+        <div className="client-modal-overlay">
+          <div className="client-modal-card">
+            <h3>DETALHES DO AGENDAMENTO</h3>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", margin: "10px 0" }}>
+              <p><strong>Serviço:</strong> {proximoFormatado.service}</p>
+              <p><strong>Data e Horário:</strong> {proximoFormatado.dataCompleta}</p>
+              <p><strong>Profissional:</strong> {proximoFormatado.professional}</p>
+              <p><strong>Valor Total:</strong> R$ {proximoFormatado.valor}</p>
+              <p><strong>Sinal Pago:</strong> R$ {proximoFormatado.sinal}</p>
+              <p><strong>Status:</strong> {STATUS_LABEL[proximoFormatado.status] || "CONFIRMADO"}</p>
+            </div>
+            <div className="client-modal-actions">
+              <button
+                type="button"
+                className="client-primary-btn"
+                onClick={() => setModalDetalhesAberto(false)}
+                style={{ width: "100%" }}
+              >
+                FECHAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: HISTÓRICO COMPLETO DE AGENDAMENTOS */}
+      {modalHistoricoAberto && (
+        <div className="client-modal-overlay">
+          <div className="client-modal-card" style={{ maxWidth: "550px", maxHeight: "80vh", overflowY: "auto" }}>
+            <h3>HISTÓRICO DE AGENDAMENTOS</h3>
+            {agendamentos.length === 0 ? (
+              <p style={{ margin: "20px 0" }}>Você ainda não possui agendamentos registrados.</p>
+            ) : (
+              <ul className="client-list" style={{ margin: "15px 0" }}>
+                {agendamentos.map((a) => {
+                  const { dataCompleta } = formatarDataHora(a.data_agendamento);
+                  return (
+                    <li key={a.id_agendamento} className="client-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 0", borderBottom: "1px solid var(--border)" }}>
+                      <div className="client-row-info">
+                        <strong>{a.servico_nome || a.servico?.nome || "Atendimento"}</strong>
+                        <span>{dataCompleta} - R$ {a.valor || "0,00"}</span>
+                      </div>
+                      <span className={`client-badge client-badge--${a.status}`}>
+                        {STATUS_LABEL[a.status] || "CONFIRMADO"}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+            <div className="client-modal-actions">
+              <button
+                type="button"
+                className="client-primary-btn"
+                onClick={() => setModalHistoricoAberto(false)}
+                style={{ width: "100%" }}
+              >
+                FECHAR
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: SAIR DA CONTA */}
       {modalSairAberto && (
         <div className="client-modal-overlay">
-          <div className="client-modal-content" style={{ background: "#121212", border: "1px solid var(--border)", padding: "36px 32px" }}>
+          <div className="client-modal-card">
             <h3>DESEJA SAIR?</h3>
             <p>Tem certeza de que deseja encerrar sua sessão atual?</p>
             <div className="client-modal-actions">

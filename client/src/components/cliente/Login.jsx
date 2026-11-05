@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// Salvar como: src/components/Login.jsx
+import { useState, useEffect } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./Login.css";
 import heroImg from "../../assets/Cilios1.jpeg";
 import { login, loginComGoogle } from "../../auth";
@@ -23,6 +24,8 @@ function IconeOlho({ aberto }) {
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
+  
   const [modoEsqueci, setModoEsqueci] = useState(false);
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [mostrarNovaSenha, setMostrarNovaSenha] = useState(false);
@@ -33,6 +36,14 @@ export default function Login() {
   const [erro, setErro] = useState(null);
   const [sucesso, setSucesso] = useState(null);
   const [enviando, setEnviando] = useState(false);
+  const [avisoAcesso, setAvisoAcesso] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("redirect") === "cestinha") {
+      setAvisoAcesso(true);
+    }
+  }, [location]);
 
   async function entrar(e) {
     e.preventDefault();
@@ -40,9 +51,13 @@ export default function Login() {
     setSucesso(null);
     setEnviando(true);
     try {
-      // Aqui o login é executado e os itens da cestinha anônima migram sozinhos para o banco
       await login(email, senha);
-      navigate("/minha-conta");
+      const params = new URLSearchParams(location.search);
+      if (params.get("redirect") === "cestinha") {
+        navigate("/cestinha");
+      } else {
+        navigate("/minha-conta");
+      }
     } catch (err) {
       if (err.status === 401) {
         setErro("E-mail ou senha incorretos.");
@@ -86,9 +101,14 @@ export default function Login() {
       setErro(null);
       setSucesso(null);
       setEnviando(true);
-      // O login com Google também executa a migração automática configurada no auth.js
       await loginComGoogle(credentialResponse.credential);
-      navigate("/minha-conta");
+      
+      const params = new URLSearchParams(location.search);
+      if (params.get("redirect") === "cestinha") {
+        navigate("/cestinha");
+      } else {
+        navigate("/minha-conta");
+      }
     } catch (err) {
       setErro("Não foi possível entrar com o Google. Tente novamente.");
     } finally {
@@ -145,6 +165,20 @@ export default function Login() {
                 : "Entre para gerenciar seus horários, pedidos e favoritos."}
             </p>
           </div>
+
+          {avisoAcesso && (
+            <div style={{
+              background: "rgba(173, 24, 56, 0.12)",
+              border: "1px solid #ad1838",
+              padding: "12px 16px",
+              borderRadius: "4px",
+              marginBottom: "20px",
+              color: "#000000",
+              fontSize: "0.85rem"
+            }}>
+              ✨ <strong>Acesse sua conta para ver a cestinha!</strong> Faça login para visualizar e gerenciar os itens salvos na sua tierlist de beleza.
+            </div>
+          )}
 
           {!modoEsqueci ? (
             <form className="login-form" onSubmit={entrar}>

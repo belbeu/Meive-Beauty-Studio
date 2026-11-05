@@ -1,4 +1,4 @@
-// src/components/CestinhaToast.jsx
+// Salvar como: src/components/CestinhaToast.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CestinhaToast.css";
@@ -20,11 +20,10 @@ export default function CestinhaToast({ produtoNome, onClose }) {
             onClick={() => {
               onClose();
               const token = localStorage.getItem("access");
-              // Se estiver logada, vai direto para a cestinha dela. Se não, vai para o login.
               if (token) {
                 navigate("/cestinha");
               } else {
-                navigate("/login");
+                navigate("/login?redirect=cestinha");
               }
             }}
           >

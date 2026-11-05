@@ -1,51 +1,73 @@
-/* Salvar como: src/components/cliente/MinhaCestinha.css */
+/* Container raiz da página da cestinha */
+.dashboard-cestinha-page {
+  background-color: var(--c-bg);
+  min-height: 100vh;
+  color: var(--c-text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-sizing: border-box;
+}
+
 .dashboard-cestinha-container {
-  padding: 20px;
-  color: #fff;
-  background-color: #0b0b0b;
-  min-height: 60vh;
+  padding: 12px 24px 32px 24px;
+  color: var(--c-text);
+  background-color: var(--c-bg);
+  box-sizing: border-box;
 }
 
 .dashboard-cestinha-container h2 {
   font-size: 1.8rem;
   margin-bottom: 5px;
+  color: var(--c-text);
 }
 
 .cestinha-subtitle {
-  color: #888;
+  color: var(--c-text-muted);
   font-size: 0.9rem;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 }
 
 .cestinha-content {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 25px;
+  gap: 24px;
+  align-items: start;
 }
 
 .cestinha-vazia {
-  padding: 40px;
+  padding: 48px 24px;
   text-align: center;
-  color: #888;
+  color: var(--c-text-muted);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+.cestinha-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .cestinha-item-card {
   display: flex;
   align-items: center;
-  gap: 15px;
-  background: #141414;
-  border: 1px solid #222;
-  padding: 14px;
-  border-radius: 6px;
-  margin-bottom: 12px;
+  gap: 16px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  padding: 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .cestinha-item-img {
-  width: 60px;
-  height: 60px;
+  width: 64px;
+  height: 64px;
   object-fit: contain;
-  background: #000;
-  border-radius: 4px;
+  background: var(--w-003);
+  border: 1px solid var(--c-border);
+  border-radius: 6px;
+  padding: 4px;
 }
 
 .cestinha-item-info {
@@ -55,78 +77,128 @@
 .cestinha-item-info h4 {
   margin: 0 0 4px 0;
   font-size: 0.95rem;
+  color: var(--c-text);
 }
 
 .cestinha-item-cat {
   display: block;
   font-size: 0.7rem;
-  color: #888;
+  color: var(--c-text-muted);
   text-transform: uppercase;
   margin-bottom: 4px;
+  letter-spacing: 0.5px;
 }
 
 .cestinha-item-preco {
-  color: #ad1838;
+  color: var(--c-primary);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
+}
+
+.cestinha-item-acoes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  color: var(--c-text-muted);
+  font-size: 0.85rem;
 }
 
 .cestinha-resumo {
-  background: #141414;
-  border: 1px solid #222;
-  padding: 20px;
-  border-radius: 6px;
-  height: fit-content;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  padding: 24px;
+  border-radius: 8px;
+  position: sticky;
+  top: 24px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .cestinha-resumo h3 {
   margin-top: 0;
   font-size: 1.1rem;
-  border-bottom: 1px solid #333;
-  padding-bottom: 10px;
+  color: var(--c-text);
+  border-bottom: 1px solid var(--c-border);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
 }
 
 .resumo-linha {
   display: flex;
   justify-content: space-between;
-  margin: 15px 0;
+  margin: 16px 0;
   font-size: 1rem;
+  color: var(--c-text);
+}
+
+.resumo-linha strong {
+  color: var(--c-primary);
+  font-size: 1.1rem;
 }
 
 .btn-finalizar-interesse {
   width: 100%;
-  background: #ad1838;
+  background: var(--c-primary);
   color: #fff;
   border: none;
-  padding: 12px;
+  padding: 14px;
   font-weight: 700;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.3s;
+  border-radius: 6px;
+  transition: opacity 0.2s, background 0.3s;
+  margin-top: 8px;
 }
 
 .btn-finalizar-interesse:hover {
-  background: #c31c40;
+  opacity: 0.9;
 }
 
 .btn-remover-item {
   background: transparent;
-  border: 1px solid #ad1838;
-  color: #ad1838;
-  padding: 5px 10px;
+  border: 1px solid var(--c-primary);
+  color: var(--c-primary);
+  padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 0.75rem;
-  transition: all 0.3s;
+  font-weight: 600;
+  transition: all 0.2s;
 }
 
 .btn-remover-item:hover {
-  background: #ad1838;
+  background: var(--c-primary);
   color: #fff;
+}
+
+.cestinha-loading {
+  padding: 80px 24px;
+  text-align: center;
+  color: var(--c-text-muted);
+  background: var(--c-bg);
+  font-size: 1rem;
+}
+
+.client-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  text-decoration: none;
+  height: 48px;
+  padding: 0 28px;
+  color: #ffffff;
+  background-color: var(--c-primary);
+  border-radius: 6px;
+  font-weight: 600;
+  transition: opacity 0.2s, background-color 0.3s;
 }
 
 @media (max-width: 768px) {
   .cestinha-content {
     grid-template-columns: 1fr;
+  }
+  
+  .cestinha-resumo {
+    position: static;
   }
 }

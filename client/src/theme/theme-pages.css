@@ -503,9 +503,10 @@
 :root[data-theme="light"] .dash-container .products-file-btn:hover,
 :root[data-theme="light"] .dash-container .products-file-btn:focus-within,
 :root[data-theme="light"] .dash-container .products-img-tabs button:hover {
-  background: #f2e5e9;
-  color: #76243b;
-  border-color: #c99eac;
+  background: #f2e5e9 !important;
+  color: #76243b !important;
+  border-color: #c99eac !important;
+  opacity: 1 !important;
 }
 
 :root[data-theme="light"] .dash-container .products-filter button.is-active,
@@ -516,8 +517,9 @@
 
 :root[data-theme="light"] .dash-container .products-sell:hover:not(:disabled),
 :root[data-theme="light"] .dash-container .products-edit:hover {
-  color: #76243b;
-  background: #f2e5e9;
+  color: #76243b !important;
+  background: #f2e5e9 !important;
+  opacity: 1 !important;
 }
 
 /* Configurações: hover do menu lateral */
@@ -544,3 +546,5 @@
 :root[data-theme="light"] .dash-container .clients-modal-close:hover {
   color: #8f1838;
 }
+
+

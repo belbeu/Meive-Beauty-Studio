@@ -86,20 +86,30 @@
 }
 
 .client-avatar {
-  width: 56px;
-  height: 56px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
-  border: none;
-  background: var(--purple);
-  color: #ffffff;
-  font-size: 1rem;
-  font-weight: 600;
+  border: 1px solid var(--c-border);
+  background: var(--purple, #5a2d82);
+  color: #ffffff !important;
+  font-size: 0.85rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: filter 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: filter 0.2s ease, background-color 0.3s ease;
 }
 
 .client-avatar:hover {
   filter: brightness(1.15);
+}
+
+/* Garante visibilidade perfeita do avatar no tema claro */
+:root[data-theme="light"] .client-avatar {
+  background: #5a2d82 !important;
+  color: #ffffff !important;
+  border-color: #d9c5cc;
 }
 
 .client-menu {
@@ -468,28 +478,35 @@
 
 /* ============ MODAL DE CONFIRMAÇÃO DE SAÍDA ============ */
 .client-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(3px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-  animation: fadeIn 0.2s ease;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 99999 !important;
+  margin: 0 !important;
+  padding: 20px !important;
+  box-sizing: border-box !important;
 }
 
 .client-modal-card {
-  background: #121212;
-  border: 1px solid var(--border);
+  background: var(--surface, #121212);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.09));
   padding: 36px 32px;
   max-width: 420px;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100000 !important;
 }
 
 .client-modal-card h3 {
@@ -498,31 +515,98 @@
   font-weight: 400;
   font-size: 1.625rem;
   letter-spacing: 1px;
-  color: #ffffff;
+  color: var(--c-text, #ffffff);
 }
 
 .client-modal-card p {
   margin: 0;
-  font-size: 0.8125rem;
-  color: var(--muted);
+  font-size: 0.875rem;
+  color: var(--muted, #7a7a7a);
   line-height: 1.5;
 }
 
 .client-modal-actions {
   display: flex;
+  align-items: center;
+  justify-content: stretch;
   gap: 12px;
-  margin-top: 14px;
+  margin-top: 16px;
+  width: 100%;
 }
 
 .client-modal-actions button {
   flex: 1;
   height: 44px;
-  font-size: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0 16px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   TEMA CLARO - MODAL DE SAÍDA
+========================================= */
+:root[data-theme="light"] .client-modal-overlay {
+  background: rgba(35, 20, 26, 0.45) !important;
+}
+
+:root[data-theme="light"] .client-modal-card {
+  background: #ffffff !important;
+  border-color: rgba(74, 36, 48, 0.15) !important;
+  box-shadow: 0 15px 35px rgba(74, 36, 48, 0.15) !important;
+}
+
+:root[data-theme="light"] .client-modal-card h3 {
+  color: #1f1519 !important;
+}
+
+:root[data-theme="light"] .client-modal-card p {
+  color: #665b61 !important;
 }
 
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+/* =========================================
+   CORREÇÃO DE CONTRASTE NO TEMA CLARO (BANNER E BOTÕES)
+========================================= */
+:root[data-theme="light"] .client-page .client-next {
+  background: linear-gradient(110deg, #d8a5b3 55%, #caa1ad 65%, #bb8f9e 80%) !important;
+  border: 1px solid rgba(48, 6, 17, 0.3) !important;
+}
+
+:root[data-theme="light"] .client-page .client-next-info h2 {
+  color: #1a080d !important;
+}
+
+:root[data-theme="light"] .client-page .client-next-info p,
+:root[data-theme="light"] .client-page .client-next-label {
+  color: #3b121c !important;
+  font-weight: 600 !important;
+}
+
+/* Botão de Detalhes e Status legíveis no modo claro */
+:root[data-theme="light"] .client-page .client-next .client-outline-btn {
+  color: #1a080d !important;
+  border-color: #3b121c !important;
+  background-color: rgba(255, 255, 255, 0.25) !important;
+}
+
+:root[data-theme="light"] .client-page .client-next .client-outline-btn:hover {
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+:root[data-theme="light"] .client-page .client-next .client-badge {
+  background-color: #3b121c !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
 }
 
 /* ============ RESPONSIVO ============ */
