@@ -4,7 +4,7 @@ import "./Hero.css";
 
 export default function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" id="topo">
       <div className="hero-background"></div>
       <div className="hero-overlay"></div>
 

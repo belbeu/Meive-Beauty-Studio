@@ -129,9 +129,28 @@
   color: var(--c-text-muted, #858585);
 }
 
-.secondary-button:hover {
-  border-color: var(--w-02, rgba(255, 255, 255, 0.4));
+.secondary-button {
+  height: 43px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 25px;
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  
+  /* Ajustes para garantir visibilidade e contraste */
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
   color: var(--c-text);
+  font-weight: 500;
+}
+
+.secondary-button:hover {
+  background: var(--c-primary);
+  border-color: var(--c-primary);
+  color: #ffffff;
 }
 
 .stats {

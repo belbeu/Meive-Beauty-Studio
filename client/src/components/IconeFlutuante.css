@@ -115,6 +115,22 @@
   pointer-events: none;
 }
 
+.floating-btn.nav-scroll {
+  background: #1a1a1a;
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+/* Quando o usuário rolar a página para baixo, a seta de subir ganha destaque com a cor bordô da marca */
+.floating-btn.nav-scroll.ativo-scroll {
+  border-color: #ad1838;
+}
+
+.floating-btn.nav-scroll:hover {
+  background: #ad1838;
+  border-color: #ad1838;
+}
+
 @keyframes floatPulse {
   0% {
     transform: scale(1);

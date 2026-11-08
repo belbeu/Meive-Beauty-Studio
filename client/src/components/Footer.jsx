@@ -17,7 +17,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="site-footer">
+    <footer className="site-footer" id="footer">
       <div className="footer-content">
         {/* Coluna 1: Logo, descrição e redes sociais */}
         <div className="footer-col brand-col">
