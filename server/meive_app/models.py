@@ -11,9 +11,47 @@ class Agendamento(models.Model):
     data_agendamento = models.DateTimeField()
     valor = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     sinal_pago = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
+    # Linha do tempo: quando foi criado e cada mudança de status ({status, em, de?}).
+    criado_em = models.DateTimeField(null=True, blank=True)
+    historico = models.JSONField(default=list, blank=True)
 
     class Meta:
         db_table = 'agendamento'
+
+    def save(self, *args, **kwargs):
+        agora = timezone.now()
+        historico = list(self.historico or [])
+
+        if self._state.adding:
+            if not self.criado_em:
+                self.criado_em = agora
+            if not historico:
+                historico.append({'status': 'created', 'em': self.criado_em.isoformat()})
+                historico.append({'status': self.status, 'em': agora.isoformat()})
+        else:
+            antigo = (
+                Agendamento.objects.filter(pk=self.pk)
+                .values('status', 'data_agendamento')
+                .first()
+            )
+            if antigo is not None:
+                if antigo['status'] != self.status:
+                    historico.append({'status': self.status, 'em': agora.isoformat(), 'de': antigo['status']})
+                if antigo['data_agendamento'] != self.data_agendamento and hasattr(self.data_agendamento, 'isoformat'):
+                    historico.append({
+                        'status': 'rescheduled',
+                        'em': agora.isoformat(),
+                        'de': antigo['data_agendamento'].isoformat(),
+                        'para': self.data_agendamento.isoformat(),
+                    })
+
+        self.historico = historico
+
+        # Se quem chamou limitou as colunas salvas, garante que o histórico entre também.
+        if kwargs.get('update_fields') is not None:
+            kwargs['update_fields'] = set(kwargs['update_fields']) | {'historico', 'criado_em'}
+
+        super().save(*args, **kwargs)
 
 
 class Avaliacao(models.Model):

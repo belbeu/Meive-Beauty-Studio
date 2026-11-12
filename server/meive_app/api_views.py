@@ -140,6 +140,12 @@ class AgendamentoViewSet(viewsets.ModelViewSet):
     serializer_class = AgendamentoSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def get_permissions(self):
+        # Editar, cancelar/reativar e excluir agendamentos: somente administrador.
+        if self.action in ("update", "partial_update", "destroy"):
+            return [permissions.IsAdminUser()]
+        return super().get_permissions()
+
     def get_queryset(self):
         usuario = self.request.user
         queryset = Agendamento.objects.all().order_by("data_agendamento")

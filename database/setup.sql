@@ -50,8 +50,10 @@ CREATE TABLE agendamento (
     id_servico INT NOT NULL,
     status VARCHAR(50) NOT NULL,
     data_agendamento TIMESTAMP NOT NULL,
-    valor NUMERIC(10,2) CHECK (preco >= 0),
+    valor NUMERIC(10,2) CHECK (valor >= 0),
     sinal_pago NUMERIC(10,2) DEFAULT 0.00 CHECK (sinal_pago >= 0),
+    criado_em TIMESTAMPTZ,
+    historico JSONB NOT NULL DEFAULT '[]'::jsonb,
 
     CONSTRAINT fk_agendamento_usuario
         FOREIGN KEY (id_usuario)
