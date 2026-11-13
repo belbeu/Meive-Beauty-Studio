@@ -516,6 +516,44 @@
   color: var(--faint);
 }
 
+/* ---- Dashboard ligado ao banco ---- */
+.dash-appointment--home {
+  grid-template-columns: 46px 36px 1fr auto 106px;
+}
+
+.dash-appointment--home.is-cancelled .dash-appointment-info strong,
+.dash-appointment--home.is-cancelled .dash-appointment-price {
+  text-decoration: line-through;
+  opacity: 0.55;
+}
+
+.dash-empty {
+  margin: 0;
+  padding: 28px 0 16px;
+  font-size: 0.6875rem;
+  color: var(--faint);
+}
+
+.dash-bar {
+  position: relative;
+}
+
+.dash-bar--today {
+  background: linear-gradient(180deg, #d12a4a 0%, #5a1424 100%);
+}
+
+.dash-bar-value {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  right: 0;
+  padding-bottom: 6px;
+  text-align: center;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #e4e8ee;
+}
+
 /* ============ RESPONSIVO ============ */
 @media (max-width: 1100px) {
   .dash-stats {

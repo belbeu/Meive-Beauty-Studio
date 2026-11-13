@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
+import { api } from "../../api";
+import NovoAgendamentoModal from "./NovoAgendamentoModal";
 import "./AdminDashboard.css";
 
 const iconProps = {
@@ -23,37 +25,47 @@ const Icons = {
   ),
 };
 
-const APPOINTMENTS = [
-  { time: "09:00", initials: "CR", name: "Camila Rodrigues", service: "Volume Russo", price: "R$ 280", status: "concluded" },
-  { time: "11:30", initials: "BA", name: "Bianca Alves", service: "Manutenção", price: "R$ 140", status: "ongoing" },
-  { time: "14:30", initials: "JM", name: "Juliana Mendes", service: "Volume Brasileiro", price: "R$ 230", status: "confirmed" },
-  { time: "17:00", initials: "AC", name: "Aline Costa", service: "Lash Lifting", price: "R$ 150", status: "confirmed" },
-];
-
 const STATUS_LABEL = {
   concluded: "CONCLUÍDO",
   ongoing: "EM ATENDIMENTO",
   confirmed: "CONFIRMADO",
+  cancelled: "CANCELADO",
 };
 
-const TOP_PRODUCTS = [
-  { rank: "01", name: "Sérum Lash Power", units: 12, total: "R$ 1068", image: null },
-  { rank: "02", name: "Clean Girl Foam", units: 9, total: "R$ 612", image: null },
-  { rank: "03", name: "Removedor Oil-Free", units: 6, total: "R$ 270", image: null },
-];
-
-const WEEK = [
-  { day: "SEG", value: 5 },
-  { day: "TER", value: 8 },
-  { day: "QUA", value: 6 },
-  { day: "QUI", value: 9 },
-  { day: "SEX", value: 7.5 },
-  { day: "SÁB", value: 3.5 },
-];
-
-const API_BASE = (import.meta.env.VITE_API_URL || "http://127.0.0.1:8000/api").replace(/\/$/, "");
+const WEEK_LABELS = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB", "DOM"];
+const TOP_PRODUTOS = 5;
 
 /* ---------- Helpers ---------- */
+const pad = (n) => String(n).padStart(2, "0");
+
+// AAAA-MM-DD no fuso local (toISOString usa UTC e "vira o dia" à noite no Brasil)
+const ymd = (d) => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+
+function getMonday(date) {
+  const d = new Date(date);
+  d.setHours(0, 0, 0, 0);
+  d.setDate(d.getDate() - ((d.getDay() + 6) % 7));
+  return d;
+}
+
+function addDays(date, n) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+const brl = (v, semCentavosSeInteiro = false) => {
+  const n = Number(v) || 0;
+  return n.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    minimumFractionDigits: semCentavosSeInteiro && Number.isInteger(n) ? 0 : 2,
+    maximumFractionDigits: 2,
+  });
+};
+
+const lista = (dados) => (Array.isArray(dados) ? dados : dados?.results || []);
+
 function formatToday() {
   const text = new Date().toLocaleDateString("pt-BR", {
     weekday: "long",
@@ -63,42 +75,188 @@ function formatToday() {
   return text.replace(",", "").toUpperCase().replace(/^(\S+) (.*)$/, "$1, $2");
 }
 
+// A data do agendamento é lida como foi digitada (sem converter fuso), igual à tela Agenda.
+const diaDe = (ag) => (ag.data_agendamento || "").split("T")[0];
+const horaDe = (ag) => ((ag.data_agendamento || "").split("T")[1] || "").substring(0, 5);
+
+const iniciais = (nome) =>
+  (nome || "Cliente")
+    .split(" ")
+    .filter(Boolean)
+    .map((n) => n[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase() || "CL";
+
+const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+
 /* ---------- Componente ---------- */
 export default function AdminDashboard() {
-  const [totalClients, setTotalClients] = useState(0);
-  const maxWeek = Math.max(...WEEK.map((d) => d.value));
+  const [agendamentos, setAgendamentos] = useState([]);
+  const [totalClientes, setTotalClientes] = useState(0);
+  const [produtos, setProdutos] = useState([]);
+  const [itensCestinha, setItensCestinha] = useState([]);
+  const [loading, setLoading] = useState({ agenda: true, clientes: true, produtos: true, cestinha: true });
+  const [modalAberto, setModalAberto] = useState(false);
 
-  // Buscar total de clientes do banco via API do Django
-  useEffect(() => {
-    const fetchClientsCount = async () => {
-      try {
-        const token = localStorage.getItem("access");
-        const response = await fetch(`${API_BASE}/clientes/`, {
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-        });
+  const fim = (chave) => setLoading((l) => ({ ...l, [chave]: false }));
 
-        if (response.ok) {
-          const data = await response.json();
-          const results = Array.isArray(data) ? data : data.results || [];
-          setTotalClients(results.length);
-        }
-      } catch (error) {
-        console.error("Erro ao buscar total de clientes para o dashboard:", error);
-      }
-    };
-
-    fetchClientsCount();
+  const carregarAgendamentos = useCallback(async () => {
+    try {
+      setAgendamentos(lista(await api("/agendamentos/")));
+    } catch (err) {
+      console.error("Erro ao carregar agendamentos do dashboard:", err);
+    } finally {
+      fim("agenda");
+    }
   }, []);
 
+  useEffect(() => {
+    carregarAgendamentos();
+
+    api("/clientes/")
+      .then((d) => setTotalClientes(lista(d).length))
+      .catch((err) => console.error("Erro ao buscar clientes do dashboard:", err))
+      .finally(() => fim("clientes"));
+
+    api("/admin/produtos/")
+      .then((d) => setProdutos(lista(d)))
+      .catch((err) => console.error("Erro ao buscar produtos do dashboard:", err))
+      .finally(() => fim("produtos"));
+
+    api("/cestinha/")
+      .then((d) => setItensCestinha(lista(d)))
+      .catch((err) => console.error("Erro ao buscar cestinhas do dashboard:", err))
+      .finally(() => fim("cestinha"));
+  }, [carregarAgendamentos]);
+
+  /* ---------- Cálculos a partir do banco ---------- */
+  const {
+    entradaMes,
+    sinaisMes,
+    agendamentosMes,
+    agendamentosSemana,
+    agendaHoje,
+    previstoHoje,
+    semana,
+    totalSemana,
+    nomeMes,
+  } = useMemo(() => {
+    const hoje = new Date();
+    const hojeStr = ymd(hoje);
+    const mesStr = hojeStr.slice(0, 7);
+    const segunda = getMonday(hoje);
+    const diasSemana = WEEK_LABELS.map((label, i) => ({ label, dataStr: ymd(addDays(segunda, i)) }));
+    const primeiroDia = diasSemana[0].dataStr;
+    const ultimoDia = diasSemana[6].dataStr;
+
+    const validos = agendamentos.filter((a) => a.status !== "cancelled");
+    const doMes = validos.filter((a) => diaDe(a).startsWith(mesStr));
+
+    // Entrada = valor dos atendimentos já finalizados no mês.
+    const entrada = doMes
+      .filter((a) => a.status === "concluded")
+      .reduce((soma, a) => soma + Number(a.valor || 0), 0);
+
+    // Sinais já recebidos de atendimentos que ainda não foram finalizados
+    // (nos finalizados o sinal já está dentro do valor total).
+    const sinais = doMes
+      .filter((a) => a.status !== "concluded")
+      .reduce((soma, a) => soma + Number(a.sinal_pago || 0), 0);
+
+    const hojeLista = agendamentos
+      .filter((a) => diaDe(a) === hojeStr)
+      .sort((a, b) => horaDe(a).localeCompare(horaDe(b)));
+    const hojeValidos = hojeLista.filter((a) => a.status !== "cancelled");
+
+    const dias = diasSemana.map((d) => ({
+      ...d,
+      value: validos.filter((a) => diaDe(a) === d.dataStr).length,
+      hoje: d.dataStr === hojeStr,
+    }));
+    // Domingo só aparece se houver atendimento nele (o studio costuma fechar).
+    const diasVisiveis = dias.filter((d) => d.label !== "DOM" || d.value > 0);
+
+    return {
+      entradaMes: entrada,
+      sinaisMes: sinais,
+      agendamentosMes: doMes.length,
+      agendamentosSemana: validos.filter((a) => diaDe(a) >= primeiroDia && diaDe(a) <= ultimoDia).length,
+      agendaHoje: hojeLista,
+      previstoHoje: hojeValidos.reduce((soma, a) => soma + Number(a.valor || 0), 0),
+      semana: diasVisiveis,
+      totalSemana: dias.reduce((soma, d) => soma + d.value, 0),
+      nomeMes: hoje.toLocaleDateString("pt-BR", { month: "long" }),
+    };
+  }, [agendamentos]);
+
+  // Valor em estoque: igual à página de Produtos (produtos ativos: preço x estoque atual).
+  const { valorEstoque, produtosAtivos } = useMemo(() => {
+    const ativos = produtos.filter((p) => p.ativo !== false);
+    return {
+      produtosAtivos: ativos.length,
+      valorEstoque: ativos.reduce(
+        (soma, p) => soma + Number(p.preco || 0) * Number(p.estoque_atual || 0),
+        0
+      ),
+    };
+  }, [produtos]);
+
+  // Produtos mais adicionados às cestinhas das clientes.
+  const maisRequisitados = useMemo(() => {
+    const mapa = new Map();
+    itensCestinha.forEach((item) => {
+      const p = item.produto;
+      if (!p) return;
+      const atual = mapa.get(p.id_produto) || {
+        id: p.id_produto,
+        nome: p.nome,
+        imagem: p.imagem_url,
+        cestinhas: 0,
+        unidades: 0,
+      };
+      atual.cestinhas += 1;
+      atual.unidades += Number(item.quantidade) || 1;
+      mapa.set(p.id_produto, atual);
+    });
+    return [...mapa.values()]
+      .sort((a, b) => b.cestinhas - a.cestinhas || b.unidades - a.unidades)
+      .slice(0, TOP_PRODUTOS);
+  }, [itensCestinha]);
+
+  const show = (carregando, valor) => (carregando ? "—" : valor);
+
   const STATS = [
-    { label: "FATURAMENTO DO MÊS", value: "R$ 12.480", note: "+18,4%", variant: "red" },
-    { label: "AGENDAMENTOS", value: "48", note: "+6 esta semana", variant: "purple" },
-    { label: "NOVAS CLIENTES", value: totalClients.toString(), note: "Total no banco", variant: "dark" },
-    { label: "TICKET MÉDIO", value: "R$ 260", note: "+R$ 18", variant: "dark" },
+    {
+      label: "ENTRADA DO MÊS",
+      value: show(loading.agenda, brl(entradaMes, true)),
+      note: loading.agenda
+        ? "Atendimentos concluídos"
+        : `Concluídos em ${nomeMes} · + ${brl(sinaisMes)} em sinais`,
+      variant: "red",
+    },
+    {
+      label: "AGENDAMENTOS",
+      value: show(loading.agenda, String(agendamentosMes)),
+      note: loading.agenda ? "Sem cancelados" : `${agendamentosSemana} esta semana`,
+      variant: "purple",
+    },
+    {
+      label: "CLIENTES",
+      value: show(loading.clientes, String(totalClientes)),
+      note: "Total cadastradas",
+      variant: "dark",
+    },
+    {
+      label: "VALOR EM ESTOQUE",
+      value: show(loading.produtos, brl(valorEstoque, true)),
+      note: loading.produtos ? "Produtos ativos" : plural(produtosAtivos, "produto ativo", "produtos ativos"),
+      variant: "dark",
+    },
   ];
+
+  const atendimentosHoje = agendaHoje.filter((a) => a.status !== "cancelled").length;
+  const maxSemana = Math.max(1, ...semana.map((d) => d.value));
 
   return (
     <main className="dash-main">
@@ -109,11 +267,7 @@ export default function AdminDashboard() {
         </div>
 
         <div className="dash-header-actions">
-
-          <button type="button" className="dash-icon-btn" aria-label="Buscar">
-            {Icons.search}
-          </button>
-          <button type="button" className="dash-primary-btn">
+          <button type="button" className="dash-primary-btn" onClick={() => setModalAberto(true)}>
             + NOVO AGENDAMENTO
           </button>
         </div>
@@ -130,65 +284,73 @@ export default function AdminDashboard() {
         ))}
       </section>
 
-      {/* ---- Agenda + Mais vendidos ---- */}
+      {/* ---- Agenda + Mais requisitados ---- */}
       <section className="dash-grid">
         <article className="dash-panel">
           <div className="dash-panel-head">
             <div>
               <h2 className="dash-panel-title">AGENDA DE HOJE</h2>
-              <p className="dash-panel-sub">5 atendimentos · R$ 1.150 previstos</p>
+              <p className="dash-panel-sub">
+                {loading.agenda
+                  ? "Carregando..."
+                  : `${plural(atendimentosHoje, "atendimento", "atendimentos")} · ${brl(previstoHoje, true)} previstos`}
+              </p>
             </div>
             <Link to="/admin/agenda" className="dash-link">
               VER AGENDA COMPLETA
             </Link>
           </div>
 
-          <ul className="dash-list">
-            {APPOINTMENTS.map((a) => (
-              <li key={a.time} className="dash-appointment">
-                <span className="dash-appointment-time">{a.time}</span>
-                <div className="dash-avatar">{a.initials}</div>
-                <div className="dash-appointment-info">
-                  <strong>{a.name}</strong>
-                  <span>{a.service}</span>
-                </div>
-                <span className="dash-appointment-price">{a.price}</span>
-                <span className={`dash-status dash-status--${a.status}`}>
-                  {STATUS_LABEL[a.status]}
-                </span>
-                <button type="button" className="dash-more" aria-label={`Mais opções de ${a.name}`}>
-                  •••
-                </button>
-              </li>
-            ))}
-          </ul>
+          {!loading.agenda && agendaHoje.length === 0 ? (
+            <p className="dash-empty">Nenhum atendimento para hoje.</p>
+          ) : (
+            <ul className="dash-list">
+              {agendaHoje.map((a) => (
+                <li
+                  key={a.id_agendamento}
+                  className={`dash-appointment dash-appointment--home ${a.status === "cancelled" ? "is-cancelled" : ""}`}
+                >
+                  <span className="dash-appointment-time">{horaDe(a)}</span>
+                  <div className="dash-avatar">{iniciais(a.cliente_nome)}</div>
+                  <div className="dash-appointment-info">
+                    <strong>{a.cliente_nome || "Cliente"}</strong>
+                    <span>{a.servico_nome || "Serviço"}</span>
+                  </div>
+                  <span className="dash-appointment-price">{brl(a.valor)}</span>
+                  <span className={`dash-status dash-status--${a.status}`}>
+                    {STATUS_LABEL[a.status] || String(a.status || "").toUpperCase()}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
         </article>
 
         <article className="dash-panel">
           <div className="dash-panel-head">
             <div>
-              <h2 className="dash-panel-title">MAIS VENDIDOS</h2>
-              <p className="dash-panel-sub">Últimos 30 dias</p>
+              <h2 className="dash-panel-title">MAIS REQUISITADOS</h2>
+              <p className="dash-panel-sub">Mais adicionados às cestinhas das clientes</p>
             </div>
           </div>
 
-          <ul className="dash-list">
-            {TOP_PRODUCTS.map((p) => (
-              <li key={p.rank} className="dash-product">
-                <span className="dash-product-rank">{p.rank}</span>
-                {p.image ? (
-                  <img src={p.image} alt={p.name} className="dash-product-img" />
-                ) : (
-                  <div className="dash-product-img dash-product-img--placeholder" />
-                )}
-                <div className="dash-product-info">
-                  <strong>{p.name}</strong>
-                  <span>{p.units} unidades</span>
-                </div>
-                <span className="dash-product-total">{p.total}</span>
-              </li>
-            ))}
-          </ul>
+          {!loading.cestinha && maisRequisitados.length === 0 ? (
+            <p className="dash-empty">Nenhum produto nas cestinhas ainda.</p>
+          ) : (
+            <ul className="dash-list">
+              {maisRequisitados.map((p, i) => (
+                <li key={p.id} className="dash-product">
+                  <span className="dash-product-rank">{pad(i + 1)}</span>
+                  <ProdutoImg src={p.imagem} alt={p.nome} />
+                  <div className="dash-product-info">
+                    <strong>{p.nome}</strong>
+                    <span>{plural(p.cestinhas, "cestinha", "cestinhas")}</span>
+                  </div>
+                  <span className="dash-product-total">{p.unidades} un.</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </article>
       </section>
 
@@ -197,29 +359,50 @@ export default function AdminDashboard() {
         <div className="dash-panel-head">
           <div>
             <h2 className="dash-panel-title">VISÃO DA SEMANA</h2>
-            <p className="dash-panel-sub">Agendamentos confirmados</p>
+            <p className="dash-panel-sub">Agendamentos da semana (sem cancelados)</p>
           </div>
           <div className="dash-week-total">
-            <strong>32</strong>
+            <strong>{show(loading.agenda, totalSemana)}</strong>
             <span>ATENDIMENTOS</span>
           </div>
         </div>
 
-        <div className="dash-chart" role="img" aria-label="Gráfico de agendamentos por dia da semana">
-          {WEEK.map((d) => (
-            <div key={d.day} className="dash-bar-col">
+        <div
+          className="dash-chart"
+          style={{ gridTemplateColumns: `repeat(${semana.length}, 1fr)` }}
+          role="img"
+          aria-label="Gráfico de agendamentos por dia da semana"
+        >
+          {semana.map((d) => (
+            <div key={d.label} className="dash-bar-col">
               <div className="dash-bar-track">
                 <div
-                  className="dash-bar"
-                  style={{ height: `${(d.value / maxWeek) * 100}%` }}
-                  title={`${d.value} atendimentos`}
-                />
+                  className={`dash-bar ${d.hoje ? "dash-bar--today" : ""}`}
+                  style={{ height: `${(d.value / maxSemana) * 86}%` }}
+                  title={plural(d.value, "atendimento", "atendimentos")}
+                >
+                  <span className="dash-bar-value">{loading.agenda ? "" : d.value}</span>
+                </div>
               </div>
-              <span className="dash-bar-label">{d.day}</span>
+              <span className="dash-bar-label">{d.label}</span>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Novo agendamento (o mesmo modal da página Agenda) */}
+      <NovoAgendamentoModal
+        isOpen={modalAberto}
+        agendamento={null}
+        onClose={() => setModalAberto(false)}
+        onSuccess={carregarAgendamentos}
+      />
     </main>
   );
+}
+
+function ProdutoImg({ src, alt }) {
+  const [falhou, setFalhou] = useState(false);
+  if (!src || falhou) return <div className="dash-product-img dash-product-img--placeholder" />;
+  return <img src={src} alt={alt} className="dash-product-img" onError={() => setFalhou(true)} />;
 }
