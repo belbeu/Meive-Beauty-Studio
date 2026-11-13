@@ -9,15 +9,18 @@ import re
 
 from django.db import transaction
 from django.http import Http404
+from django.utils import timezone
 from rest_framework import mixins, permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework import mixins, permissions, serializers, viewsets
 
 from .models import (
     Agendamento,
     Avaliacao,
     CestinhaInteresse,
+    ConfiguracaoStudio,
     Curso,
     MaterialCurso,
     Matricula,
@@ -31,6 +34,7 @@ from .serializers import (
     AgendamentoSerializer,
     AvaliacaoSerializer,
     CestinhaInteresseSerializer,
+    ConfiguracaoStudioSerializer,
     CursoSerializer,
     MaterialCursoSerializer,
     MatriculaSerializer,
@@ -124,6 +128,29 @@ class PromocaoAdminViewSet(viewsets.ModelViewSet):
     queryset = Promocao.objects.all().order_by("-destaque", "-criado_em")
     serializer_class = PromocaoSerializer
     permission_classes = [permissions.IsAdminUser]
+
+
+class ConfiguracaoStudioView(APIView):
+    """Dados do studio (nome, contato, endereço e horários).
+
+    GET é público (o rodapé do site usa); alterar (PATCH) é só do administrador.
+    """
+
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]
+
+    def get(self, request):
+        return Response(ConfiguracaoStudioSerializer(ConfiguracaoStudio.obter()).data)
+
+    def patch(self, request):
+        serializer = ConfiguracaoStudioSerializer(
+            ConfiguracaoStudio.obter(), data=request.data, partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save(atualizado_em=timezone.now())
+        return Response(serializer.data)
 
 
 class UsuarioViewSet(viewsets.ModelViewSet):

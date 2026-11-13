@@ -10,8 +10,10 @@ from .usuario import UsuarioSerializer
 from .cestinha_interesse import CestinhaInteresseSerializer
 from .cliente_serializer import ClienteSerializer
 from .promocao import PromocaoSerializer
+from .configuracao_studio import ConfiguracaoStudioSerializer
 
 __all__ = [
     'ClienteSerializer',
     'PromocaoSerializer',
+    'ConfiguracaoStudioSerializer',
 ]

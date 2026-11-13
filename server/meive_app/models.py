@@ -270,3 +270,45 @@ class Promocao(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+DIAS_SEMANA = ["seg", "ter", "qua", "qui", "sex", "sab", "dom"]
+
+
+def horarios_padrao():
+    fechado = {"aberto": False, "abre": "09:00", "fecha": "18:00"}
+    return {
+        "seg": dict(fechado),
+        "ter": {"aberto": True, "abre": "09:00", "fecha": "22:00"},
+        "qua": {"aberto": True, "abre": "09:00", "fecha": "22:00"},
+        "qui": {"aberto": True, "abre": "09:00", "fecha": "22:00"},
+        "sex": {"aberto": True, "abre": "09:00", "fecha": "22:00"},
+        "sab": {"aberto": True, "abre": "09:00", "fecha": "17:00"},
+        "dom": dict(fechado),
+    }
+
+
+class ConfiguracaoStudio(models.Model):
+    """Dados do studio mostrados no site (rodapé) e editados em Admin > Configurações.
+
+    Existe uma única linha (id_config = 1); use ConfiguracaoStudio.obter().
+    """
+
+    id_config = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=150, default="Meive Beauty Studio")
+    telefone = models.CharField(max_length=20, default="(11) 94487-4969")
+    email = models.CharField(max_length=150, default="meivebeautystudio@gmail.com")
+    endereco = models.CharField(max_length=255, default="R. Giancarlo Palanti, 22 A, 03661-050, Vila Ré")
+    horarios = models.JSONField(default=horarios_padrao)
+    atualizado_em = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = 'configuracao_studio'
+
+    @classmethod
+    def obter(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+    def __str__(self):
+        return self.nome

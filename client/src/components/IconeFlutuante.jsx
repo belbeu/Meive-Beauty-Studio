@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import imagem from "../assets/icone-test.jpg";
+import { useStudio, whatsappDoStudio } from "../studio";
 import "./IconeFlutuante.css";
 
 export default function FloatingSocials() {
   const [aberto, setAberto] = useState(false);
+  const studio = useStudio();
   const [mostrarSubir, setMostrarSubir] = useState(false);
 
   // Monitora a rolagem da página para saber se o usuário saiu do topo
@@ -23,7 +25,7 @@ export default function FloatingSocials() {
   const mensagemWhatsApp =
     "Olá! Vim pelo site e gostaria de realizar um agendamento!";
 
-  const linkWhatsApp = `https://wa.me/5511944874969?text=${encodeURIComponent(
+  const linkWhatsApp = `https://wa.me/${whatsappDoStudio(studio.telefone)}?text=${encodeURIComponent(
     mensagemWhatsApp
   )}`;
 

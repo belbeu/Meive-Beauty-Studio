@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../api";
+import { useStudio, whatsappDoStudio } from "../studio";
 import "./Promocao.css";
 
-const PHONE_NUMBER = "5511944874969";
 const moeda = (valor) => Number(valor || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 2 });
 
 export default function PromocoesSection() {
   const [promocoes, setPromocoes] = useState([]);
+  const studio = useStudio();
+  const PHONE_NUMBER = whatsappDoStudio(studio.telefone);
 
   useEffect(() => {
     let ativa = true;

@@ -34,4 +34,5 @@ urlpatterns = [
     path("produtos/imagem/<int:pk>/", ProdutoImagemView.as_view(), name="produto-imagem"),
     path("auth/recuperar-senha/", RecuperarSenhaDiretaView.as_view()),
     path("auth/google/", GoogleLoginView.as_view()),
+    path("studio/", v.ConfiguracaoStudioView.as_view()),
 ] + router.urls

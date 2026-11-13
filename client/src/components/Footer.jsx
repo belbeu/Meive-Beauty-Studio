@@ -1,10 +1,13 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useStudio, agruparHorarios } from "../studio";
 import "./Footer.css";
 
 export default function Footer() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const studio = useStudio();
+  const horarios = agruparHorarios(studio.horarios);
 
   // Função para rolar suavemente até seções internas na Home
   const irPara = (e, id) => {
@@ -80,18 +83,12 @@ export default function Footer() {
         <div className="footer-col schedule-col">
           <h4 className="footer-title">HORÁRIOS</h4>
           <ul className="schedule-list">
-            <li>
-              <span>Ter - Sex</span>
-              <span className="highlight-time">9h às 22h</span>
-            </li>
-            <li>
-              <span>Sábado</span>
-              <span className="highlight-time">9h às 17h</span>
-            </li>
-            <li>
-              <span>Dom - Seg</span>
-              <span className="closed-time">Fechado</span>
-            </li>
+            {horarios.map((h) => (
+              <li key={h.rotulo}>
+                <span>{h.rotulo}</span>
+                <span className={h.aberto ? "highlight-time" : "closed-time"}>{h.texto}</span>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -101,15 +98,15 @@ export default function Footer() {
           <ul className="contact-list">
             <li>
               <span className="icon">📍</span>
-              <span>R. Giancarlo Palanti, 22 A, 03661-050, Vila Ré</span>
+              <span>{studio.endereco}</span>
             </li>
             <li>
               <span className="icon">📱</span>
-              <span>(11) 94487-4969</span>
+              <span>{studio.telefone}</span>
             </li>
             <li>
               <span className="icon">📧</span>
-              <span>meivebeautystudio@gmail.com</span>
+              <span>{studio.email}</span>
             </li>
           </ul>
         </div>
@@ -117,7 +114,7 @@ export default function Footer() {
 
       {/* Linha inferior de Copyright */}
       <div className="footer-bottom">
-        <p>© 2026 Meive Beauty Studio. Todos os direitos reservados.</p>
+        <p>© 2026 {studio.nome}. Todos os direitos reservados.</p>
         <span className="hashtag">#MeiveBeauty</span>
       </div>
     </footer>

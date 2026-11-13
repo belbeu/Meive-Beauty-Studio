@@ -58,53 +58,6 @@
   padding: 28px 28px 28px;
 }
 
-/* ---- Logo ---- */
-.settings-logo {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 0 22px;
-}
-
-.settings-logo-avatar {
-  width: 58px;
-  height: 58px;
-  font-size: 15px;
-  font-weight: 600;
-}
-
-.settings-logo-info {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.settings-logo-info strong {
-  font-size: 10px;
-  font-weight: 700;
-}
-
-.settings-logo-info span {
-  font-size: 8px;
-  color: var(--faint);
-}
-
-.settings-logo-btn {
-  align-self: flex-start;
-  background: none;
-  border: none;
-  padding: 0;
-  font-size: 7px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  color: var(--red-bright);
-  cursor: pointer;
-}
-
-.settings-logo-btn:hover {
-  text-decoration: underline;
-}
-
 /* ---- Campos ---- */
 .settings-fields {
   display: grid;
@@ -152,7 +105,104 @@
   border-color: var(--red);
 }
 
-/* ---- Lembretes (toggles) ---- */
+
+.settings-fields--spaced {
+  padding-top: 24px;
+}
+
+/* ---- Horários ---- */
+.settings-hours-row {
+  display: grid;
+  grid-template-columns: 110px 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-hours-day {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.settings-hours-times {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 8px;
+  color: var(--faint);
+}
+
+.settings-hours-closed {
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  color: var(--faint);
+}
+
+.settings-time {
+  width: 112px;
+  height: 38px;
+  padding: 0 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 0;
+  color: #e4e8ee;
+  color-scheme: dark;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 0.6px;
+  transition: border-color 0.2s ease;
+}
+
+.settings-time:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.settings-time:focus {
+  outline: none;
+  border-color: var(--red);
+}
+
+/* ---- Prévia do rodapé ---- */
+.settings-preview {
+  list-style: none;
+  margin: 0;
+  padding: 20px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.settings-preview li {
+  display: flex;
+  gap: 30px;
+  font-size: 10px;
+  color: var(--faint);
+}
+
+.settings-preview li span:first-child {
+  width: 90px;
+}
+
+.settings-preview-open {
+  color: var(--red-bright);
+  font-weight: 500;
+}
+
+.settings-retry {
+  margin-top: 20px;
+}
+
+.settings-save:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.settings-save:disabled:hover {
+  background: var(--red);
+}
+
+/* ---- Interruptores ---- */
 .settings-toggle-row {
   display: flex;
   align-items: center;
