@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import {
-  login,
   logout as limparSessao,
   estaLogado,
   usuarioAtual,
 } from "../../auth";
+import { api } from "../../api";
 
 const AuthContext = createContext({});
 
@@ -47,30 +47,43 @@ export function AuthProvider({ children }) {
   }, []);
 
   const loginAdmin = async (email, password) => {
+    // Não reutiliza um token antigo para iniciar uma nova autenticação administrativa.
+    limparSessao();
+    setUser(null);
     try {
-      const usuario = await login(email, password);
-      const admin = comoAdmin(usuario);
+      await api("/auth/admin/solicitar-codigo/", {
+        method: "POST",
+        body: JSON.stringify({ email: email.trim().toLowerCase(), password }),
+      });
+      return { success: true, verificationRequired: true };
+    } catch (error) {
+      return {
+        success: false,
+        message: error.dados?.detail || "Não foi possível validar as credenciais. Tente novamente.",
+      };
+    }
+  };
 
+  const validarCodigoAdmin = async (email, codigo) => {
+    try {
+      const tokens = await api("/auth/admin/validar-codigo/", {
+        method: "POST",
+        body: JSON.stringify({ email: email.trim().toLowerCase(), codigo }),
+      });
+      localStorage.setItem("access", tokens.access);
+      localStorage.setItem("refresh", tokens.refresh);
+      const usuario = await usuarioAtual();
+      const admin = comoAdmin(usuario);
       if (!admin) {
         limparSessao();
-        return {
-          success: false,
-          message: "Credenciais inválidas ou sem permissão de administrador.",
-        };
+        return { success: false, message: "Esta conta não possui permissão administrativa." };
       }
-
       setUser(admin);
       return { success: true };
     } catch (error) {
-      if (error.status === 401) {
-        return {
-          success: false,
-          message: "Credenciais inválidas ou sem permissão de administrador.",
-        };
-      }
       return {
         success: false,
-        message: "Não foi possível entrar agora. Tente novamente em instantes.",
+        message: error.dados?.detail || "Código inválido ou expirado. Tente novamente.",
       };
     }
   };
@@ -82,7 +95,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginAdmin, logout, loading }}>
+    <AuthContext.Provider value={{ user, loginAdmin, validarCodigoAdmin, logout, loading }}>
       {!loading && children}
     </AuthContext.Provider>
   );

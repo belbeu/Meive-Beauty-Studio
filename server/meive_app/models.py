@@ -312,3 +312,21 @@ class ConfiguracaoStudio(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class CodigoVerificacaoEmail(models.Model):
+    """Código temporário para confirmar e-mail no cadastro e no login administrativo."""
+
+    email = models.EmailField(max_length=150, db_index=True)
+    finalidade = models.CharField(max_length=30, db_index=True)
+    codigo_hash = models.CharField(max_length=256)
+    dados_pendentes = models.JSONField(default=dict, blank=True)
+    expira_em = models.DateTimeField()
+    tentativas = models.PositiveSmallIntegerField(default=0)
+    criado_em = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        db_table = "codigo_verificacao_email"
+        indexes = [
+            models.Index(fields=["email", "finalidade", "-criado_em"], name="cod_verif_email_final_idx"),
+        ]

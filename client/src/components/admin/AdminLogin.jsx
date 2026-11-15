@@ -28,9 +28,11 @@ export default function AdminLogin() {
   const [attempts, setAttempts] = useState(0);
   const [isBlocked, setIsBlocked] = useState(false);
   const [enviando, setEnviando] = useState(false);
-  const [mostrarSenha, setMostrarSenha] = useState(false); // Estado para o olhinho
+  const [mostrarSenha, setMostrarSenha] = useState(false);
+  const [aguardandoCodigo, setAguardandoCodigo] = useState(false);
+  const [codigo, setCodigo] = useState("");
 
-  const { loginAdmin } = useAuth();
+  const { loginAdmin, validarCodigoAdmin } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -43,7 +45,10 @@ export default function AdminLogin() {
     try {
       const result = await loginAdmin(email, password);
 
-      if (result.success) {
+      if (result.success && result.verificationRequired) {
+        setAguardandoCodigo(true);
+        setError("");
+      } else if (result.success) {
         navigate("/admin/dashboard");
       } else {
         const newAttempts = attempts + 1;
@@ -56,6 +61,24 @@ export default function AdminLogin() {
           setError(`${result.message} (Tentativa ${newAttempts} de 3)`);
         }
       }
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const handleValidarCodigo = async (e) => {
+    e.preventDefault();
+    if (enviando) return;
+    setError("");
+    if (!/^\d{6}$/.test(codigo.trim())) {
+      setError("Digite o código de 6 números enviado ao e-mail da administradora.");
+      return;
+    }
+    setEnviando(true);
+    try {
+      const result = await validarCodigoAdmin(email, codigo);
+      if (result.success) navigate("/admin/dashboard");
+      else setError(result.message);
     } finally {
       setEnviando(false);
     }
@@ -99,56 +122,65 @@ export default function AdminLogin() {
 
           {error && <div className="error-message">{error}</div>}
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-field">
-              <label>E-MAIL INSTITUCIONAL</label>
-              <input
-                type="email"
-                placeholder="admin@studio.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                disabled={isBlocked || enviando}
-              />
-            </div>
-
-            <div className="login-field">
-              <div className="field-top-label">
-                <label>SENHA DE ACESSO</label>
-                <a href="#esqueci" className="forgot-link">
-                  Esqueci minha senha
-                </a>
-              </div>
-              
-              {/* Wrapper do input com o botão do olhinho integrado */}
-              <div className="login-input-wrapper">
+          {!aguardandoCodigo ? (
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="login-field">
+                <label>E-MAIL INSTITUCIONAL</label>
                 <input
-                  type={mostrarSenha ? "text" : "password"}
-                  placeholder="Mínimo 8 caracteres"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type="email"
+                  placeholder="admin@studio.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                   disabled={isBlocked || enviando}
+                  autoComplete="username"
                 />
-                <button
-                  type="button"
-                  className="login-eye-btn"
-                  onClick={() => setMostrarSenha((v) => !v)}
-                  aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}
-                >
-                  <IconeOlho aberto={mostrarSenha} />
-                </button>
               </div>
-            </div>
-
-            <button type="submit" className="login-submit-btn" disabled={isBlocked || enviando}>
-              {isBlocked 
-                ? "ACESSO BLOQUEADO" 
-                : enviando 
-                  ? "ACESSANDO..." 
-                  : <>ACESSAR PAINEL <span>→</span></>}
-            </button>
-          </form>
+              <div className="login-field">
+                <div className="field-top-label"><label>SENHA DE ACESSO</label></div>
+                <div className="login-input-wrapper">
+                  <input
+                    type={mostrarSenha ? "text" : "password"}
+                    placeholder="Mínimo 8 caracteres"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    disabled={isBlocked || enviando}
+                    autoComplete="current-password"
+                  />
+                  <button type="button" className="login-eye-btn" onClick={() => setMostrarSenha((v) => !v)} aria-label={mostrarSenha ? "Esconder senha" : "Mostrar senha"}>
+                    <IconeOlho aberto={mostrarSenha} />
+                  </button>
+                </div>
+              </div>
+              <button type="submit" className="login-submit-btn" disabled={isBlocked || enviando}>
+                {isBlocked ? "ACESSO BLOQUEADO" : enviando ? "ENVIANDO CÓDIGO..." : <>CONTINUAR <span>→</span></>}
+              </button>
+            </form>
+          ) : (
+            <form className="login-form" onSubmit={handleValidarCodigo}>
+              <div className="login-field">
+                <label>CÓDIGO DE VERIFICAÇÃO</label>
+                <p>Enviamos um código para <strong>{email}</strong>. Ele expira em 10 minutos.</p>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="000000"
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  maxLength={6}
+                  required
+                />
+              </div>
+              <button type="submit" className="login-submit-btn" disabled={enviando}>
+                {enviando ? "VALIDANDO..." : <>VALIDAR E ACESSAR <span>→</span></>}
+              </button>
+              <button type="button" className="forgot-link" onClick={() => { setAguardandoCodigo(false); setCodigo(""); setError(""); }}>
+                ← Voltar ao login
+              </button>
+            </form>
+          )}
 
           <div className="login-footer-links">
             <p>

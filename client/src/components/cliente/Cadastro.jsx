@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Cadastro.css";
 import heroImg from "../../assets/Cilios1.jpeg";
-import { registrar, loginComGoogle } from "../../auth";
+import { registrar, validarCadastro, loginComGoogle } from "../../auth";
 import { GoogleLogin } from '@react-oauth/google';
 
 const requisitos = [
@@ -56,6 +56,8 @@ export default function Cadastro() {
   const [telefone, setTelefone] = useState("");
   const [erro, setErro] = useState(null);
   const [enviando, setEnviando] = useState(false);
+  const [codigoEnviado, setCodigoEnviado] = useState(false);
+  const [codigo, setCodigo] = useState("");
 
   const [senha, setSenha] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
@@ -89,7 +91,7 @@ export default function Cadastro() {
     setEnviando(true);
     try {
       await registrar({ nome, email, telefone, senha });
-      navigate("/minha-conta");
+      setCodigoEnviado(true);
     } catch (err) {
       const primeira = err.dados && Object.values(err.dados).flat()[0];
       setErro(
@@ -97,6 +99,38 @@ export default function Cadastro() {
           ? primeira
           : "Não foi possível criar a conta agora. Tente novamente em instantes."
       );
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const handleValidarCodigo = async (e) => {
+    e.preventDefault();
+    setErro(null);
+    if (!/^\d{6}$/.test(codigo.trim())) {
+      setErro("Digite o código de 6 números enviado para seu e-mail.");
+      return;
+    }
+    setEnviando(true);
+    try {
+      await validarCadastro(email, codigo);
+      navigate("/minha-conta");
+    } catch (err) {
+      setErro(err.dados?.detail || "Não foi possível validar o código. Confira e tente novamente.");
+    } finally {
+      setEnviando(false);
+    }
+  };
+
+  const reenviarCodigo = async () => {
+    setErro(null);
+    setEnviando(true);
+    try {
+      await registrar({ nome, email, telefone, senha });
+      setCodigo("");
+      setErro("Um novo código foi enviado para seu e-mail.");
+    } catch (err) {
+      setErro(err.dados?.detail || "Não foi possível reenviar o código.");
     } finally {
       setEnviando(false);
     }
@@ -152,6 +186,7 @@ export default function Cadastro() {
             <p>Cadastre-se para agendar e acompanhar seus pedidos.</p>
           </div>
 
+          {!codigoEnviado ? (
           <form className="cadastro-form" onSubmit={handleCadastro} noValidate>
             <div className="cadastro-field">
               <label>SEU NOME</label>
@@ -283,7 +318,33 @@ export default function Cadastro() {
               {enviando ? "CRIANDO CONTA..." : "CRIAR MINHA CONTA"} <span>→</span>
             </button>
           </form>
+          ) : (
+            <form className="cadastro-form" onSubmit={handleValidarCodigo}>
+              <div className="cadastro-field">
+                <label>CÓDIGO DE VERIFICAÇÃO</label>
+                <p>Enviamos um código de 6 dígitos para <strong>{email}</strong>. Ele é válido por 10 minutos.</p>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  placeholder="000000"
+                  value={codigo}
+                  onChange={(e) => setCodigo(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                  maxLength={6}
+                  required
+                />
+              </div>
+              {erro && <span className="cadastro-msg-erro" role="alert">{erro}</span>}
+              <button type="submit" className="cadastro-submit-btn" disabled={enviando}>
+                {enviando ? "VALIDANDO..." : "CONFIRMAR E-MAIL"} <span>→</span>
+              </button>
+              <button type="button" className="forgot-link" onClick={reenviarCodigo} disabled={enviando}>
+                Reenviar código
+              </button>
+            </form>
+          )}
 
+          {!codigoEnviado && <>
           <div className="cadastro-divider">
             <span>ou</span>
           </div>
@@ -300,6 +361,7 @@ export default function Cadastro() {
               width="100%"
             />
           </div>
+          </>}
 
           <div className="cadastro-footer-links">
             <p>

@@ -35,9 +35,9 @@ export async function login(email, senha) {
   return usuarioAtual();
 }
 
-// Cria a conta de cliente e já deixa a pessoa logada
+// Inicia o cadastro e solicita o código de confirmação por e-mail.
 export async function registrar({ nome, email, telefone, senha }) {
-  await api("/auth/registro/", {
+  return api("/auth/registro/", {
     method: "POST",
     body: JSON.stringify({
       nome: nome.trim(),
@@ -46,7 +46,18 @@ export async function registrar({ nome, email, telefone, senha }) {
       password: senha,
     }),
   });
-  return login(email, senha);
+}
+
+// Confirma o e-mail e só então cria a sessão da cliente.
+export async function validarCadastro(email, codigo) {
+  const tokens = await api("/auth/registro/validar/", {
+    method: "POST",
+    body: JSON.stringify({ email: email.trim().toLowerCase(), codigo: codigo.trim() }),
+  });
+  localStorage.setItem("access", tokens.access);
+  localStorage.setItem("refresh", tokens.refresh);
+  await cestinhaService.migrarItensLocaisParaAPI();
+  return usuarioAtual();
 }
 
 export async function loginComGoogle(credential) {

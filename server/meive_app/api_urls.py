@@ -5,7 +5,11 @@ from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenRefreshView
 
 from . import api_views as v
-from .auth_api import EuView, LoginView, RegistroView, RecuperarSenhaDiretaView, GoogleLoginView
+from .auth_api import (
+    EuView, LoginView, RegistroView, ValidarRegistroView,
+    SolicitarCodigoAdminView, ValidarCodigoAdminView,
+    RecuperarSenhaDiretaView, GoogleLoginView,
+)
 from .produto_imagem import ProdutoImagemUploadView, ProdutoImagemView
 from meive_app.views import ClienteViewSet
 
@@ -27,6 +31,9 @@ router.register("clientes", ClienteViewSet, basename="cliente")
 
 urlpatterns = [
     path("auth/login/", LoginView.as_view()),
+    path("auth/registro/validar/", ValidarRegistroView.as_view()),
+    path("auth/admin/solicitar-codigo/", SolicitarCodigoAdminView.as_view()),
+    path("auth/admin/validar-codigo/", ValidarCodigoAdminView.as_view()),
     path("auth/refresh/", TokenRefreshView.as_view()),
     path("auth/registro/", RegistroView.as_view()),
     path("auth/eu/", EuView.as_view()),
