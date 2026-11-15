@@ -14,6 +14,7 @@ class Agendamento(models.Model):
     # Linha do tempo: quando foi criado e cada mudança de status ({status, em, de?}).
     criado_em = models.DateTimeField(null=True, blank=True)
     historico = models.JSONField(default=list, blank=True)
+    lembrete_enviado_em = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'agendamento'
@@ -37,6 +38,9 @@ class Agendamento(models.Model):
             if antigo is not None:
                 if antigo['status'] != self.status:
                     historico.append({'status': self.status, 'em': agora.isoformat(), 'de': antigo['status']})
+                if antigo['data_agendamento'] != self.data_agendamento:
+                    # Um novo horário exige um novo lembrete para a data atualizada.
+                    self.lembrete_enviado_em = None
                 if antigo['data_agendamento'] != self.data_agendamento and hasattr(self.data_agendamento, 'isoformat'):
                     historico.append({
                         'status': 'rescheduled',
@@ -50,6 +54,8 @@ class Agendamento(models.Model):
         # Se quem chamou limitou as colunas salvas, garante que o histórico entre também.
         if kwargs.get('update_fields') is not None:
             kwargs['update_fields'] = set(kwargs['update_fields']) | {'historico', 'criado_em'}
+            if 'data_agendamento' in kwargs['update_fields']:
+                kwargs['update_fields'].add('lembrete_enviado_em')
 
         super().save(*args, **kwargs)
 

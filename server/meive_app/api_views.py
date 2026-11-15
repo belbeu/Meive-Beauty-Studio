@@ -16,6 +16,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import mixins, permissions, serializers, viewsets
 
+from .notificacoes_agendamento import enviar_email_agendamento
+
 from .models import (
     Agendamento,
     Avaliacao,
@@ -168,21 +170,70 @@ class AgendamentoViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_permissions(self):
-        # Editar, cancelar/reativar e excluir agendamentos: somente administrador.
-        if self.action in ("update", "partial_update", "destroy"):
+        # Operações administrativas que alteram a agenda são restritas ao ADMIN.
+        if self.action in ("create", "update", "partial_update", "destroy"):
             return [permissions.IsAdminUser()]
         return super().get_permissions()
 
     def get_queryset(self):
         usuario = self.request.user
-        queryset = Agendamento.objects.all().order_by("data_agendamento")
+        queryset = Agendamento.objects.select_related("id_usuario", "id_servico").order_by("data_agendamento")
 
-        # Administrador mantém acesso total à agenda.
-        if getattr(usuario, 'tipo', None) == 'ADMIN':
+        if getattr(usuario, "tipo", None) == "ADMIN":
             return queryset
 
-        # Cliente visualiza apenas os seus próprios agendamentos.
         return queryset.filter(id_usuario=usuario)
+
+    def perform_create(self, serializer):
+        agendamento = serializer.save()
+        enviar_email_agendamento(agendamento, "created")
+
+    def perform_update(self, serializer):
+        anterior = serializer.instance
+        data_anterior = anterior.data_agendamento
+        status_anterior = anterior.status
+        campos_anteriores = {
+            "id_usuario_id": anterior.id_usuario_id,
+            "id_servico_id": anterior.id_servico_id,
+            "valor": anterior.valor,
+            "sinal_pago": anterior.sinal_pago,
+        }
+
+        agendamento = serializer.save()
+
+        if agendamento.status != status_anterior and agendamento.status == "cancelled":
+            evento = "cancelled"
+        elif agendamento.status != status_anterior and status_anterior == "cancelled" and agendamento.status == "confirmed":
+            evento = "reactivated"
+        elif agendamento.status != status_anterior and agendamento.status == "ongoing":
+            evento = "ongoing"
+        elif agendamento.status != status_anterior and agendamento.status == "concluded":
+            evento = "concluded"
+        elif agendamento.data_agendamento != data_anterior:
+            evento = "rescheduled"
+        elif agendamento.status != status_anterior:
+            evento = "updated"
+        else:
+            campos_novos = {
+                "id_usuario_id": agendamento.id_usuario_id,
+                "id_servico_id": agendamento.id_servico_id,
+                "valor": agendamento.valor,
+                "sinal_pago": agendamento.sinal_pago,
+            }
+            if campos_novos == campos_anteriores:
+                return
+            evento = "updated"
+
+        enviar_email_agendamento(
+            agendamento,
+            evento,
+            dados_anteriores={"data_agendamento": data_anterior},
+        )
+
+    def perform_destroy(self, instance):
+        # A cliente é avisada antes de remover o registro definitivamente.
+        enviar_email_agendamento(instance, "deleted")
+        instance.delete()
 
 
 class MaterialCursoViewSet(viewsets.ModelViewSet):
