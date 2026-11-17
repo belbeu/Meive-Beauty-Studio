@@ -194,6 +194,10 @@ CREATE TABLE avaliacao (
     comentario TEXT,
     tipo_origem VARCHAR(50),
     referencia_id INT,
+    foto_url VARCHAR(255),
+    anonima BOOLEAN NOT NULL DEFAULT FALSE,
+    criado_em TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    atualizado_em TIMESTAMPTZ,
 
     CONSTRAINT fk_avaliacao_usuario
         FOREIGN KEY (id_usuario)

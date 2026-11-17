@@ -1,5 +1,5 @@
 ﻿from .turma import TurmaSerializer
-from .avaliacao import AvaliacaoSerializer
+from .avaliacao import AvaliacaoClienteSerializer, AvaliacaoSerializer
 from .material_curso import MaterialCursoSerializer
 from .produto import ProdutoSerializer, ProdutoPublicoSerializer
 from .agendamento import AgendamentoSerializer

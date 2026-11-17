@@ -121,7 +121,7 @@
 
 :root[data-theme="light"] .client-panel,
 :root[data-theme="light"] .client-menu,
-:root[data-theme="light"] .client-club,
+:root[data-theme="light"] .client-review,
 :root[data-theme="light"] .client-modal-card {
   background: var(--c-surface);
   border-color: var(--c-border);

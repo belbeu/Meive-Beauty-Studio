@@ -3,6 +3,8 @@
 # O arquivo é guardado no banco (tabela produto_imagem). O upload devolve o
 # endereço completo da imagem, que o formulário grava em produto.imagem_url.
 
+import re
+
 from django.http import Http404, HttpResponse
 from django.urls import reverse
 from rest_framework import permissions
@@ -10,9 +12,11 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ProdutoImagem
+from .models import Avaliacao, Produto, ProdutoImagem
 
 TAMANHO_MAXIMO = 2 * 1024 * 1024  # 2 MB
+
+_ID_NA_URL = re.compile(r"/produtos/imagem/(\d+)/?$")
 
 
 def detectar_tipo(dados):
@@ -26,6 +30,27 @@ def detectar_tipo(dados):
     if dados[:4] == b"RIFF" and dados[8:12] == b"WEBP":
         return "image/webp"
     return None
+
+
+def id_imagem_da_url(url):
+    """Extrai o id da imagem de um endereço /produtos/imagem/<id>/ (ou None)."""
+    if not url:
+        return None
+    achou = _ID_NA_URL.search(str(url).split("?", 1)[0])
+    return int(achou.group(1)) if achou else None
+
+
+def apagar_imagem_se_orfa(url):
+    """Apaga a imagem do banco quando nenhum produto nem avaliação usa mais esse endereço."""
+    pk = id_imagem_da_url(url)
+    if pk is None:
+        return
+    sufixo = f"/produtos/imagem/{pk}/"
+    if Produto.objects.filter(imagem_url__endswith=sufixo).exists():
+        return
+    if Avaliacao.objects.filter(foto_url__endswith=sufixo).exists():
+        return
+    ProdutoImagem.objects.filter(pk=pk).delete()
 
 
 class ProdutoImagemUploadView(APIView):

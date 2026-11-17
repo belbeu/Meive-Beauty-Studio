@@ -27,6 +27,7 @@ router.register("cestinha", v.CestinhaInteresseViewSet, basename="cestinha")
 router.register("turmas", v.TurmaViewSet, basename="turma")
 router.register("matriculas", v.MatriculaViewSet, basename="matricula")
 router.register("avaliacoes", v.AvaliacaoViewSet, basename="avaliacao")
+router.register("minhas-avaliacoes", v.AvaliacaoClienteViewSet, basename="minha-avaliacao")
 router.register("clientes", ClienteViewSet, basename="cliente")
 
 urlpatterns = [

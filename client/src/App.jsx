@@ -23,6 +23,8 @@ import PromocoesSection from "./components/Promocao";
 import Produtos from "./components/Produtos";
 import MinhaCestinha from "./components/cliente/MinhaCestinha";
 import ClientProdutos from "./components/cliente/ClientProdutos";
+import AvaliarSite from "./components/cliente/AvaliarSite";
+import MinhasAvaliacoes from "./components/cliente/MinhasAvaliacoes";
 
 import Login from "./components/cliente/Login";
 import Cadastro from "./components/cliente/Cadastro";
@@ -84,6 +86,9 @@ export default function App() {
           <Route path="/produtos" element={<Produtos />} />
           <Route path="/cestinha" element={<MinhaCestinha />} />
           <Route path="/minha-conta/produtos" element={<ClientProdutos />} />
+          <Route path="/minha-conta/avaliar" element={<AvaliarSite key="nova" />} />
+          <Route path="/minha-conta/avaliacoes" element={<MinhasAvaliacoes />} />
+          <Route path="/minha-conta/avaliacoes/:id/editar" element={<AvaliarSite key="editar" />} />
 
           {/* Rotas de Agendamento Booksy */}
           <Route

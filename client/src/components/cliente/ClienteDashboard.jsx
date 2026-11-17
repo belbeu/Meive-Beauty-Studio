@@ -109,9 +109,6 @@ export default function ClientDashboard() {
   const fullName = usuario?.nome || "Meive Girl";
   const name = fullName.split(/\s+/)[0];
   const initials = getInitials(fullName);
-  const POINTS = { current: 320, goal: 500, reward: "R$ 50 de desconto" };
-  const percent = Math.min(100, Math.round((POINTS.current / POINTS.goal) * 100));
-  const missing = Math.max(0, POINTS.goal - POINTS.current);
 
   const agora = new Date();
 
@@ -178,6 +175,9 @@ export default function ClientDashboard() {
               </button>
               {menuOpen && (
                 <div className="client-menu" role="menu">
+                  <Link to="/minha-conta/avaliacoes" role="menuitem" onClick={() => setMenuOpen(false)}>
+                    Minhas avaliações
+                  </Link>
                   <Link to="/" role="menuitem" onClick={() => setMenuOpen(false)}>
                     Voltar ao site
                   </Link>
@@ -332,36 +332,26 @@ export default function ClientDashboard() {
             </article>
           </section>
 
-          {/* Clube Meive */}
-          <section className="client-club" aria-label="Clube Meive">
-            <div className="client-club-info">
-              <span className="client-club-label">CLUBE MEIVE</span>
+          {/* Avaliar o site */}
+          <section className="client-review" aria-label="Avalie sua experiência">
+            <div className="client-review-info">
+              <span className="client-review-label">SUA OPINIÃO IMPORTA</span>
               <h2>
-                VOCÊ TEM <span>{POINTS.current} PONTOS</span>
+                COMO FOI SUA <span>EXPERIÊNCIA?</span>
               </h2>
               <p>
-                Faltam {missing} pontos para desbloquear {POINTS.reward}.
+                Avalie o site com estrelas, comentário e foto. Leva menos de um minuto.
               </p>
             </div>
 
-            <div className="client-progress">
-              <div
-                className="client-progress-track"
-                role="progressbar"
-                aria-valuemin={0}
-                aria-valuemax={POINTS.goal}
-                aria-valuenow={POINTS.current}
-              >
-                <div className="client-progress-fill" style={{ width: `${percent}%` }} />
-              </div>
-              <span>
-                {POINTS.current} / {POINTS.goal} PONTOS
-              </span>
+            <div className="client-review-actions">
+              <Link to="/minha-conta/avaliar" className="client-primary-btn">
+                AVALIAR AGORA
+              </Link>
+              <Link to="/minha-conta/avaliacoes" className="client-outline-btn">
+                MINHAS AVALIAÇÕES
+              </Link>
             </div>
-
-            <button type="button" className="client-outline-btn">
-              VER BENEFÍCIOS
-            </button>
           </section>
         </div>
       </main>

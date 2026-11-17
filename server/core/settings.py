@@ -193,6 +193,7 @@ REST_FRAMEWORK = {
         "login": "10/min",
         "registro": "10/hour",
         "agendar": "5/hour",
+        "avaliacao": "30/hour",
     },
 }
 

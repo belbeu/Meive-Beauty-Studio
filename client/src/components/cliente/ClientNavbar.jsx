@@ -84,6 +84,9 @@ export default function ClientNavbar() {
               <Link to="/minha-conta" role="menuitem" onClick={() => setMenuOpen(false)}>
                 Meu Painel
               </Link>
+              <Link to="/minha-conta/avaliacoes" role="menuitem" onClick={() => setMenuOpen(false)}>
+                Minhas avaliações
+              </Link>
               <button 
                 type="button" 
                 role="menuitem" 

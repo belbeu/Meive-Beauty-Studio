@@ -148,18 +148,32 @@
 }
 
 /* ============ BOTÕES / BADGES ============ */
+.client-primary-btn,
+.client-outline-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 48px !important;
+  min-height: 48px !important;
+  max-height: 48px !important;
+  box-sizing: border-box !important;
+  vertical-align: middle;
+  text-decoration: none;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  margin: 0;
+  cursor: pointer;
+}
+
 .client-primary-btn {
-  height: 48px;
-  padding: 0 34px;
+  padding: 0 34px !important;
   background: var(--red);
   border: none;
   color: #ffffff;
-  font-size: 0.6875rem;
-  font-weight: 600;
   letter-spacing: 2.4px;
-  cursor: pointer;
   transition: background 0.2s ease;
-  white-space: nowrap;
 }
 
 .client-primary-btn:hover {
@@ -167,17 +181,17 @@
 }
 
 .client-outline-btn {
-  height: 48px;
-  padding: 0 24px;
+  padding: 0 24px !important;
   background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.28);
   color: #ffffff;
-  font-size: 0.6875rem;
-  font-weight: 600;
   letter-spacing: 2px;
-  cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
-  white-space: nowrap;
+}
+
+.client-outline-btn:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .client-outline-btn:hover {
@@ -416,10 +430,10 @@
   color: var(--muted);
 }
 
-/* ============ CLUBE MEIVE ============ */
-.client-club {
+/* ============ AVALIE SUA EXPERIÊNCIA ============ */
+.client-review {
   display: grid;
-  grid-template-columns: 1fr minmax(240px, 400px) auto;
+  grid-template-columns: 1fr auto;
   align-items: center;
   gap: 40px;
   padding: 44px 34px;
@@ -427,7 +441,7 @@
   background: linear-gradient(90deg, #22132d 0%, #1b1022 60%, #150e1a 100%);
 }
 
-.client-club-label {
+.client-review-label {
   display: block;
   font-size: 0.5rem;
   letter-spacing: 2px;
@@ -435,7 +449,7 @@
   margin-bottom: 10px;
 }
 
-.client-club-info h2 {
+.client-review-info h2 {
   font-family: "Anton", "Bebas Neue", sans-serif;
   font-weight: 400;
   font-size: 1.75rem;
@@ -443,37 +457,52 @@
   margin: 0 0 12px;
 }
 
-.client-club-info h2 span {
+.client-review-info h2 span {
   color: var(--red);
 }
 
-.client-club-info p {
+.client-review-info p {
   margin: 0;
   font-size: 0.75rem;
   color: #8a8794;
 }
 
-.client-progress {
+.client-review-actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
-.client-progress-track {
-  height: 4px;
-  background: rgba(255, 255, 255, 0.14);
+.client-review-actions .client-primary-btn,
+.client-review-actions .client-outline-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
-.client-progress-fill {
-  height: 100%;
-  background: var(--red);
-  transition: width 0.4s ease;
+.client-review-actions,
+.aval-acoes {
+  display: flex;
+  align-items: center !important;
+  justify-content: flex-end;
+  gap: 12px;
 }
 
-.client-progress > span {
-  font-size: 0.5rem;
-  letter-spacing: 1.6px;
-  color: var(--faint);
+/* Força alinhamento idêntico em links e botões */
+.client-primary-btn,
+.client-outline-btn,
+.aval-btn-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 48px !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+  margin: 0 !important;
+  transform: none !important;
 }
 
 /* ============ MODAL DE CONFIRMAÇÃO DE SAÍDA ============ */
@@ -615,13 +644,9 @@
     grid-template-columns: 1fr;
   }
 
-  .client-club {
+  .client-review {
     grid-template-columns: 1fr;
     gap: 26px;
-  }
-
-  .client-club .client-outline-btn {
-    justify-self: start;
   }
 }
 
@@ -663,7 +688,7 @@
 :root[data-theme="light"] .client-page .client-panel-head h3,
 :root[data-theme="light"] .client-page .client-row-info strong,
 :root[data-theme="light"] .client-page .client-order-info strong,
-:root[data-theme="light"] .client-page .client-club-info h2,
+:root[data-theme="light"] .client-page .client-review-info h2,
 :root[data-theme="light"] .client-page .client-modal-card h3 {
   color: var(--c-text);
 }
@@ -674,7 +699,7 @@
 :root[data-theme="light"] .client-page .client-empty-text span,
 :root[data-theme="light"] .client-page .client-row-info span,
 :root[data-theme="light"] .client-page .client-order-date,
-:root[data-theme="light"] .client-page .client-club-info p,
+:root[data-theme="light"] .client-page .client-review-info p,
 :root[data-theme="light"] .client-page .client-modal-card p {
   color: var(--c-text-muted);
 }
@@ -716,17 +741,10 @@
   color: #420f1d;
 }
 
-:root[data-theme="light"] .client-page .client-club {
+:root[data-theme="light"] .client-page .client-review {
   background: linear-gradient(110deg, #f1eaf5 0%, #fbf8fc 100%);
   border-color: rgba(90, 45, 130, 0.22);
   color: var(--c-text);
-}
-:root[data-theme="light"] .client-page .client-club-info p,
-:root[data-theme="light"] .client-page .client-progress > span {
-  color: var(--c-text-muted);
-}
-:root[data-theme="light"] .client-page .client-progress-track {
-  background: rgba(74, 36, 48, 0.12);
 }
 :root[data-theme="light"] .client-page .client-modal-overlay {
   background: rgba(35, 20, 26, 0.48);

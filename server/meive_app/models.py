@@ -67,6 +67,12 @@ class Avaliacao(models.Model):
     comentario = models.TextField(blank=True, null=True)
     tipo_origem = models.CharField(max_length=50, blank=True, null=True)
     referencia_id = models.IntegerField(blank=True, null=True)
+    # Avaliação do site feita pela cliente: foto opcional (endereço em produto_imagem),
+    # opção de aparecer como anônima e datas de criação/edição.
+    foto_url = models.CharField(max_length=255, blank=True, null=True)
+    anonima = models.BooleanField(default=False)
+    criado_em = models.DateTimeField(default=timezone.now, blank=True, null=True)
+    atualizado_em = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         db_table = 'avaliacao'

@@ -11,12 +11,15 @@ from django.db import transaction
 from django.http import Http404
 from django.utils import timezone
 from rest_framework import mixins, permissions, viewsets
+from rest_framework.parsers import FormParser, JSONParser, MultiPartParser
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import mixins, permissions, serializers, viewsets
 
 from .notificacoes_agendamento import enviar_email_agendamento
+from .produto_imagem import apagar_imagem_se_orfa
 
 from .models import (
     Agendamento,
@@ -32,8 +35,10 @@ from .models import (
     Turma,
     Usuario,
 )
+from .serializers.avaliacao import TIPO_ORIGEM_SITE
 from .serializers import (
     AgendamentoSerializer,
+    AvaliacaoClienteSerializer,
     AvaliacaoSerializer,
     CestinhaInteresseSerializer,
     ConfiguracaoStudioSerializer,
@@ -312,3 +317,40 @@ class AvaliacaoViewSet(viewsets.ModelViewSet):
     queryset = Avaliacao.objects.all().order_by("id_avaliacao")
     serializer_class = AvaliacaoSerializer
     permission_classes = [permissions.IsAdminUser]
+
+
+class AvaliacaoClienteViewSet(viewsets.ModelViewSet):
+    """Avaliações do site feitas pela cliente logada: ela só enxerga e altera as próprias."""
+
+    serializer_class = AvaliacaoClienteSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
+    throttle_scope = "avaliacao"
+
+    def get_throttles(self):
+        # Limita só o que grava (e guarda fotos no banco); listar não conta.
+        if self.action in ("create", "update", "partial_update"):
+            return [ScopedRateThrottle()]
+        return []
+
+    def get_queryset(self):
+        return Avaliacao.objects.filter(
+            id_usuario=self.request.user, tipo_origem=TIPO_ORIGEM_SITE
+        ).order_by("-criado_em", "-id_avaliacao")
+
+    @transaction.atomic
+    def perform_create(self, serializer):
+        serializer.save(id_usuario=self.request.user, tipo_origem=TIPO_ORIGEM_SITE)
+
+    @transaction.atomic
+    def perform_update(self, serializer):
+        foto_antiga = serializer.instance.foto_url
+        avaliacao = serializer.save(atualizado_em=timezone.now())
+        if foto_antiga and foto_antiga != avaliacao.foto_url:
+            apagar_imagem_se_orfa(foto_antiga)
+
+    @transaction.atomic
+    def perform_destroy(self, instance):
+        foto_antiga = instance.foto_url
+        instance.delete()
+        apagar_imagem_se_orfa(foto_antiga)
