@@ -39,6 +39,7 @@ from .serializers.avaliacao import TIPO_ORIGEM_SITE
 from .serializers import (
     AgendamentoSerializer,
     AvaliacaoClienteSerializer,
+    AvaliacaoPublicaSerializer,
     AvaliacaoSerializer,
     CestinhaInteresseSerializer,
     ConfiguracaoStudioSerializer,
@@ -311,6 +312,21 @@ class MatriculaViewSet(viewsets.ModelViewSet):
     queryset = Matricula.objects.all().order_by("id_matricula")
     serializer_class = MatriculaSerializer
     permission_classes = [permissions.IsAdminUser]
+
+
+class AvaliacoesPublicasViewSet(viewsets.ReadOnlyModelViewSet):
+    """Lista pública e somente leitura das avaliações enviadas sobre o site."""
+
+    serializer_class = AvaliacaoPublicaSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return (
+            Avaliacao.objects
+            .filter(tipo_origem=TIPO_ORIGEM_SITE)
+            .select_related("id_usuario")
+            .order_by("-criado_em", "-id_avaliacao")
+        )
 
 
 class AvaliacaoViewSet(viewsets.ModelViewSet):

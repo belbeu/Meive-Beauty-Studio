@@ -12,6 +12,11 @@ export const avaliacaoService = {
     return Array.isArray(dados) ? dados : dados?.results || [];
   },
 
+  async listarPublicas() {
+  const dados = await api("/avaliacoes-publicas/");
+  return Array.isArray(dados) ? dados : dados?.results || [];
+  },
+
   obter(id) {
     return api(`/minhas-avaliacoes/${id}/`);
   },

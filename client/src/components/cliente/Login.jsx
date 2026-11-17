@@ -55,6 +55,8 @@ export default function Login() {
       const params = new URLSearchParams(location.search);
       if (params.get("redirect") === "cestinha") {
         navigate("/cestinha");
+      } else if (params.get("redirect") === "avaliacao") {
+        navigate("/minha-conta/avaliar");
       } else {
         navigate("/minha-conta");
       }
@@ -106,6 +108,8 @@ export default function Login() {
       const params = new URLSearchParams(location.search);
       if (params.get("redirect") === "cestinha") {
         navigate("/cestinha");
+      } else if (params.get("redirect") === "avaliacao") {
+        navigate("/minha-conta/avaliar");
       } else {
         navigate("/minha-conta");
       }

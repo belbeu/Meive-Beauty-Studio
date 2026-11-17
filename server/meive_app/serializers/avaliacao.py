@@ -103,3 +103,31 @@ class AvaliacaoClienteSerializer(serializers.ModelSerializer):
         elif remover:
             validated_data["foto_url"] = None
         return super().update(instance, validated_data)
+
+
+
+class AvaliacaoPublicaSerializer(serializers.ModelSerializer):
+    """Dados seguros das avaliações do site exibidos na página pública."""
+
+    nome_exibicao = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Avaliacao
+        fields = [
+            "id_avaliacao",
+            "nota",
+            "comentario",
+            "anonima",
+            "foto_url",
+            "criado_em",
+            "nome_exibicao",
+        ]
+
+    def get_nome_exibicao(self, obj):
+        if obj.anonima:
+            return "Cliente Meive"
+        nome = getattr(obj.id_usuario, "nome", "") or "Cliente Meive"
+        partes = nome.strip().split()
+        if len(partes) > 1:
+            return f"{partes[0]} {partes[-1][0].upper()}."
+        return nome

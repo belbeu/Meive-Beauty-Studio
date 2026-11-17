@@ -14,7 +14,7 @@ import BeautyMarquee from "./components/BeautyMarquee";
 import Services from "./components/Services";
 import AboutSection from "./components/Sobre";
 import ProdutosSection from "./components/ProdutosHome";
-// import Testimonials from "./components/Avaliacoes";
+import Testimonials from "./components/Avaliacoes";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import FloatingSocials from "./components/IconeFlutuante";
@@ -64,7 +64,7 @@ function HomePage() {
       <PromocoesSection />
       <AboutSection />
       <ProdutosSection />
-      {/* <Testimonials /> */}
+      <Testimonials />
       <Contact />
       <Footer />
       <FloatingSocials />
