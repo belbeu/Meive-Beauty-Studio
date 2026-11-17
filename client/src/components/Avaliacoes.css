@@ -113,12 +113,12 @@
 .testimonials-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--c-border); /* Linha superior unificada */
+  border-top: 1px solid var(--c-border);
 }
 
 .testimonial-row {
   padding: 28px 0;
-  border-bottom: 1px solid var(--c-border); /* Linha inferior alinhada ao tema */
+  border-bottom: 1px solid var(--c-border);
   text-align: left;
 }
 
@@ -241,6 +241,7 @@
 
 .pagination-btn {
   background: transparent;
+  border: 1px side var(--c-border);
   border: 1px solid var(--c-border);
   color: var(--c-text);
   padding: 8px 16px;
@@ -296,6 +297,7 @@
   max-height: 85vh;
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   border: 1px solid var(--c-border);
+  position: relative; /* Necessário para posicionar as setas na parte inferior */
 }
 
 .lightbox-image-container {
@@ -306,12 +308,16 @@
   justify-content: center;
   position: relative;
   min-height: 350px;
+  overflow: hidden; /* Garante que nada vaze para fora do box */
+  padding-bottom: 0; /* Remove a folga antiga */
 }
 
 .lightbox-main-img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
   max-height: 80vh;
-  object-fit: contain;
+  object-fit: cover; /* Faz a foto preencher o espaço proporcionalmente sem distorcer */
+  display: block;
 }
 
 .lightbox-counter {
@@ -334,17 +340,22 @@
   text-align: left;
 }
 
-/* Correção do espaçamento entre o autor e a data no cabeçalho do modal */
 .lightbox-sidebar .lightbox-author-header {
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Separa o bloco de avatar/nome da data */
-  gap: 12px;
+  justify-content: space-between;
+  gap: 16px;
   margin-bottom: 20px;
 }
 
+.lightbox-sidebar .lightbox-author-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .lightbox-sidebar .lightbox-author-header .testimonial-date {
-  margin-left: auto; /* Empurra a data para a direita, garantindo respiro */
+  margin-left: auto;
   white-space: nowrap;
 }
 
@@ -360,15 +371,17 @@
   z-index: 10000;
 }
 
+/* Mudança chave: Movendo as setas para a parte inferior da foto (longe do canto direito onde fica o VLibras) */
 .lightbox-prev, .lightbox-next {
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background: rgba(255,255,255,0.1);
+  bottom: 15px;
+  top: auto;
+  transform: none;
+  background: rgba(255, 255, 255, 0.15);
   border: none;
   color: #fff;
-  font-size: 36px;
-  padding: 10px 16px;
+  font-size: 20px;
+  padding: 6px 16px;
   cursor: pointer;
   border-radius: 4px;
   transition: background 0.2s;
@@ -376,11 +389,16 @@
 }
 
 .lightbox-prev:hover, .lightbox-next:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.35);
 }
 
-.lightbox-prev { left: 20px; }
-.lightbox-next { right: 20px; }
+.lightbox-prev { 
+  left: 30%; 
+}
+
+.lightbox-next { 
+  right: 55%; 
+}
 
 .lightbox-cta {
   margin-top: auto;
@@ -494,6 +512,8 @@
   .lightbox-overlay {
     padding: 15px;
   }
+  .lightbox-prev { left: 25%; }
+  .lightbox-next { right: 25%; }
 }
 
 /* --- Tema Claro --- */

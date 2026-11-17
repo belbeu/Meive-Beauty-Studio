@@ -106,7 +106,7 @@ export default function MinhasAvaliacoes() {
               <i className="client-tag-line" /> MINHAS AVALIAÇÕES
             </span>
             <h1 className="aval-title">
-              O QUE VOCÊ <span>DISSE.</span>
+              SUAS <span>EXPERIÊNCIAS.</span>
             </h1>
             <p className="aval-sub">Veja, edite ou apague as avaliações que você enviou.</p>
           </div>
