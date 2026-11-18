@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "./AdminDashboard.css";
@@ -45,6 +45,12 @@ const Icons = {
       <path d="M3 7l9 4.5L21 7M12 11.5v10" />
     </svg>
   ),
+  courses: (
+    <svg {...iconProps}>
+      <path d="m2 9 10-5 10 5-10 5L2 9Z" />
+      <path d="M6 11v5c3.5 2.5 8.5 2.5 12 0v-5M22 9v6" />
+    </svg>
+  ),
   tag: (
     <svg {...iconProps}>
       <path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8Z" />
@@ -64,6 +70,7 @@ const MENU = [
   { id: "agenda", label: "Agenda", icon: Icons.calendar, to: "/admin/agenda" },
   { id: "clients", label: "Clientes", icon: Icons.users, to: "/admin/clientes" },
   { id: "products", label: "Produtos", icon: Icons.box, to: "/admin/produtos" },
+  { id: "courses", label: "Cursos", icon: Icons.courses, to: "/admin/cursos" },
   { id: "promotions", label: "Promoções", icon: Icons.tag, to: "/admin/promocoes" },
   { id: "settings", label: "Configurações", icon: Icons.settings, to: "/admin/configuracoes" },
 ];

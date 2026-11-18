@@ -7,7 +7,8 @@
 
 import re
 
-from django.db import transaction
+from django.db import IntegrityError, transaction
+from django.db.models.deletion import ProtectedError
 from django.http import Http404
 from django.utils import timezone
 from rest_framework import mixins, permissions, viewsets
@@ -73,6 +74,37 @@ class CursoViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Curso.objects.filter(ativo=True).order_by("id_curso")
     serializer_class = CursoSerializer
     permission_classes = [permissions.AllowAny]
+
+class CursoAdminViewSet(viewsets.ModelViewSet):
+    """CRUD administrativo; cursos com histórico são inativados em vez de apagados."""
+    queryset = Curso.objects.all().order_by("id_curso")
+    serializer_class = CursoSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+    def destroy(self, request, *args, **kwargs):
+        curso = self.get_object()
+        possui_vinculos = (
+            Turma.objects.filter(id_curso=curso).exists()
+            or MaterialCurso.objects.filter(id_curso=curso).exists()
+            or CestinhaInteresse.objects.filter(id_curso=curso).exists()
+        )
+        if possui_vinculos:
+            curso.ativo = False
+            curso.save(update_fields=["ativo"])
+            return Response({
+                "detail": "O curso possui registros vinculados e foi inativado para preservar o histórico.",
+                "inativado": True,
+            }, status=200)
+        try:
+            curso.delete()
+        except (ProtectedError, IntegrityError):
+            curso.ativo = False
+            curso.save(update_fields=["ativo"])
+            return Response({
+                "detail": "O curso possui vínculos que impedem a remoção. Ele foi inativado e o histórico foi preservado.",
+                "inativado": True,
+            }, status=200)
+        return Response(status=204)
 
 
 # ---------- Somente administrador ----------
@@ -306,6 +338,12 @@ class TurmaViewSet(viewsets.ModelViewSet):
     queryset = Turma.objects.all().order_by("id_turma")
     serializer_class = TurmaSerializer
     permission_classes = [permissions.IsAdminUser]
+
+    def destroy(self, request, *args, **kwargs):
+        turma = self.get_object()
+        turma.ativo = False
+        turma.save(update_fields=["ativo"])
+        return Response({"detail": "Turma inativada com sucesso. O histórico foi preservado."}, status=200)
 
 
 class MatriculaViewSet(viewsets.ModelViewSet):

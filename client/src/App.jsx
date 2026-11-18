@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -38,6 +38,7 @@ import AdminAgenda from "./components/admin/AdminAgenda";
 import AdminLayout from "./components/admin/AdminLayout";
 import AdminClientes from "./components/admin/AdminClientes";
 import AdminProdutos from "./components/admin/AdminProdutos";
+import AdminCursos from "./components/admin/AdminCursos";
 import AdminPromocoes from "./components/admin/AdminPromocoes";
 import AdminConfiguracoes from "./components/admin/AdminConfiguracoes";
 
@@ -114,6 +115,7 @@ export default function App() {
             <Route path="/admin/agenda" element={<AdminAgenda />} />
             <Route path="/admin/clientes" element={<AdminClientes />} />
             <Route path="/admin/produtos" element={<AdminProdutos />} />
+            <Route path="/admin/cursos" element={<AdminCursos />} />
             <Route path="/admin/promocoes" element={<AdminPromocoes />} />
             <Route
               path="/admin/configuracoes"

@@ -217,6 +217,7 @@ class Turma(models.Model):
     data_inicio = models.DateTimeField()
     data_fim = models.DateTimeField()
     capacidade_maxima = models.IntegerField()
+    ativo = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'turma'

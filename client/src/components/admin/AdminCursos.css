@@ -1,0 +1,519 @@
+/* =====================================================
+   AdminCursos.css — Alinhado ao Design System do Painel
+   ===================================================== */
+
+.admin-courses { 
+  min-width: 0; 
+  background: transparent !important;
+}
+
+.courses-subtitle { 
+  margin: 8px 0 0; 
+  color: var(--c-text-muted, var(--muted, #777777)); 
+  font-size: .86rem; 
+}
+
+/* ---- Cards de Resumo ---- */
+.courses-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+  background: transparent !important;
+  border: none !important;
+}
+
+.courses-summary-card {
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 24px 24px 26px;
+  border: 1px solid var(--c-border, rgba(130,91,104,.18));
+  border-radius: 0;
+  background: var(--c-surface) !important;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.courses-summary-card span { 
+  color: var(--c-text-muted, #777777); 
+  font-size: .5rem; 
+  font-weight: 700; 
+  letter-spacing: 1.8px; 
+}
+
+.courses-summary-card strong { 
+  color: var(--c-text, #ffffff); 
+  font-family: "Anton", "Bebas Neue", inherit; 
+  font-size: 2.125rem; 
+  line-height: 1; 
+  font-weight: 400;
+}
+
+.courses-summary-card small { 
+  color: var(--c-text-muted, #555555); 
+  font-size: .5625rem; 
+}
+
+/* ---- Barra de Ferramentas / Busca ---- */
+.courses-toolbar { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 14px; 
+  margin: 24px 0 18px; 
+}
+
+.courses-search { 
+  display: flex; 
+  align-items: center; 
+  gap: 10px; 
+  width: min(420px, 100%); 
+  padding: 0 14px; 
+  min-height: 40px; 
+  border: 1px solid var(--c-border, #e8dfe2); 
+  border-radius: 0px; 
+  color: var(--c-text-muted, #777777); 
+  background: var(--c-surface, #fff) !important; 
+}
+
+.courses-search input { 
+  width: 100%; 
+  border: 0; 
+  outline: 0; 
+  color: var(--c-text, #ffffff); 
+  background: transparent; 
+  font: inherit; 
+  font-size: .82rem; 
+}
+
+.courses-filters { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 6px; 
+}
+
+.courses-filters button { 
+  border: 1px solid var(--c-border, #e8dfe2); 
+  border-radius: 0px; 
+  padding: 10px 16px; 
+  background: var(--c-surface, #fff) !important; 
+  color: var(--c-text-muted, #777777); 
+  font-size: .625rem; 
+  font-weight: 700; 
+  letter-spacing: 1px; 
+  cursor: pointer; 
+}
+
+.courses-filters button.is-selected { 
+  border-color: var(--c-primary, #825b68); 
+  background: var(--c-primary, #825b68) !important; 
+  color: #fff; 
+}
+
+/* ---- Grid de Cards de Cursos ---- */
+.courses-grid { 
+  display: grid; 
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  gap: 16px; 
+}
+
+.course-admin-card { 
+  min-width: 0; 
+  padding: 24px; 
+  border: 1px solid var(--c-border, rgba(130,91,104,.18)); 
+  border-radius: 0px; 
+  background: var(--c-surface, #fff) !important; 
+}
+
+.course-admin-card-top { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 10px; 
+}
+
+.course-status { 
+  display: inline-flex; 
+  align-items: center; 
+  border-radius: 0px; 
+  padding: 5px 10px; 
+  color: #397354; 
+  background: #e8f4ed; 
+  font-size: .56rem; 
+  font-weight: 800; 
+  letter-spacing: .06em; 
+}
+
+.course-status.is-inactive { 
+  color: #8b5961; 
+  background: #f5e9eb; 
+}
+
+.course-class-count { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 6px; 
+  color: var(--c-text-muted, #777777); 
+  font-size: .72rem; 
+}
+
+.course-admin-card h2 { 
+  margin: 17px 0 7px; 
+  color: var(--c-text, #ffffff); 
+  font-size: 1.05rem; 
+  font-weight: 700; 
+}
+
+.course-admin-description { 
+  min-height: 40px; 
+  margin: 0; 
+  color: var(--c-text-muted, #777777); 
+  font-size: .78rem; 
+  line-height: 1.55; 
+}
+
+.course-admin-details { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 12px; 
+  margin: 18px 0; 
+  padding-top: 14px; 
+  border-top: 1px solid var(--c-border, #eee5e8); 
+}
+
+.course-admin-details span { 
+  display: inline-flex; 
+  align-items: center; 
+  gap: 7px; 
+  color: var(--c-text-muted, #777777); 
+  font-size: .75rem; 
+}
+
+.course-admin-details strong { 
+  color: var(--c-text, #ffffff); 
+  font-size: .9rem; 
+}
+
+/* ---- Botões de Ação dos Cards ---- */
+.course-admin-actions { 
+  display: flex; 
+  align-items: center; 
+  gap: 8px; 
+}
+
+.course-action-secondary, .course-action-primary, .course-action-danger { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 7px; 
+  min-height: 38px; 
+  padding: 8px 14px; 
+  border-radius: 0px; 
+  font-size: .65rem; 
+  font-weight: 700; 
+  letter-spacing: 1px; 
+  cursor: pointer; 
+}
+
+.course-action-secondary { 
+  border: 1px solid var(--c-border, #e5dadd); 
+  color: var(--c-text, #ffffff); 
+  background: var(--c-surface, #fff); 
+}
+
+.course-action-primary { 
+  flex: 1; 
+  border: 1px solid var(--c-primary, #825b68); 
+  color: #fff; 
+  background: var(--c-primary, #825b68); 
+}
+
+.course-action-primary:disabled { 
+  opacity: .45; 
+  cursor: not-allowed; 
+}
+
+.course-action-icon { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  width: 38px; 
+  height: 38px; 
+  border: 1px solid var(--c-border, #e5dadd); 
+  border-radius: 0px; 
+  color: #a34f5b; 
+  background: var(--c-surface, #fff); 
+  cursor: pointer; 
+}
+
+.course-action-danger { 
+  border: 1px solid #a34f5b; 
+  color: #fff; 
+  background: #a34f5b; 
+}
+
+/* ---- Estados Vazios ---- */
+.courses-empty { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  gap: 8px; 
+  min-height: 150px; 
+  padding: 24px; 
+  border: 1px dashed var(--c-border, #e5dadd); 
+  border-radius: 0px; 
+  color: var(--c-text-muted, #777777); 
+  text-align: center; 
+  font-size: .82rem; 
+  background: var(--c-surface, #fff) !important; 
+}
+
+.courses-empty strong { 
+  color: var(--c-text, #ffffff); 
+  font-size: .78rem; 
+  letter-spacing: .06em; 
+}
+
+.courses-empty.compact { 
+  min-height: 90px; 
+}
+
+/* ---- Seção de Turmas e Tabela ---- */
+.courses-classes-section { 
+  margin-top: 34px; 
+}
+
+.courses-section-heading { 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  gap: 14px; 
+  margin-bottom: 15px; 
+}
+
+.courses-section-heading h2 { 
+  margin: 5px 0 0; 
+  color: var(--c-text, #ffffff); 
+  font-size: 1.15rem; 
+  letter-spacing: .035em; 
+}
+
+.courses-table-wrap { 
+  overflow-x: auto; 
+  border: 1px solid var(--c-border, #e8dfe2); 
+  border-radius: 0px; 
+  background: var(--c-surface, #fff) !important; 
+}
+
+.courses-table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  min-width: 680px; 
+}
+
+.courses-table th { 
+  padding: 13px 15px; 
+  color: var(--c-text-muted, #555555); 
+  background: var(--c-surface-2, #f8f4f5); 
+  font-size: .63rem; 
+  letter-spacing: 1.4px; 
+  text-align: left; 
+}
+
+.courses-table td { 
+  padding: 14px 15px; 
+  border-top: 1px solid var(--c-border, #eee5e8); 
+  color: var(--c-text-muted, #777777); 
+  font-size: .76rem; 
+  white-space: nowrap; 
+}
+
+.courses-table td strong { 
+  color: var(--c-text, #ffffff); 
+}
+
+/* ---- Modais e Toasts ---- */
+.courses-modal-overlay, .courses-toast-overlay { 
+  position: fixed; 
+  inset: 0; 
+  z-index: 1000; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 20px; 
+  background: rgba(20, 14, 17, .58); 
+  backdrop-filter: blur(4px);
+}
+
+.courses-modal, .courses-confirm-modal { 
+  width: min(560px, 100%); 
+  max-height: min(90vh, 850px); 
+  overflow-y: auto; 
+  padding: 24px; 
+  border: 1px solid var(--c-border, #e8dfe2); 
+  border-radius: 0px; 
+  background: var(--c-surface, #fff) !important; 
+  box-shadow: 0 20px 40px rgba(0,0,0,.25); 
+}
+
+.courses-modal-heading { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: flex-start; 
+  gap: 16px; 
+  margin-bottom: 22px; 
+}
+
+.courses-modal-heading span { 
+  color: var(--c-text-muted, #555555); 
+  font-size: .63rem; 
+  font-weight: 800; 
+  letter-spacing: 1.2px; 
+}
+
+.courses-modal-heading h2 { 
+  margin: 5px 0 0; 
+  color: var(--c-text, #ffffff); 
+  font-family: "Anton", "Bebas Neue", inherit;
+  font-size: 1.25rem; 
+  letter-spacing: 0.5px;
+}
+
+.courses-modal-heading > button { 
+  display: grid; 
+  place-items: center; 
+  width: 34px; 
+  height: 34px; 
+  border: 1px solid var(--c-border, #e5dadd); 
+  border-radius: 0px; 
+  color: var(--c-text-muted, #555555); 
+  background: transparent; 
+  cursor: pointer; 
+}
+
+.courses-modal > label, .courses-form-row label { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+  margin: 14px 0; 
+  color: var(--c-text, #ffffff); 
+  font-size: .75rem; 
+  font-weight: 700; 
+}
+
+.courses-modal input:not([type="checkbox"]), .courses-modal textarea, .courses-modal select { 
+  width: 100%; 
+  min-height: 40px; 
+  box-sizing: border-box; 
+  padding: 10px 12px; 
+  border: 1px solid var(--c-border, #e5dadd); 
+  border-radius: 0px; 
+  outline-color: var(--c-primary, #825b68); 
+  color: var(--c-text, #ffffff); 
+  background: var(--c-bg, #fff); 
+  font: inherit; 
+  font-size: .8rem; 
+}
+
+.courses-modal textarea { 
+  resize: vertical; 
+}
+
+.courses-form-row { 
+  display: grid; 
+  grid-template-columns: repeat(2, minmax(0, 1fr)); 
+  gap: 12px; 
+}
+
+.courses-modal .courses-check { 
+  flex-direction: row; 
+  align-items: center; 
+  gap: 9px; 
+  font-weight: 500; 
+  cursor: pointer;
+}
+
+.courses-modal .courses-check input { 
+  accent-color: var(--c-primary, #825b68); 
+  width: 16px;
+  height: 16px;
+}
+
+.courses-modal-actions { 
+  display: flex; 
+  justify-content: flex-end; 
+  gap: 10px; 
+  margin-top: 23px; 
+}
+
+.courses-confirm-modal { 
+  width: min(450px, 100%); 
+}
+
+.courses-confirm-modal p { 
+  color: var(--c-text-muted, #777777); 
+  font-size: .82rem; 
+  line-height: 1.6; 
+}
+
+.courses-toast { 
+  position: relative; 
+  width: min(410px, 100%); 
+  padding: 24px; 
+  border-radius: 0px; 
+  background: var(--c-surface, #fff) !important; 
+  border: 1px solid var(--c-border, #e8dfe2);
+  box-shadow: 0 20px 40px rgba(0,0,0,.25); 
+}
+
+.courses-toast > button:first-child { 
+  position: absolute; 
+  top: 14px; 
+  right: 14px; 
+  border: 0; 
+  color: var(--c-text-muted, #555555); 
+  background: transparent; 
+  cursor: pointer; 
+}
+
+.courses-toast > strong { 
+  display: block; 
+  padding-right: 25px; 
+  color: var(--c-text, #ffffff); 
+  font-size: .85rem; 
+  letter-spacing: 1px; 
+}
+
+.courses-toast p { 
+  margin: 12px 0 18px; 
+  color: var(--c-text-muted, #777777); 
+  font-size: .8rem; 
+  line-height: 1.55; 
+}
+
+/* ---- Correção Definitiva do Botão Principal (Novo Curso) ---- */
+.dash-primary-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  text-align: center !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+  line-height: 1 !important;
+  border-radius: 0px !important;
+}
+
+.dash-primary-btn svg {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  margin-top: -1px;
+}
+
+/* Responsivo */
+@media (max-width: 900px) { 
+  .courses-grid { grid-template-columns: 1fr; } 
+}
