@@ -1,7 +1,7 @@
 ﻿from django.urls import reverse
 from rest_framework import serializers
 
-from ..models import Avaliacao, ProdutoImagem
+from ..models import Avaliacao, ProdutoImagem, Servico
 from ..produto_imagem import TAMANHO_MAXIMO, detectar_tipo
 
 TIPO_ORIGEM_SITE = "site"
@@ -42,6 +42,10 @@ class AvaliacaoClienteSerializer(serializers.ModelSerializer):
         },
     )
     anonima = serializers.BooleanField(required=False)
+    servico_nome = serializers.SerializerMethodField()
+    id_servico = serializers.PrimaryKeyRelatedField(
+        queryset=Servico.objects.all(), required=False, allow_null=True
+    )
     foto = serializers.FileField(
         write_only=True,
         required=False,
@@ -57,6 +61,8 @@ class AvaliacaoClienteSerializer(serializers.ModelSerializer):
             "nota",
             "comentario",
             "anonima",
+            "id_servico",
+            "servico_nome",
             "foto",
             "remover_foto",
             "foto_url",
@@ -104,12 +110,15 @@ class AvaliacaoClienteSerializer(serializers.ModelSerializer):
             validated_data["foto_url"] = None
         return super().update(instance, validated_data)
 
+    def get_servico_nome(self, obj):
+        return obj.id_servico.nome if obj.id_servico_id else None
 
 
 class AvaliacaoPublicaSerializer(serializers.ModelSerializer):
     """Dados seguros das avaliações do site exibidos na página pública."""
 
     nome_exibicao = serializers.SerializerMethodField()
+    servico_nome = serializers.SerializerMethodField()
 
     class Meta:
         model = Avaliacao
@@ -121,6 +130,8 @@ class AvaliacaoPublicaSerializer(serializers.ModelSerializer):
             "foto_url",
             "criado_em",
             "nome_exibicao",
+            "id_servico",
+            "servico_nome",
         ]
 
     def get_nome_exibicao(self, obj):
@@ -131,3 +142,6 @@ class AvaliacaoPublicaSerializer(serializers.ModelSerializer):
         if len(partes) > 1:
             return f"{partes[0]} {partes[-1][0].upper()}."
         return nome
+
+    def get_servico_nome(self, obj):
+        return obj.id_servico.nome if obj.id_servico_id else None

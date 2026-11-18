@@ -6,6 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import ClientNavbar from "./ClientNavbar";
 import EstrelasNota from "./EstrelasNota";
 import { estaLogado } from "../../auth";
+import { api } from "../../api";
 import {
   COMENTARIO_MAX,
   FORMATOS_FOTO,
@@ -39,6 +40,10 @@ export default function AvaliarSite() {
   const [nota, setNota] = useState(0);
   const [comentario, setComentario] = useState("");
   const [anonima, setAnonima] = useState(false);
+  const [servicoId, setServicoId] = useState("");
+  const [servicos, setServicos] = useState([]);
+  const [carregandoServicos, setCarregandoServicos] = useState(true);
+  const [erroServicos, setErroServicos] = useState(null);
   const [foto, setFoto] = useState(null); // arquivo novo escolhido agora
   const [previa, setPrevia] = useState(null); // endereço temporário para mostrar o arquivo novo
   const [fotoAtual, setFotoAtual] = useState(null); // foto que já estava salva (edição)
@@ -62,6 +67,24 @@ export default function AvaliarSite() {
     };
   }, [previa]);
 
+  // Carrega as opções do catálogo público. O serviço é opcional, então uma falha
+  // nessa consulta não impede a cliente de enviar uma avaliação geral.
+  useEffect(() => {
+    let ativo = true;
+    api("/servicos/")
+      .then((lista) => {
+        if (ativo) setServicos(Array.isArray(lista) ? lista : lista?.results || []);
+      })
+      .catch((erro) => {
+        console.error("Não foi possível carregar os serviços para a avaliação:", erro);
+        if (ativo) setErroServicos("Não foi possível carregar os serviços. Você ainda pode avaliar sem selecionar um.");
+      })
+      .finally(() => {
+        if (ativo) setCarregandoServicos(false);
+      });
+    return () => { ativo = false; };
+  }, []);
+
   // Exige login e, na edição, carrega a avaliação.
   useEffect(() => {
     if (!estaLogado()) {
@@ -78,6 +101,7 @@ export default function AvaliarSite() {
         setNota(a.nota);
         setComentario(a.comentario || "");
         setAnonima(Boolean(a.anonima));
+        setServicoId(a.id_servico ? String(a.id_servico) : "");
         setFotoAtual(a.foto_url || null);
         setCarregando(false);
       })
@@ -146,7 +170,7 @@ export default function AvaliarSite() {
     setErros({});
     setEnviando(true);
     try {
-      const corpo = montarFormData({ nota, comentario, anonima, foto, removerFoto });
+      const corpo = montarFormData({ nota, comentario, anonima, servicoId, foto, removerFoto });
       if (editando) {
         await avaliacaoService.atualizar(id, corpo);
       } else {
@@ -193,7 +217,7 @@ export default function AvaliarSite() {
           </h1>
           <p className="aval-sub">
             {editando
-              ? "Ajuste a nota, o comentário ou a foto e salve."
+              ? "Ajuste o serviço, a nota, o comentário ou a foto e salve."
               : "Sua opinião ajuda o Meive Beauty Studio a melhorar. Leva menos de um minuto."}
           </p>
         </header>
@@ -258,6 +282,32 @@ export default function AvaliarSite() {
                   {erros.nota}
                 </p>
               )}
+            </div>
+
+            {/* Serviço relacionado (opcional) */}
+            <div className="aval-campo">
+              <label className="aval-label" htmlFor="aval-servico">
+                SERVIÇO REALIZADO (OPCIONAL)
+              </label>
+              <select
+                id="aval-servico"
+                className="aval-select"
+                value={servicoId}
+                disabled={enviando || carregandoServicos}
+                onChange={(e) => setServicoId(e.target.value)}
+              >
+                <option value="">Avaliar a experiência geral (sem serviço)</option>
+                {servicos.map((servico) => (
+                  <option key={servico.id_servico} value={servico.id_servico}>
+                    {servico.nome}{servico.categoria ? ` · ${servico.categoria}` : ""}
+                  </option>
+                ))}
+              </select>
+              <small className="aval-ajuda-servico">
+                {carregandoServicos
+                  ? "Carregando serviços disponíveis..."
+                  : erroServicos || "Se desejar, indique qual procedimento realizou para ajudar outras clientes."}
+              </small>
             </div>
 
             {/* Comentário */}

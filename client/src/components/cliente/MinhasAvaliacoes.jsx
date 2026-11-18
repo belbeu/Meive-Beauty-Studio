@@ -170,6 +170,10 @@ export default function MinhasAvaliacoes() {
                     {a.anonima && <span className="aval-selo">ANÔNIMA</span>}
                   </div>
 
+                  {a.servico_nome && (
+                    <p className="aval-item-servico"><strong>Serviço:</strong> {a.servico_nome}</p>
+                  )}
+
                   <p className={`aval-item-texto${a.comentario ? "" : " aval-item-texto--vazio"}`}>
                     {a.comentario || "Sem comentário."}
                   </p>

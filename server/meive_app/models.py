@@ -63,6 +63,11 @@ class Agendamento(models.Model):
 class Avaliacao(models.Model):
     id_avaliacao = models.AutoField(primary_key=True)
     id_usuario = models.ForeignKey('Usuario', models.DO_NOTHING, db_column='id_usuario')
+    # Serviço é opcional: avaliações antigas e avaliações gerais continuam válidas.
+    id_servico = models.ForeignKey(
+        'Servico', models.SET_NULL, db_column='id_servico',
+        blank=True, null=True, related_name='avaliacoes'
+    )
     nota = models.IntegerField()
     comentario = models.TextField(blank=True, null=True)
     tipo_origem = models.CharField(max_length=50, blank=True, null=True)

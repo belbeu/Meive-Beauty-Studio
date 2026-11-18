@@ -531,3 +531,23 @@ align-items: stretch;
 width: 100% !important;
 }
 }
+
+/* Serviço opcional vinculado à avaliação */
+.aval-select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.8rem 2.6rem 0.8rem 1rem;
+  border: 1px solid var(--c-border);
+  border-radius: 4px;
+  color: var(--c-text);
+  background: var(--w-003, var(--c-surface));
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+  transition: border-color .2s ease, background-color .2s ease;
+}
+.aval-select:focus { outline: none; border-color: var(--c-primary); }
+.aval-select:disabled { opacity: .65; cursor: wait; }
+.aval-ajuda-servico { color: var(--c-text-muted); font-size: .78rem; line-height: 1.5; }
+.aval-item-servico { margin: 0 0 .65rem; color: var(--c-text-muted); font-size: .875rem; }
+.aval-item-servico strong { color: var(--c-text); }

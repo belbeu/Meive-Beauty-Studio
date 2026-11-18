@@ -324,7 +324,7 @@ class AvaliacoesPublicasViewSet(viewsets.ReadOnlyModelViewSet):
         return (
             Avaliacao.objects
             .filter(tipo_origem=TIPO_ORIGEM_SITE)
-            .select_related("id_usuario")
+            .select_related("id_usuario", "id_servico")
             .order_by("-criado_em", "-id_avaliacao")
         )
 

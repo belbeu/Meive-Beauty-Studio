@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { avaliacaoService } from "../services/avaliacaoService";
 import { estaLogado } from "../auth";
+import { api } from "../api";
 import { EstrelasLeitura } from "./cliente/EstrelasNota";
 import "./Avaliacoes.css";
 
@@ -33,6 +34,8 @@ export default function Testimonials() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(false);
   const [tentativa, setTentativa] = useState(0);
+  const [servicos, setServicos] = useState([]);
+  const [servicoSelecionado, setServicoSelecionado] = useState("");
 
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [fotoAtivaIndex, setFotoAtivaIndex] = useState(null);
@@ -57,22 +60,45 @@ export default function Testimonials() {
     return () => { ativo = false; };
   }, [tentativa]);
 
+  useEffect(() => {
+    let ativo = true;
+    api("/servicos/")
+      .then((lista) => {
+        if (ativo) setServicos(Array.isArray(lista) ? lista : lista?.results || []);
+      })
+      .catch((error) => {
+        // A vitrine de avaliações continua funcionando mesmo se o catálogo falhar.
+        console.error("Não foi possível carregar os serviços para o filtro:", error);
+      });
+    return () => { ativo = false; };
+  }, []);
+
+  const avaliacoesFiltradas = useMemo(() => {
+    if (!servicoSelecionado) return avaliacoes;
+    return avaliacoes.filter((item) => String(item.id_servico || "") === String(servicoSelecionado));
+  }, [avaliacoes, servicoSelecionado]);
+
+  useEffect(() => {
+    setPaginaAtual(1);
+    setFotoAtivaIndex(null);
+  }, [servicoSelecionado]);
+
   const resumo = useMemo(() => {
-    if (!avaliacoes.length) return null;
-    const media = avaliacoes.reduce((total, item) => total + Number(item.nota || 0), 0) / avaliacoes.length;
-    return { media: media.toFixed(1).replace(".", ","), total: avaliacoes.length };
-  }, [avaliacoes]);
+    if (!avaliacoesFiltradas.length) return null;
+    const media = avaliacoesFiltradas.reduce((total, item) => total + Number(item.nota || 0), 0) / avaliacoesFiltradas.length;
+    return { media: media.toFixed(1).replace(".", ","), total: avaliacoesFiltradas.length };
+  }, [avaliacoesFiltradas]);
 
   const fotosClientes = useMemo(() => {
-    return avaliacoes.filter((item) => Boolean(item.foto_url));
-  }, [avaliacoes]);
+    return avaliacoesFiltradas.filter((item) => Boolean(item.foto_url));
+  }, [avaliacoesFiltradas]);
 
-  const totalPaginas = Math.ceil(avaliacoes.length / ITENS_POR_PAGINA);
+  const totalPaginas = Math.ceil(avaliacoesFiltradas.length / ITENS_POR_PAGINA);
   
   const avaliacoesPaginadas = useMemo(() => {
     const inicio = (paginaAtual - 1) * ITENS_POR_PAGINA;
-    return avaliacoes.slice(inicio, inicio + ITENS_POR_PAGINA);
-  }, [avaliacoes, paginaAtual]);
+    return avaliacoesFiltradas.slice(inicio, inicio + ITENS_POR_PAGINA);
+  }, [avaliacoesFiltradas, paginaAtual]);
 
   const irParaProximaPagina = () => {
     setPaginaAtual((prev) => Math.min(prev + 1, totalPaginas));
@@ -121,6 +147,24 @@ export default function Testimonials() {
         </div>
       )}
 
+      {servicos.length > 0 && (
+        <div className="testimonials-filter">
+          <label htmlFor="testimonials-service-filter">ENCONTRE AVALIAÇÕES POR SERVIÇO</label>
+          <select
+            id="testimonials-service-filter"
+            value={servicoSelecionado}
+            onChange={(e) => setServicoSelecionado(e.target.value)}
+          >
+            <option value="">Todos os serviços</option>
+            {servicos.map((servico) => (
+              <option key={servico.id_servico} value={servico.id_servico}>
+                {servico.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       {carregando ? (
         <div className="testimonials-state" role="status">Carregando avaliações...</div>
       ) : erro ? (
@@ -135,6 +179,13 @@ export default function Testimonials() {
           <span className="testimonials-empty-icon" aria-hidden="true">☆</span>
           <strong>Seja a primeira a avaliar!</strong>
           <p>Quando nossas clientes compartilharem suas experiências, elas aparecerão aqui.</p>
+        </div>
+      ) : avaliacoesFiltradas.length === 0 ? (
+        <div className="testimonials-state">
+          <span className="testimonials-empty-icon" aria-hidden="true">☆</span>
+          <strong>Ainda não há avaliações deste serviço.</strong>
+          <p>Escolha outro serviço ou volte para visualizar todas as experiências.</p>
+          <button type="button" onClick={() => setServicoSelecionado("")}>VER TODAS AS AVALIAÇÕES</button>
         </div>
       ) : (
         <>
@@ -178,9 +229,9 @@ export default function Testimonials() {
                 <div className="testimonial-row-body">
                   <EstrelasLeitura nota={avaliacao.nota} />
                   
-                  {(avaliacao.servico || avaliacao.funcionario) && (
+                  {(avaliacao.servico_nome || avaliacao.servico || avaliacao.funcionario) && (
                     <div className="testimonial-service-info">
-                      {avaliacao.servico && <span><strong>Serviço:</strong> {avaliacao.servico}</span>}
+                      {(avaliacao.servico_nome || avaliacao.servico) && <span><strong>Serviço:</strong> {avaliacao.servico_nome || avaliacao.servico}</span>}
                       {avaliacao.funcionario && <span><strong>Profissional:</strong> {avaliacao.funcionario}</span>}
                     </div>
                   )}
@@ -271,9 +322,9 @@ export default function Testimonials() {
               </div>
               <EstrelasLeitura nota={avaliacaoAtualLightbox.nota} />
               
-              {(avaliacaoAtualLightbox.servico || avaliacaoAtualLightbox.funcionario) && (
+              {(avaliacaoAtualLightbox.servico_nome || avaliacaoAtualLightbox.servico || avaliacaoAtualLightbox.funcionario) && (
                 <div className="testimonial-service-info">
-                  {avaliacaoAtualLightbox.servico && <span><strong>Serviço:</strong> {avaliacaoAtualLightbox.servico}</span>}
+                  {(avaliacaoAtualLightbox.servico_nome || avaliacaoAtualLightbox.servico) && <span><strong>Serviço:</strong> {avaliacaoAtualLightbox.servico_nome || avaliacaoAtualLightbox.servico}</span>}
                   {avaliacaoAtualLightbox.funcionario && <span><strong>Profissional:</strong> {avaliacaoAtualLightbox.funcionario}</span>}
                 </div>
               )}

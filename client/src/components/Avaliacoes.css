@@ -566,3 +566,53 @@
   color: #ffffff;
   border-color: #ad1838;
 }
+
+/* Filtro público por serviço */
+.testimonials-filter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  margin: 0 auto 30px;
+  padding: 16px 20px;
+  max-width: 720px;
+  border: 1px solid var(--c-border);
+  border-radius: 8px;
+  background: var(--c-surface);
+}
+.testimonials-filter label {
+  color: var(--c-text-muted);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.7px;
+}
+.testimonials-filter select {
+  min-width: min(260px, 100%);
+  max-width: 100%;
+  padding: 10px 36px 10px 12px;
+  border: 1px solid var(--c-border);
+  border-radius: 5px;
+  color: var(--c-text);
+  background: var(--c-bg);
+  font: inherit;
+  font-size: 13px;
+}
+.testimonials-filter select:focus { outline: 2px solid var(--c-primary); outline-offset: 2px; }
+.testimonials-state button {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: 1px solid var(--c-primary);
+  border-radius: 4px;
+  color: #fff;
+  background: var(--c-primary);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+@media (max-width: 560px) {
+  .testimonials-filter { align-items: stretch; flex-direction: column; }
+  .testimonials-filter select { width: 100%; min-width: 0; }
+}

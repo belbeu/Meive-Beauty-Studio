@@ -35,11 +35,14 @@ export const avaliacaoService = {
 };
 
 // Monta o corpo multipart (a foto vai junto com a avaliação, na mesma requisição).
-export function montarFormData({ nota, comentario, anonima, foto, removerFoto }) {
+export function montarFormData({ nota, comentario, anonima, servicoId = "", foto, removerFoto }) {
   const dados = new FormData();
   dados.append("nota", String(nota));
   dados.append("comentario", comentario.trim());
   dados.append("anonima", anonima ? "true" : "false");
+  // String vazia representa null no serializer DRF com allow_null=True,
+  // permitindo remover o serviço associado durante a edição.
+  dados.append("id_servico", servicoId || "");
   if (foto) {
     dados.append("foto", foto);
   } else if (removerFoto) {
