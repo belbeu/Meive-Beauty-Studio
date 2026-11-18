@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ThemeToggle from "./ThemeToggle"
+import ThemeToggle from "./ThemeToggle";
 import FontSizeControls from "../theme/FontSizeControls";
 import "./Navbar.css";
 
@@ -50,36 +50,16 @@ export default function Navbar() {
         <Link to="/#servicos" onClick={(e) => irPara(e, "servicos")}>SERVIÇOS</Link>
         <Link to="/#produtos" onClick={(e) => irPara(e, "produtos")}>PRODUTOS</Link>
         <Link to="/#sobre" onClick={(e) => irPara(e, "sobre")}>SOBRE</Link>
-        <Link to="/#promocoes" onClick={(size, e) => irPara(e, "promocoes")}>PROMOÇÕES</Link>
+        <Link to="/promocao">PROMOÇÕES</Link>
         <Link to="/#contato" onClick={(e) => irPara(e, "contato")}>CONTATO</Link>
       </nav>
 
-      {/* Ações da Navbar Desktop */}
-      <div className="nav-actions">
-        <ThemeToggle />
-        <FontSizeControls />
-        <button className="cart-box-button" aria-label="Carrinho">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
-        </button>
-
-        <Link to="/login" className="account-box-button">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
-          <span>MINHA CONTA</span>
-        </Link>
-      </div>
-
-      {/* Botão do Menu Hambúrguer (Mobile) */}
-      <button 
-        className="hamburger-toggle" 
+      {/* Botão do Menu Hambúrguer */}
+      <button
+        className="hamburger-toggle"
         onClick={toggleMenu}
         aria-label="Toggle Menu"
+        aria-expanded={menuOpen}
       >
         {menuOpen ? (
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -95,14 +75,14 @@ export default function Navbar() {
         )}
       </button>
 
-      {/* Menu Suspenso Mobile */}
+      {/* Menu Suspenso (Hambúrguer) */}
       <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
         <div className="mobile-nav-links">
           <Link to="/courses" onClick={() => setMenuOpen(false)}>CURSOS</Link>
           <Link to="/#servicos" onClick={(e) => irPara(e, "servicos")}>SERVIÇOS</Link>
           <Link to="/#produtos" onClick={(e) => irPara(e, "produtos")}>PRODUTOS</Link>
           <Link to="/#sobre" onClick={(e) => irPara(e, "sobre")}>SOBRE</Link>
-          <Link to="/#promocoes" onClick={(e) => irPara(e, "promocoes")}>PROMOÇÕES</Link>
+          <Link to="/promocao" onClick={() => setMenuOpen(false)}>PROMOÇÕES</Link>
           <Link to="/#contato" onClick={(e) => irPara(e, "contato")}>CONTATO</Link>
         </div>
 
@@ -110,23 +90,33 @@ export default function Navbar() {
 
         <div className="mobile-actions">
           <div className="mobile-accessibility">
-          <ThemeToggle />
-          <FontSizeControls />
-        </div>
-          <Link to="/login" className="account-box-button" onClick={() => setMenuOpen(false)}>
+            <ThemeToggle />
+            <FontSizeControls />
+          </div>
+
+          <Link
+            to="/cestinha"
+            className="cart-box-button"
+            aria-label="Cestinha"
+            onClick={() => setMenuOpen(false)}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <path d="M16 10a4 4 0 0 1-8 0"></path>
+            </svg>
+          </Link>
+
+          <Link
+            to="/login"
+            className="account-box-button"
+            onClick={() => setMenuOpen(false)}
+          >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
               <circle cx="12" cy="7" r="4"></circle>
             </svg>
             <span>MINHA CONTA</span>
-          </Link>
-
-          <Link to="/cestinha" className="cart-box-button" aria-label="Cestinha">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <path d="M16 10a4 4 0 0 1-8 0"></path>
-          </svg>
           </Link>
         </div>
       </div>

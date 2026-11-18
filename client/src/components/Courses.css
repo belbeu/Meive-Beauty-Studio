@@ -1,7 +1,8 @@
 .services-page-container {
-  background-color: #090909;
+  background-color: var(--c-bg, #090909);
   min-height: 100vh;
   padding-bottom: 60px;
+  transition: background-color 0.3s ease;
 }
 
 .services-page-nav-bar {
@@ -21,4 +22,34 @@
 
 .back-home-btn:hover {
   opacity: 0.8;
+}
+
+/* ==========================================
+   Modo Claro (:root[data-theme="light"])
+   ========================================== */
+:root[data-theme="light"] .services-page-container .course-category-title,
+:root[data-theme="light"] .services-page-container .courses-light-heading {
+  color: #111111 !important;
+}
+
+:root[data-theme="light"] .services-page-container .courses-light-desc {
+  color: #333333 !important;
+}
+
+:root[data-theme="light"] .services-page-container .courses-light-muted {
+  color: #555555 !important;
+}
+
+:root[data-theme="light"] .services-page-container .courses-light-panel {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(17, 17, 17, 0.12) !important;
+}
+
+:root[data-theme="light"] .services-page-container .courses-light-divider {
+  border-top-color: rgba(17, 17, 17, 0.1) !important;
+  border-bottom-color: rgba(17, 17, 17, 0.1) !important;
+}
+
+:root[data-theme="light"] .services-page-container hr {
+  background-color: rgba(17, 17, 17, 0.12) !important;
 }
