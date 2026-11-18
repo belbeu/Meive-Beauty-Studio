@@ -59,8 +59,11 @@ export default function Footer() {
           <ul className="explore-list">
             <li>
               <a href="#servicos" onClick={(e) => irPara(e, "servicos")}>
-                SERVIÇOS & CURSOS
+                SERVIÇOS
               </a>
+            </li>
+            <li>
+              <Link to="/courses">CURSOS</Link>
             </li>
             <li>
               <a href="#produtos" onClick={(e) => irPara(e, "produtos")}>
@@ -70,11 +73,8 @@ export default function Footer() {
             <li>
               <Link to="/login">MINHA CONTA</Link>
             </li>
-          
             <li>
-                <Link to="/agendar">
-                AGENDAR
-                </Link>
+              <Link to="/agendar">AGENDAR</Link>
             </li>
           </ul>
         </div>
@@ -86,7 +86,9 @@ export default function Footer() {
             {horarios.map((h) => (
               <li key={h.rotulo}>
                 <span>{h.rotulo}</span>
-                <span className={h.aberto ? "highlight-time" : "closed-time"}>{h.texto}</span>
+                <span className={h.aberto ? "highlight-time" : "closed-time"}>
+                  {h.texto}
+                </span>
               </li>
             ))}
           </ul>

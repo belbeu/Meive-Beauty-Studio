@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import imagem from "../assets/icone-test.jpg";
+import iconeBooksy from "../assets/booksy-icon.png";
 import { useStudio, whatsappDoStudio } from "../studio";
 import "./IconeFlutuante.css";
 
@@ -29,6 +30,8 @@ export default function FloatingSocials() {
     mensagemWhatsApp
   )}`;
 
+  const linkBooksy = studio.booksy || "https://booksy.com/pt-br/390978_nicolle-neris-studio-cilios-sobrancelhas-e-unhas-zona-leste-vila-re_sobrancelhas-cilios_1047773_sao-paulo/staffer/481315#ba_s=seo";
+
   return (
     <div className="floating-socials-container">
 
@@ -47,17 +50,20 @@ export default function FloatingSocials() {
           </svg>
         </a>
 
-        {/* TikTok */}
+        {/* Booksy */}
         <a
-          href="https://tiktok.com"
+          href={linkBooksy}
           target="_blank"
           rel="noreferrer"
-          className="floating-btn tiktok"
-          aria-label="TikTok"
+          className="floating-btn booksy"
+          aria-label="Booksy"
+          title="Agendar no Booksy"
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 1 1-2.09-2.78V9.39a6.34 6.34 0 0 0-1.36.15 6.37 6.37 0 1 0 6.9 6.33V8.83a8.3 8.3 0 0 0 4.17 1.25V6.69z" />
-          </svg>
+          <img
+            src={iconeBooksy}
+            alt="Booksy"
+            className="floating-btn-img"
+          />
         </a>
 
         {/* Instagram */}

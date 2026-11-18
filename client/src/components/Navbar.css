@@ -22,6 +22,7 @@ html {
   height: 49px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 0 19px 0 20px;
   background-color: var(--c-surface, #0f0f0f);
   border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
@@ -73,13 +74,6 @@ html {
   color: var(--c-text, #ffffff);
 }
 
-/* Ações Desktop */
-.nav-actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 /* Botão do Carrinho */
 .cart-box-button {
   display: flex;
@@ -127,24 +121,76 @@ html {
   background: var(--w-003, rgba(255, 255, 255, 0.02));
 }
 
-/* Botão Hambúrguer e Menu Mobile - OCULTOS POR PADRÃO NO DESKTOP */
+/* Botão Hambúrguer - VISÍVEL EM TODOS OS TAMANHOS DE TELA */
 .hamburger-toggle {
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--c-text, #ffffff);
+  cursor: pointer;
+  padding: 5px;
+  margin-left: auto;
 }
 
+/* Menu Dropdown (Desktop e Mobile) */
 .mobile-menu {
+  position: absolute;
+  top: 49px;
+  right: 19px;
+  width: 260px;
+  background-color: var(--c-surface, #0f0f0f);
+  border: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
+  border-top: none;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+  gap: 15px;
+  box-sizing: border-box;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, background-color 0.3s ease;
+}
+
+.mobile-menu.open {
+  max-height: 500px;
+  opacity: 1;
+  padding: 20px;
+  pointer-events: auto;
+}
+
+/* Links dentro do menu hambúrguer ficam ocultos no desktop (já estão na barra) */
+.mobile-menu .mobile-nav-links,
+.mobile-menu .mobile-divider {
   display: none;
 }
 
+.mobile-menu .mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-/* Controles de acessibilidade no menu mobile */
+.mobile-menu .mobile-actions .account-box-button,
+.mobile-menu .mobile-actions .cart-box-button {
+  width: 100%;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* Controles de acessibilidade no menu */
 .mobile-accessibility {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 5px 0;
-  border-bottom: 1px solid var(--c-border);
+  padding: 5px 0 10px;
+  border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
 }
 
 .mobile-accessibility .font-size-controls {
@@ -155,59 +201,25 @@ html {
    Responsividade: Telas <= 950px
    =================================== */
 @media (max-width: 950px) {
-  .navbar {
-    justify-content: space-between;
-  }
-
   .logo {
     min-width: auto;
   }
 
-  /* Esconde os elementos desktop */
-  .nav-links,
-  .nav-actions {
+  /* Esconde os links da barra superior */
+  .nav-links {
     display: none;
   }
 
-  /* Exibe o botão do hambúrguer */
-  .hamburger-toggle {
-    display: flex;
-    background: transparent;
-    border: none;
-    color: var(--c-text, #ffffff);
-    cursor: pointer;
-    padding: 5px;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Menu Dropdown Mobile */
+  /* No mobile, o menu ocupa a largura total da tela */
   .mobile-menu {
-    position: absolute;
-    top: 49px;
+    right: 0;
     left: 0;
     width: 100%;
-    background-color: var(--c-surface, #0f0f0f);
-    border-bottom: 1px solid var(--c-border, rgba(255, 255, 255, 0.08));
-    display: flex;
-    flex-direction: column;
-    padding: 0;
-    gap: 15px;
-    box-sizing: border-box;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-    
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease, background-color 0.3s ease;
+    border-left: none;
+    border-right: none;
   }
 
-  .mobile-menu.open {
-    max-height: 500px;
-    opacity: 1;
-    padding: 20px;
-  }
-
+  /* Exibe os links e o divisor dentro do menu hambúrguer */
   .mobile-menu .mobile-nav-links {
     display: flex;
     flex-direction: column;
@@ -228,22 +240,10 @@ html {
   }
 
   .mobile-menu .mobile-divider {
+    display: block;
     height: 1px;
     background-color: var(--c-border, rgba(255, 255, 255, 0.08));
     margin: 5px 0;
-  }
-
-  .mobile-menu .mobile-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .mobile-menu .mobile-actions .account-box-button,
-  .mobile-menu .mobile-actions .cart-box-button {
-    width: 100%;
-    justify-content: center;
-    box-sizing: border-box;
   }
 }
 
