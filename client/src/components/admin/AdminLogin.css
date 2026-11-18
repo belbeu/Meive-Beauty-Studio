@@ -165,6 +165,8 @@
   font-size: 11px;
   color: #ad1838;
   text-decoration: none;
+  background: transparent !important;
+  border: none !important;
 }
 
 .forgot-link:hover {
