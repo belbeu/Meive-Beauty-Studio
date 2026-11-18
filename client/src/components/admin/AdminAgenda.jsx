@@ -47,7 +47,16 @@ const STATUS_LABEL = {
   cancelled: "CANCELADO",
 };
 
-const NEXT_FREE_SLOT = "18:30";
+// Próximo horário livre do dia: 2h depois do último atendimento (mesma duração exibida na lista)
+const DURACAO_PADRAO_H = 2;
+function proximoHorarioLivre(appointments) {
+  const ativos = appointments.filter((a) => a.status !== "cancelled");
+  if (ativos.length === 0) return "09:00";
+  const ultimo = ativos.reduce((max, a) => (a.time > max ? a.time : max), "00:00");
+  const [h, m] = ultimo.split(":").map(Number);
+  const total = h * 60 + m + DURACAO_PADRAO_H * 60;
+  return `${pad(Math.floor(total / 60) % 24)}:${pad(total % 60)}`;
+}
 
 /* ---------- Helpers ---------- */
 const WEEK_LABELS = ["SEG", "TER", "QUA", "QUI", "SEX", "SÁB"];
@@ -253,6 +262,16 @@ function RowMenu({ appt, aberto, onToggle, onAction }) {
           >
             Editar
           </button>
+          {appt.status === "confirmed" && (
+            <button type="button" role="menuitem" onClick={() => onAction("start", appt)}>
+              Iniciar atendimento
+            </button>
+          )}
+          {(appt.status === "confirmed" || appt.status === "ongoing") && (
+            <button type="button" role="menuitem" onClick={() => onAction("conclude", appt)}>
+              Concluir atendimento
+            </button>
+          )}
           {podeReagendar(appt) && (
             <button type="button" role="menuitem" onClick={() => onAction("reschedule", appt)}>
               Reagendar
@@ -351,7 +370,7 @@ function DayPanel({ date, appointments, onOpenNew, isDataPassada, menuId, onTogg
         {/* Só exibe o horário disponível/botão de novo agendamento se NÃO for data passada */}
         {!isDataPassada && (
           <li className="agenda-free">
-            <span className="agenda-free-time">{NEXT_FREE_SLOT}</span>
+            <span className="agenda-free-time">{proximoHorarioLivre(appointments)}</span>
             <button type="button" className="agenda-free-btn" aria-label="Adicionar agendamento" onClick={onOpenNew}>
               {Icons.plus}
             </button>
@@ -659,6 +678,15 @@ export default function AdminAgenda() {
       });
     } else if (acao === "reactivate") {
       mudarStatus(appt, "confirmed");
+    } else if (acao === "start") {
+      mudarStatus(appt, "ongoing");
+    } else if (acao === "conclude") {
+      setConfirmInfo({
+        title: "CONCLUIR ATENDIMENTO",
+        message: `Marcar este atendimento como concluído?\n\n${resumo}`,
+        confirmLabel: "CONFIRMAR CONCLUSÃO",
+        onConfirm: () => mudarStatus(appt, "concluded"),
+      });
     } else if (acao === "delete") {
       setConfirmInfo({
         title: "EXCLUIR AGENDAMENTO",

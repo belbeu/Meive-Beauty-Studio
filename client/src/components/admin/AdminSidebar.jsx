@@ -4,6 +4,7 @@ import { useAuth } from "./AuthContext";
 import "./AdminDashboard.css";
 import ThemeToggle from "../ThemeToggle";
 import FontSizeControls from "../../theme/FontSizeControls";
+import AdminNotificacoes from "./AdminNotificacoes";
 
 const iconProps = {
   width: 18,
@@ -94,6 +95,7 @@ export default function AdminSidebar() {
             <ThemeToggle />
             <FontSizeControls />
           </div>
+          <AdminNotificacoes />
         </div>
 
         <nav className="dash-nav" aria-label="Navegação do painel">

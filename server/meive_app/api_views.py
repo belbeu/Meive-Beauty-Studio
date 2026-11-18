@@ -19,6 +19,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import mixins, permissions, serializers, viewsets
 
+from datetime import timedelta
+
+from .agenda_tempo import HORAS_AVISO_ADMIN, agora_digitado, minutos_ate
 from .notificacoes_agendamento import enviar_email_agendamento
 from .produto_imagem import apagar_imagem_se_orfa
 
@@ -408,3 +411,41 @@ class AvaliacaoClienteViewSet(viewsets.ModelViewSet):
         foto_antiga = instance.foto_url
         instance.delete()
         apagar_imagem_se_orfa(foto_antiga)
+
+class NotificacoesAdminView(APIView):
+    """
+    Avisos do painel admin (o "sino"):
+      - proximo: atendimento confirmado que começa nas próximas HORAS_AVISO_ADMIN horas;
+      - pendente: atendimento ainda "confirmado" cuja hora já passou (falta marcar como
+        realizado/concluído ou cancelar), considerando os últimos 7 dias.
+    """
+
+    permission_classes = [permissions.IsAdminUser]
+
+    def get(self, request):
+        agora = agora_digitado()
+        limite = agora + timedelta(hours=HORAS_AVISO_ADMIN)
+        base = Agendamento.objects.select_related("id_usuario", "id_servico")
+
+        proximos = base.filter(
+            status="confirmed", data_agendamento__gte=agora, data_agendamento__lte=limite
+        ).order_by("data_agendamento")
+        pendentes = base.filter(
+            status="confirmed",
+            data_agendamento__lt=agora,
+            data_agendamento__gte=agora - timedelta(days=7),
+        ).order_by("-data_agendamento")[:20]
+
+        def item(ag, tipo):
+            return {
+                "id_agendamento": ag.id_agendamento,
+                "tipo": tipo,
+                "cliente_nome": ag.id_usuario.nome,
+                "servico_nome": ag.id_servico.nome,
+                "data_agendamento": ag.data_agendamento.isoformat(),
+                "minutos": minutos_ate(ag.data_agendamento, agora),
+            }
+
+        itens = [item(a, "proximo") for a in proximos] + [item(a, "pendente") for a in pendentes]
+        return Response({"janela_horas": HORAS_AVISO_ADMIN, "total": len(itens), "itens": itens})
+

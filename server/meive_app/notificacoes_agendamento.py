@@ -50,17 +50,17 @@ def enviar_email_agendamento(agendamento, evento, dados_anteriores=None):
     valor = _valor(agendamento.valor)
 
     assuntos = {
-        "created": "Agendamento confirmado - Mevie Studio",
-        "rescheduled": "Seu agendamento foi reagendado - Mevie Studio",
-        "cancelled": "Agendamento cancelado - Mevie Studio",
-        "reactivated": "Agendamento reativado - Mevie Studio",
-        "ongoing": "Seu atendimento foi iniciado - Mevie Studio",
-        "concluded": "Atendimento concluído - Mevie Studio",
-        "updated": "Atualização no seu agendamento - Mevie Studio",
-        "deleted": "Agendamento removido - Mevie Studio",
-        "reminder": "Lembrete: seu atendimento é amanhã - Mevie Studio",
+        "created": "Agendamento confirmado - Meive Studio",
+        "rescheduled": "Seu agendamento foi reagendado - Meive Studio",
+        "cancelled": "Agendamento cancelado - Meive Studio",
+        "reactivated": "Agendamento reativado - Meive Studio",
+        "ongoing": "Seu atendimento foi iniciado - Meive Studio",
+        "concluded": "Atendimento concluído - Meive Studio",
+        "updated": "Atualização no seu agendamento - Meive Studio",
+        "deleted": "Agendamento removido - Meive Studio",
+        "reminder": "Lembrete: seu atendimento é amanhã - Meive Studio",
     }
-    assunto = assuntos.get(evento, "Atualização do agendamento - Mevie Studio")
+    assunto = assuntos.get(evento, "Atualização do agendamento - Meive Studio")
 
     linhas = [
         f"Olá, {nome}!",
@@ -80,7 +80,7 @@ def enviar_email_agendamento(agendamento, evento, dados_anteriores=None):
     elif evento == "ongoing":
         linhas += ["Seu atendimento foi marcado como iniciado.", ""]
     elif evento == "concluded":
-        linhas += ["Seu atendimento foi concluído. Obrigada por escolher a Mevie!", ""]
+        linhas += ["Seu atendimento foi concluído. Obrigada por escolher o Studio Meive!", ""]
     elif evento == "updated":
         linhas += ["As informações do seu agendamento foram atualizadas.", ""]
     elif evento == "deleted":
@@ -99,8 +99,8 @@ def enviar_email_agendamento(agendamento, evento, dados_anteriores=None):
     else:
         linhas += [f"Serviço: {servico}", f"Data anteriormente agendada: {data_hora}"]
 
-    linhas += ["", "Se precisar de ajuda, entre em contato com a equipe Mevie Studio.", "Email: meivebeautystudio@gmail.com", "WhatsApp: (11) 94487-4969", "", "Com carinho,",
-               "Equipe Mevie Studio"]
+    linhas += ["", "Se precisar de ajuda, entre em contato com a equipe Meive Studio.", "Email: meivebeautystudio@gmail.com", "WhatsApp: (11) 94487-4969", "", "Com carinho,",
+               "Equipe Meive Studio"]
     mensagem = "\n".join(linhas)
 
     # Corpo HTML simples e responsivo; os dados variáveis são escapados.
@@ -120,12 +120,12 @@ def enviar_email_agendamento(agendamento, evento, dados_anteriores=None):
     html = (
         '<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;'
         'padding:24px;color:#30252a;line-height:1.6">'
-        '<h2 style="color:#762b43">Mevie Studio</h2>'
+        '<h2 style="color:#762b43">Meive Studio</h2>'
         f"<p>Olá, {escape(nome)}!</p>"
         f"<p>{escape(linhas[2] if len(linhas) > 2 else '')}</p>"
         f"{detalhes}"
-        '<p>Se precisar de ajuda, entre em contato com a equipe da Mevie Studio.</p>'
-        '<p>Com carinho,<br><b>Equipe Mevie Studio</b></p></div>'
+        '<p>Se precisar de ajuda, entre em contato com a equipe da Meive Studio.</p>'
+        '<p>Com carinho,<br><b>Equipe Meive Studio</b></p></div>'
     )
 
     try:
@@ -143,4 +143,47 @@ def enviar_email_agendamento(agendamento, evento, dados_anteriores=None):
             "Falha ao enviar e-mail do agendamento %s para %s (evento %s).",
             agendamento.pk, destinatario, evento,
         )
+        return False
+
+def enviar_email_admin_proximos(agendamentos, horas):
+    """
+    Avisa o admin (um único e-mail) sobre atendimentos que começam em breve.
+    Devolve True só se o e-mail foi aceito pelo servidor de envio.
+    """
+    destinatario = (getattr(settings, "ADMIN_NOTIFICATION_EMAIL", "") or "").strip()
+    if not destinatario or not agendamentos:
+        return False
+
+    linhas = [f"Atendimentos nas próximas {horas} horas:", ""]
+    itens_html = []
+    for ag in agendamentos:
+        hora = timezone.localtime(ag.data_agendamento).strftime("%H:%M")
+        cliente = ag.id_usuario.nome or "Cliente"
+        servico = ag.id_servico.nome
+        linhas.append(f"{hora} - {cliente} - {servico}")
+        itens_html.append(
+            f"<li><b>{escape(hora)}</b> - {escape(cliente)} - {escape(servico)}</li>"
+        )
+    linhas += ["", "Veja a agenda completa no painel administrativo."]
+
+    html = (
+        '<div style="font-family:Arial,sans-serif;max-width:560px;margin:auto;'
+        'padding:24px;color:#30252a;line-height:1.6">'
+        '<h2 style="color:#762b43">Atendimento próximo</h2>'
+        f"<p>Atendimentos nas próximas {horas} horas:</p>"
+        f"<ul>{''.join(itens_html)}</ul>"
+        "<p>Veja a agenda completa no painel administrativo.</p></div>"
+    )
+    try:
+        enviados = send_mail(
+            subject=f"Atendimento próximo ({len(agendamentos)}) - Meive Studio",
+            message="\n".join(linhas),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[destinatario],
+            html_message=html,
+            fail_silently=False,
+        )
+        return enviados == 1
+    except Exception:
+        logger.exception("Falha ao enviar o aviso de atendimento próximo ao admin.")
         return False

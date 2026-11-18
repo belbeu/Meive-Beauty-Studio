@@ -129,3 +129,21 @@ Depois atualize `CORS_ALLOWED_ORIGINS` (e `ALLOWED_HOSTS`, se mudar o endereço 
   junto com a tela de agendamento.
 - Backup do banco: confirme que o plano escolhido faz backup e teste restaurar.
 - O site coleta nome, e-mail e telefone: vale publicar uma política de privacidade (LGPD).
+
+## 5. Lembretes e avisos de atendimento (precisa de agendador)
+
+O comando `python manage.py enviar_lembretes_agendamentos` faz duas coisas:
+
+1. envia às clientes o lembrete de quem tem atendimento **amanhã**;
+2. envia **a você** (e-mail em `ADMIN_NOTIFICATION_EMAIL`; se vazio, usa o e-mail do studio) um aviso dos atendimentos que começam nas **próximas 2 horas**.
+
+Ele **não roda sozinho**: é preciso agendá-lo a cada 15 minutos. No Render: **New > Cron Job**, mesmo repositório,
+Root Directory `server`, Build Command igual ao da API, Command `python manage.py enviar_lembretes_agendamentos`,
+Schedule `*/15 * * * *`. Copie para o Cron Job as mesmas variáveis de ambiente da API
+(`DATABASE_URL`, `SECRET_KEY`, `DEBUG`, `EMAIL_HOST_PASSWORD`, `ADMIN_NOTIFICATION_EMAIL`).
+
+> O e-mail por SMTP não funciona no plano gratuito do Render (ver tabela de custos acima). Sem e-mail, o **sino do painel
+> admin continua funcionando** (ele consulta `/api/admin/notificacoes/` direto no banco), só os e-mails não saem.
+
+Depois de subir esta versão, rode as migrações (o build do Render já faz isso): a migration `0013` cria a coluna
+`lembrete_admin_enviado_em`. Se o banco do Neon ainda não tem `lembrete_enviado_em` (migration 0009), o `migrate` cria também.

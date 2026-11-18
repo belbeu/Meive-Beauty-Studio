@@ -181,6 +181,9 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+# Quem recebe os avisos de atendimento próximo (padrão: o próprio e-mail do studio).
+ADMIN_NOTIFICATION_EMAIL = os.getenv("ADMIN_NOTIFICATION_EMAIL") or EMAIL_HOST_USER
+
 
 # ---------- API (DRF + JWT) ----------
 REST_FRAMEWORK = {

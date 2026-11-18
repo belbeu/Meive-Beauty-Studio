@@ -15,6 +15,8 @@ class Agendamento(models.Model):
     criado_em = models.DateTimeField(null=True, blank=True)
     historico = models.JSONField(default=list, blank=True)
     lembrete_enviado_em = models.DateTimeField(null=True, blank=True)
+    # Aviso "atendimento próximo" enviado ao admin (a cliente usa lembrete_enviado_em).
+    lembrete_admin_enviado_em = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'agendamento'
@@ -41,6 +43,7 @@ class Agendamento(models.Model):
                 if antigo['data_agendamento'] != self.data_agendamento:
                     # Um novo horário exige um novo lembrete para a data atualizada.
                     self.lembrete_enviado_em = None
+                    self.lembrete_admin_enviado_em = None
                 if antigo['data_agendamento'] != self.data_agendamento and hasattr(self.data_agendamento, 'isoformat'):
                     historico.append({
                         'status': 'rescheduled',
@@ -55,7 +58,7 @@ class Agendamento(models.Model):
         if kwargs.get('update_fields') is not None:
             kwargs['update_fields'] = set(kwargs['update_fields']) | {'historico', 'criado_em'}
             if 'data_agendamento' in kwargs['update_fields']:
-                kwargs['update_fields'].add('lembrete_enviado_em')
+                kwargs['update_fields'].update({'lembrete_enviado_em', 'lembrete_admin_enviado_em'})
 
         super().save(*args, **kwargs)
 

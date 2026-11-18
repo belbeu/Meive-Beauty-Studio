@@ -286,7 +286,9 @@ export default function AdminClientes() {
   };
 
   const totalClientsCount = clients.length;
-  const vipCount = Math.round(totalClientsCount * 0.23);
+  // Novas clientes no mês atual (dado real: data de cadastro vinda do banco)
+  const mesAtual = new Date().toISOString().slice(0, 7);
+  const novasNoMes = clients.filter((c) => (c.criado_em || "").slice(0, 7) === mesAtual).length;
 
   const exportClientsPdf = () => {
     const doc = new jsPDF({ orientation: "landscape", unit: "mm", format: "a4" });
@@ -416,10 +418,10 @@ export default function AdminClientes() {
         <article className="clients-stat">
           <div className="clients-stat-icon clients-stat-icon--purple">{Icons.star}</div>
           <div className="clients-stat-body">
-            <strong className="clients-stat-value">{vipCount}</strong>
-            <span className="clients-stat-label">CLIENTES VIP</span>
+            <strong className="clients-stat-value">{novasNoMes}</strong>
+            <span className="clients-stat-label">NOVAS NO MÊS</span>
           </div>
-          <span className="clients-stat-note">23% da base</span>
+          <span className="clients-stat-note">Cadastros do mês</span>
         </article>
 
         <article className="clients-stat">
