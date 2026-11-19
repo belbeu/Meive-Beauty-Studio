@@ -132,6 +132,7 @@ class RegistroView(APIView):
         try:
             _enviar_codigo(dados["email"], "cadastro", pendentes)
         except Exception:
+            logger.exception("ERRO NO CADASTRO")
             return Response(
                 {"detail": "Não foi possível enviar o e-mail de verificação. Confira a configuração do Gmail e tente novamente."},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -196,6 +197,7 @@ class SolicitarCodigoAdminView(APIView):
         try:
             _enviar_codigo(email, "login_admin", {"id_usuario": usuario.id_usuario})
         except Exception:
+            logger.exception("ERRO NO LOGIN ADMIN")
             return Response(
                 {"detail": "Não foi possível enviar o código. Verifique a configuração do Gmail."},
                 status=status.HTTP_503_SERVICE_UNAVAILABLE,
