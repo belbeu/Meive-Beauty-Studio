@@ -5,6 +5,7 @@
 
 import os
 import secrets
+import logging
 from datetime import timedelta
 
 from django.contrib.auth.hashers import check_password, make_password
@@ -27,6 +28,11 @@ from rest_framework import status
 
 from google.auth.transport import requests as google_requests
 from google.oauth2 import id_token
+
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token
+
+logger = logging.getLogger(__name__)
 
 class RegistroSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(max_length=150)
@@ -82,6 +88,7 @@ def _enviar_codigo(email, finalidade, dados_pendentes=None):
             fail_silently=False,
         )
     except Exception:
+        logger.exception("Falha ao enviar e-mail de verificação")
         desafio.delete()
         raise
     return desafio
