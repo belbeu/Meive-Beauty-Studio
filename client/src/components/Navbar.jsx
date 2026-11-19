@@ -50,7 +50,7 @@ export default function Navbar() {
         <Link to="/#servicos" onClick={(e) => irPara(e, "servicos")}>SERVIÇOS</Link>
         <Link to="/#produtos" onClick={(e) => irPara(e, "produtos")}>PRODUTOS</Link>
         <Link to="/#sobre" onClick={(e) => irPara(e, "sobre")}>SOBRE</Link>
-        <Link to="/promocao">PROMOÇÕES</Link>
+        <Link to="/#promocoes" onClick={(e) => irPara(e, "promocoes")}>PROMOÇÕES</Link>
         <Link to="/#contato" onClick={(e) => irPara(e, "contato")}>CONTATO</Link>
       </nav>
 
@@ -82,7 +82,7 @@ export default function Navbar() {
           <Link to="/#servicos" onClick={(e) => irPara(e, "servicos")}>SERVIÇOS</Link>
           <Link to="/#produtos" onClick={(e) => irPara(e, "produtos")}>PRODUTOS</Link>
           <Link to="/#sobre" onClick={(e) => irPara(e, "sobre")}>SOBRE</Link>
-          <Link to="/promocao" onClick={() => setMenuOpen(false)}>PROMOÇÕES</Link>
+          <Link to="/#promocoes" onClick={(e) => irPara(e, "promocoes")}>PROMOÇÕES</Link>
           <Link to="/#contato" onClick={(e) => irPara(e, "contato")}>CONTATO</Link>
         </div>
 
